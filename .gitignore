@@ -1,0 +1,5 @@
+mysh
+*.o
+a.out
+report
+.vscode

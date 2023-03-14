@@ -8,7 +8,7 @@
 #include "my.h"
 #include <string.h>
 
-static int my_strncmp_tok(char* s1, char* s2, int n)
+int my_strncmp_tok(char* s1, char* s2, int n)
 {
     char* token1;
     char* token2;

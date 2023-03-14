@@ -7,6 +7,7 @@
 
 #include "my.h"
 #include <stdbool.h>
+int my_strncmp_tok(char* s1, char* s2, int n);
 
 static bool my_str_isalphanum(char *str)
 {
@@ -31,15 +32,11 @@ static int setenv_error_handling(char *name)
     return (0);
 }
 
-static bool is_env_var_present(char *str, char **env)
+bool is_env_var_present(char *str, char **env)
 {
-    int i = 0;
-
-    for (; env[i] != NULL; i++) {
-        if (my_strncmp(env[i], str, my_strlen(str)) == true)
-            return (true);
-    }
-    return (false);
+    if (my_getenv(env, str) == NULL)
+        return (false);
+    return (true);
 }
 
 int my_setenv(char *name, char *value, char **env)
@@ -56,7 +53,7 @@ int my_setenv(char *name, char *value, char **env)
     my_strcat(str, "=");
     my_strcat(str, value);
     if (is_env_var_present(name, env) == true) {
-        for (; my_strncmp(env[i], name, my_strlen(name)) != 0; i++);
+        for (; my_strncmp_tok(env[i], name, my_strlen(name)) != 0; i++);
         env[i] = str;
     } else {
         for (; env[i] != NULL; i++);

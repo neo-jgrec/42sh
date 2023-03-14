@@ -17,4 +17,3 @@ int main(int argc, UNUSED char **argv, char **env)
         env = malloc(sizeof(char *) * 1000);
     return (minishell(env));
 }
-

@@ -26,7 +26,7 @@ static char *read_stdin(term_t *term)
 static void my_prompt(void)
 {
     my_printf("%s", getcwd(NULL, 0));
-    my_printf("\033[1;32m$>\033[0m ");
+    my_printf(" \033[1;32m$>\033[0m ");
 }
 
 int minishell(char **env)

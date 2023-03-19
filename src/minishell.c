@@ -51,7 +51,7 @@ int minishell(char **env)
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
-        printf("str = |%s|\n", term.str);
+        my_printf("str = |%s|\n", term.str);
         term.argv = my_str_to_word_array(term.str, ' ');
         for (int i = 0; term.argv[i] != NULL; i++)
             my_printf("argv[%d] = |%s|\n", i, term.argv[i]);

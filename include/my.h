@@ -12,6 +12,7 @@
     #include <stdio.h>
     #include <unistd.h>
     #include <errno.h>
+    #include <stdlib.h>
 
     typedef struct {
         char *prog_name;

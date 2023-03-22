@@ -11,6 +11,7 @@
 #include <sys/wait.h>
 #include <dirent.h>
 #include "my.h"
+#include <unistd.h>
 
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
@@ -35,7 +36,7 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     return 0;
 }
 
-void my_parsing(exec_t *exec, char **args, char **env, term_t *term)
+void my_parsing(exec_t *exec, char **args, term_t *term)
 {
     for (int i = 0; args[i] != NULL; ++i) {
         if (!my_strcmp(args[i], "<")
@@ -59,15 +60,18 @@ void my_parsing(exec_t *exec, char **args, char **env, term_t *term)
     }
 }
 
-int execute_commands(char **args, char **env, term_t *term)
+int execute_commands(char **args, term_t *term)
 {
     exec_t exec = {0, 1, 0, 0, 0};
 
-    my_parsing(&exec, args, env, term);
+    my_parsing(&exec, args, term);
     exec.last_pid = execute_command(args + exec.cmd_start,
     exec.input_fd, exec.output_fd, term);
-    waitpid(exec.last_pid, NULL, 0);
+    waitpid(exec.last_pid, term->exit_status, 0);
     (exec.input_fd != STDIN_FILENO) ? close(exec.input_fd) : 0;
     (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
+    if (WIFEXITED(*term->exit_status))
+        *term->exit_status = WEXITSTATUS(*term->exit_status);
+    sigsegv_handler(term);
     return 0;
 }

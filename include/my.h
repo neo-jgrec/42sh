@@ -56,7 +56,7 @@
     char **my_str_to_word_array(char *str, const char to_clean);
     int len_tab(char **tab);
 
-    void sigsegv_handler(int sig);
+    void sigsegv_handler(term_t *term);
     void perror_exit(const char *s);
 
     int is_executable(char ***args, char **env);

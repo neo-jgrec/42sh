@@ -8,7 +8,7 @@
 #include "my.h"
 
 char *clean_str_minishell(char *str, const char *to_clean);
-int execute_commands(char **args, char **env, term_t *term);
+int execute_commands(char **args, term_t *term);
 
 static char *read_stdin(void)
 {
@@ -48,7 +48,7 @@ int minishell(char **env)
         term.argv = my_str_to_word_array(term.str, ' ');
         if (term.argv == NULL)
             continue;
-        execute_commands(term.argv, term.env, &term);
+        execute_commands(term.argv, &term);
         free(term.str);
         free(term.argv);
     }

@@ -20,7 +20,9 @@ void my_semicolon(exec_t *exec, int i, term_t *term, char **args);
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
     int is_builtin = is_builtins(args);
-    int is_executable_int = (is_builtin == 0) ? is_executable(&args, (char **)term->env) : 0;
+    int is_executable_int = (is_builtin == 0)
+    ? is_executable(&args, (char **)term->env) : 0;
+
     if (is_executable_int == 0 && is_builtin == 0) {
         my_printf("%s: Command not found.\n", args[0]);
         return 0;
@@ -30,9 +32,11 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
         return 0;
     }
     if (is_builtin)
-        return execute_builtin_command(args, (char **)term->env, term->exit_status);
+        return execute_builtin_command(args, (char **)term->env,
+        term->exit_status);
     if (!is_builtin)
-        return execute_non_builtin_command(args, &input_fd, &output_fd, (char **)term->env);
+        return execute_non_builtin_command(args, &input_fd,
+        &output_fd, (char **)term->env);
     return 0;
 }
 

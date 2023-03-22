@@ -60,7 +60,7 @@ void heredoc(char **args, int *input_fd, int *i)
     pid_t pid;
 
     heredoc_pipe(pipefd);
-    heredoc_fork(pipefd, &pid);
+    heredoc_fork(&pid);
     if (pid == 0)
         heredoc_child(pipefd, args, i);
     heredoc_parent(pipefd, input_fd, args, i);

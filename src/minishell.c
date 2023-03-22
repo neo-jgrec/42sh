@@ -8,18 +8,18 @@
 #include "my.h"
 
 char *clean_str_minishell(char *str, const char *to_clean);
+int execute_commands(char **args, char **env, term_t *term);
 
-static char *read_stdin(term_t *term)
+static char *read_stdin(void)
 {
     char *str = NULL;
     size_t size = 0;
 
     if (getline(&str, &size, stdin) == EOF) {
         (isatty(0) == 1) ? write(1, "exit\n", 5) : 0;
-        exit(term->exit_status);
+        exit(0);
     }
     str[my_strlen(str) - 1] = '\0';
-    term->exit_status = 0;
     return (str);
 }
 
@@ -34,30 +34,21 @@ int minishell(char **env)
     term_t term = {
         .str = NULL,
         .argv = NULL,
-        .cwd = getcwd(NULL, 0),
-        .old_cwd = NULL,
-        .action = NONE,
-        .exit_status = 0,
         .env = env,
-        .path = NULL,
-        .command_with_path = NULL
     };
 
     while (1) {
-        term.path = my_str_to_word_array(my_getenv(term.env, "PATH"), ':');
         if (isatty(0) == 1)
             my_prompt();
-        term.str = read_stdin(&term);
+        term.str = read_stdin();
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
-        my_printf("str = |%s|\n", term.str);
         term.argv = my_str_to_word_array(term.str, ' ');
-        for (int i = 0; term.argv[i] != NULL; i++)
-            my_printf("argv[%d] = |%s|\n", i, term.argv[i]);
         if (term.argv == NULL)
             continue;
-        is_builtins(&term);
-        // is_executable(&term);
+        execute_commands(term.argv, term.env, &term);
+        free(term.str);
+        free(term.argv);
     }
 }

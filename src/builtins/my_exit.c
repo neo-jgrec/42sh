@@ -17,18 +17,19 @@ static bool my_str_isnum(char *str)
     return (true);
 }
 
-void my_exit(term_t *term)
+void my_exit(char **argv, UNUSED char **env, int *exit_status)
 {
-    if (len_tab(term->argv) > 2) {
+    int status = *exit_status;
+    if (len_tab(argv) > 2) {
         my_printf("exit: Expression Syntax.\n");
         return;
     }
-    if (term->argv[1] != NULL) {
-        if (my_str_isnum(term->argv[1]) == 0) {
+    if (argv[1] != NULL) {
+        if (my_str_isnum(argv[1]) == 0) {
             my_printf("exit: Badly formed number.\n");
             return;
         }
-        exit(my_atoi(term->argv[1]));
+        exit(my_atoi(argv[1]));
     }
-    exit(term->exit_status);
+    exit(status);
 }

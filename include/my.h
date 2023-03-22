@@ -15,59 +15,54 @@
     #include <stdlib.h>
 
     typedef struct {
-        char *prog_name;
-        int nb_args;
-        pid_t PID;
-        pid_t child_PID;
-        int status;
-    } my_process_t;
-
-    typedef enum action_e {
-        NONE,
-        BUILTINS,
-        EXEC
-    } action_t;
-
-    typedef struct {
         char *str;
         char **argv;
-        char *cwd;
-        char *old_cwd;
-        action_t action;
         char **env;
-        char **path;
-        char *command_with_path;
-        int exit_status;
     } term_t;
 
     typedef struct commands_s {
         char *name;
-        void (*func)(term_t *term);
+        void (*func)(void *args, char **env, int *exit_status);
     } commands_t;
 
-    char *my_getenv(char **env, char *name);
+    typedef struct {
+        int input_fd;
+        int output_fd;
+        int cmd_start;
+        int append;
+        pid_t last_pid;
+    } exec_t;
+
+    char *my_getenv(char **env, const char *name);
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
 
-    void my_cd(term_t *term);
-    int my_unsetenv_builtin(term_t *term);
-    int my_setenv_builtin(term_t *term);
-    int my_print_env(term_t *term);
-    void my_exit(term_t *term);
+    void my_cd(char **args, char **env, int *exit_status);
+    int my_unsetenv_builtin(char **args, char **env, int *exit_status);
+    int my_setenv_builtin(char **args, char **env, int *exit_status);
+    int my_env(char **args, char **env, int *exit_status);
+    void my_exit(char **args, char **env, int *exit_status);
 
     static const struct commands_s commands[] = {
-        {"cd", my_cd},
-        {"exit", my_exit},
-        {"env", (void *) my_print_env},
+        {"cd", (void *) my_cd},
         {"setenv", (void *) my_setenv_builtin},
         {"unsetenv", (void *) my_unsetenv_builtin},
+        {"env", (void *) my_env},
+        {"exit", (void *) my_exit},
         {NULL, NULL}
     };
 
     char **my_str_to_word_array(char *str, const char to_clean);
     int len_tab(char **tab);
 
-    int is_builtins(term_t *term);
-    int is_executable(term_t *term);
+    void sigsegv_handler(int sig);
+    void perror_exit(const char *s);
+
+    int is_executable(char ***args, char **env);
+    int is_builtins(char **args);
+    int execute_builtin_command(char **args, char **env,
+    int *exit_status);
+    int execute_non_builtin_command(char **args, int *input_fd,
+    int *output_fd, char **env);
 
 #endif /* !MY_H_ */

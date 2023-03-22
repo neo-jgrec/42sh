@@ -11,6 +11,8 @@ int len_tab(char **tab)
 {
     int i = 0;
 
+    if (tab == NULL)
+        return (0);
     for (; tab[i] != NULL; i++);
     return (i);
 }

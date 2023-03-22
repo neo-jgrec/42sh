@@ -2,67 +2,73 @@
 ** EPITECH PROJECT, 2023
 ** minishell2
 ** File description:
-** exec
+** exec setenv | cat -e
 */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <dirent.h>
+#include "my.h"
 
-// static const struct commands_s commands[] = {
-//     {"cd", my_cd},
-//     {"exit", my_exit},
-//     {"env", (void *) my_print_env},
-//     {"setenv", (void *) my_setenv_builtin},
-//     {"unsetenv", (void *) my_unsetenv_builtin},
-//     {NULL, NULL}
-// };
+void my_left_redirection(char **args, int *input_fd, int *i, int append);
+void my_right_redirection(char **args, int *output_fd, int *i, int append);
+int my_pipe(exec_t *exec, int i, char **env, char **args);
+void my_semicolon(exec_t *exec, int i, char **env, char **args);
 
-// // Helper function to check if a command is a builtin
-// int is_builtin(const char *cmd) {
-//     for (int i = 0; commands[i].name != NULL; i++) {
-//         if (strcmp(commands[i].name, cmd) == 0) {
-//             return 1;
-//         }
-//     }
-//     return 0;
-// }
+int execute_command(char **args, int input_fd, int output_fd, char **env)
+{
+    int is_builtin = is_builtins(args);
+    int is_executable_int = (is_builtin == 0) ? is_executable(&args, env) : 0;
+    if (is_executable_int == 0 && is_builtin == 0) {
+        my_printf("%s: Command not found.\n", args[0]);
+        return 0;
+    }
+        if (is_executable_int == 0 && is_builtin == 0) {
+        my_printf("%s: Command not found.\n", args[0]);
+        return 0;
+    }
+    if (is_builtin)
+        return execute_builtin_command(args, env, &(int){0});
+    if (!is_builtin)
+        return execute_non_builtin_command(args, &input_fd, &output_fd, env);
+    return 0;
+}
 
-// // Function to execute builtin commands
-// void execute_builtin(char **args, char **env) {
-//     for (int i = 0; commands[i].name != NULL; i++) {
-//         if (strcmp(commands[i].name, args[0]) == 0) {
-//             commands[i].func(args, env);
-//             break;
-//         }
-//     }
-// }
+void my_parsing(exec_t *exec, char **args, char **env)
+{
+    for (int i = 0; args[i] != NULL; ++i) {
+        if (!my_strcmp(args[i], "<")
+        || !(exec->append = my_strcmp(args[i], "<<"))) {
+            my_left_redirection(args, &exec->input_fd, &i, exec->append);
+            continue;
+        }
+        if (!my_strcmp(args[i], ">")
+        || !(exec->append = my_strcmp(args[i], ">>"))) {
+            my_right_redirection(args, &exec->output_fd, &i, exec->append);
+            continue;
+        }
+        if (!my_strcmp(args[i], "|")) {
+            my_pipe(exec, i, env, args);
+            continue;
+        }
+        if (!my_strcmp(args[i], ";")) {
+            my_semicolon(exec, i, env, args);
+            continue;
+        }
+    }
+}
 
+int execute_commands(char **args, char **env)
+{
+    exec_t exec = {0, 1, 0, 0, 0};
 
-// int main(void)
-// {
-//     char *args[] = {"/usr/bin/ls", "-l", "|", "/usr/bin/wc", "-l", ";", "ls", NULL};
-//     char *env[] = {NULL};
-//     function here
-//     return 0;
-// }
-
-// static const struct commands_s commands[] = {
-//     {"cd", my_cd},
-//     {"exit", my_exit},
-//     {"env", (void *) my_print_env},
-//     {"setenv", (void *) my_setenv_builtin},
-//     {"unsetenv", (void *) my_unsetenv_builtin},
-//     {NULL, NULL}
-// };
-
-// make the execute function with execeve, it'll work like a bash shell taking the arguments and the environment
-// Make the redirections and pipes work. you have to handle : "<", ">", "<<", ">>", "|", ";"
-// Make the builtins work (cd, exit, env, setenv, unsetenv) are pointers to functions
-// use only execve, fork, waitpid, dup2, open, close, pipe, dup, dup3, getcwd, chdir, opendir, readdir, closedir, stat, lstat, fstat, get_next_line, malloc, free, perror, strerror, exit
-// it must have error handling for segv and unknown commands
+    my_parsing(&exec, args, env);
+    exec.last_pid = execute_command(args + exec.cmd_start,
+    exec.input_fd, exec.output_fd, env);
+    waitpid(exec.last_pid, NULL, 0);
+    (exec.input_fd != STDIN_FILENO) ? close(exec.input_fd) : 0;
+    (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
+    return 0;
+}

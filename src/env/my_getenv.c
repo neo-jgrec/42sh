@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-char *my_getenv(char **env, char *name)
+char *my_getenv(char **env, const char *name)
 {
     int i = 0;
     int j = 0;

@@ -8,38 +8,39 @@
 #include "my.h"
 #include <string.h>
 
-static void error_handling(term_t *term)
+static void cd_error(char *message, int *exit_status)
+{
+    my_printf("%s.\n", message);
+    *exit_status = 1;
+}
+
+static void error_handling(char **argv, char **env)
 {
     if (errno != 0) {
-        my_printf("%s: %s.\n", term->argv[1], strerror(errno));
+        my_printf("%s: %s.\n", argv[1], strerror(errno));
         errno = 0;
     } else {
-        term->old_cwd = term->cwd;
-        term->cwd = getcwd(NULL, 0);
-        my_setenv("OLDPWD", term->old_cwd, term->env);
-        my_setenv("PWD", term->cwd, term->env);
+        my_setenv("OLDPWD", my_getenv(env, "PWD"), env);
+        my_setenv("PWD", getcwd(NULL, 0), env);
     }
 }
 
-void my_cd(term_t *term)
+void my_cd(char **argv, char **env, int *exit_status)
 {
-    char *tmp = NULL;
+    char *home = my_getenv(env, "HOME");
+    char *oldpwd = my_getenv(env, "OLDPWD");
 
-    if (len_tab(term->argv) > 2) {
-        my_printf("cd: Too many arguments.\n");
-        return;
-    }
-    if (term->argv[1] == NULL) {
-        tmp = my_getenv(term->env, "HOME");
-        if (tmp != NULL)
-            chdir(tmp);
-        else {
-            my_printf("cd: No home directory.\n");
+    errno = 0;
+    if (argv[1] == NULL) {
+        chdir(home);
+    } else if (my_strcmp(argv[1], "-") == 0) {
+        (oldpwd == NULL) ? ({
+            cd_error(": No such file or directory", exit_status);
             return;
-        }
-    } else if (my_strcmp(term->argv[1], "-") == 0)
-        chdir(term->old_cwd);
-    else
-        chdir(term->argv[1]);
-    error_handling(term);
+        }) : (0);
+        chdir(oldpwd);
+    } else {
+        chdir(argv[1]);
+    }
+    error_handling(argv, env);
 }

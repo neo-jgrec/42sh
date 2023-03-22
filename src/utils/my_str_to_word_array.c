@@ -15,7 +15,7 @@ static char *fill_line(char const *str, int pos, char const separator)
 
     for (; str[pos] != separator && str[pos] != '\0'; pos++)
         len++;
-    line = malloc(sizeof(char) * (len + 1));
+    line = malloc(sizeof(char) * (len + 3));
     for (int pos = 0; str[tmp] != separator && str[tmp] != '\0'; pos++, tmp++)
         line[pos] = str[tmp];
     line[len] = '\0';

@@ -20,9 +20,9 @@
 int execute_command(char **args, int input_fd, int output_fd, term_t *term);
 void perror_exit(const char *s);
 
-void my_left_redirection(char **args, int *input_fd, int *i, int append)
+void my_left_redirection(char **args, int *input_fd, int *i)
 {
-    *input_fd = open(args[*i + 1], append ? O_RDONLY : O_RDONLY | O_APPEND);
+    *input_fd = open(args[*i + 1], O_RDONLY);
     if (*input_fd < 0)
         perror_exit(args[*i + 1]);
     args[*i] = NULL;

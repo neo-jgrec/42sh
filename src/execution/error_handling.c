@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "my.h"
 #include <sys/wait.h>
+#include <string.h>
 
 void perror_exit(const char *s)
 {

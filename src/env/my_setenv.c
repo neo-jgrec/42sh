@@ -20,23 +20,23 @@ void add_element_tab_tail(char **tab, char *element)
 
 int my_setenv(char *name, char *value, char **env)
 {
-    char *tmp;
+    int i = 0;
+    int j = 0;
+    int len = my_strlen(name);
+    char *new_env = NULL;
 
-    for (int idx = 0; env[idx] != NULL; idx++) {
-        if (my_strncmp(env[idx], name, my_strlen(name)) == 0
-        && env[idx][my_strlen(name)] == '=') {
-            tmp = malloc(sizeof(char) * my_strlen(name) + my_strlen(value) + 2);
-            my_strcpy(tmp, name);
-            my_strcat(tmp, "=");
-            my_strcat(tmp, value);
-            env[idx] = tmp;
-            return 0;
+    while (env[i] != NULL) {
+        while (env[i][j] == name[j] && env[i][j] != '\0' && name[j] != '\0')
+            j++;
+        if (j == len && env[i][j] == '=') {
+            new_env = my_strcat_inf(3, name, "=", value);
+            env[i] = new_env;
+            return (0);
         }
+        j = 0;
+        i++;
     }
-    tmp = malloc(sizeof(char) * my_strlen(name) + my_strlen(value) + 2);
-    my_strcpy(tmp, name);
-    my_strcat(tmp, "=");
-    my_strcat(tmp, value);
-    add_element_tab_tail(env, tmp);
-    return 0;
+    new_env = my_strcat_inf(3, name, "=", value);
+    add_element_tab_tail(env, new_env);
+    return (0);
 }

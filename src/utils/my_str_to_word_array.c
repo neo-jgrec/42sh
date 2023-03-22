@@ -13,27 +13,24 @@
 static char *fill_line(char const *str, int *pos, char const separator)
 {
     int len = 0;
-    char *line;
     bool in_quotes = false;
-    int tmp = *pos;
 
-    for (; (str[tmp] != separator && str[tmp] != '\0') || in_quotes; tmp++) {
-        if (str[tmp] == '"') {
+    for (int tmp = *pos ; (str[tmp] != separator && str[tmp] != '\0')
+    || in_quotes; tmp++, len++) {
+        if (str[tmp] == '"' || str[tmp] == '\'') {
             in_quotes = !in_quotes;
             continue;
         }
-        len++;
     }
-    line = malloc(sizeof(char) * (len + 1));
-
-    for (int i = 0; (str[*pos] != separator && str[*pos] != '\0') || in_quotes; (*pos)++) {
-        if (str[*pos] == '"') {
+    char *line = my_calloc(sizeof(char), len + 1);
+    for (int i = 0; (str[*pos] != separator && str[*pos] != '\0')
+    || in_quotes; (*pos)++) {
+        if (str[*pos] == '"' || str[*pos] == '\'') {
             in_quotes = !in_quotes;
             continue;
         }
         line[i++] = str[*pos];
     }
-    line[len] = '\0';
     return line;
 }
 
@@ -42,8 +39,9 @@ static int count_word(char const *str, int *pos, char const separator)
     int letter = 0;
     bool in_quotes = false;
 
-    for (; (str[*pos] != separator && str[*pos] != '\0') || in_quotes; (*pos)++) {
-        if (str[*pos] == '"') {
+    for (; (str[*pos] != separator && str[*pos] != '\0')
+    || in_quotes; (*pos)++) {
+        if (str[*pos] == '"' || str[*pos] == '\'') {
             in_quotes = !in_quotes;
             continue;
         }

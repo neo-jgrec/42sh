@@ -39,15 +39,12 @@ int minishell(char **env)
     };
 
     while (1) {
-        if (isatty(0) == 1)
-            my_prompt();
+        if (isatty(0) == 1) my_prompt();
         term.str = read_stdin();
-        if (term.str[0] == '\0')
-            continue;
+        if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = my_str_to_word_array(term.str, ' ');
-        if (term.argv == NULL)
-            continue;
+        if (term.argv == NULL) continue;
         execute_commands(term.argv, &term);
         free(term.str);
         free(term.argv);

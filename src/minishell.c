@@ -35,6 +35,7 @@ int minishell(char **env)
         .str = NULL,
         .argv = NULL,
         .env = env,
+        .exit_status = malloc(sizeof(int))
     };
 
     while (1) {

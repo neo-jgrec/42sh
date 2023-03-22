@@ -14,13 +14,13 @@
 
 void my_left_redirection(char **args, int *input_fd, int *i, int append);
 void my_right_redirection(char **args, int *output_fd, int *i, int append);
-int my_pipe(exec_t *exec, int i, char **env, char **args);
-void my_semicolon(exec_t *exec, int i, char **env, char **args);
+int my_pipe(exec_t *exec, int i, term_t *term, char **args);
+void my_semicolon(exec_t *exec, int i, term_t *term, char **args);
 
-int execute_command(char **args, int input_fd, int output_fd, char **env)
+int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
     int is_builtin = is_builtins(args);
-    int is_executable_int = (is_builtin == 0) ? is_executable(&args, env) : 0;
+    int is_executable_int = (is_builtin == 0) ? is_executable(&args, (char **)term->env) : 0;
     if (is_executable_int == 0 && is_builtin == 0) {
         my_printf("%s: Command not found.\n", args[0]);
         return 0;
@@ -30,13 +30,13 @@ int execute_command(char **args, int input_fd, int output_fd, char **env)
         return 0;
     }
     if (is_builtin)
-        return execute_builtin_command(args, env, &(int){0});
+        return execute_builtin_command(args, (char **)term->env, term->exit_status);
     if (!is_builtin)
-        return execute_non_builtin_command(args, &input_fd, &output_fd, env);
+        return execute_non_builtin_command(args, &input_fd, &output_fd, (char **)term->env);
     return 0;
 }
 
-void my_parsing(exec_t *exec, char **args, char **env)
+void my_parsing(exec_t *exec, char **args, char **env, term_t *term)
 {
     for (int i = 0; args[i] != NULL; ++i) {
         if (!my_strcmp(args[i], "<")
@@ -50,23 +50,23 @@ void my_parsing(exec_t *exec, char **args, char **env)
             continue;
         }
         if (!my_strcmp(args[i], "|")) {
-            my_pipe(exec, i, env, args);
+            my_pipe(exec, i, term, args);
             continue;
         }
         if (!my_strcmp(args[i], ";")) {
-            my_semicolon(exec, i, env, args);
+            my_semicolon(exec, i, term, args);
             continue;
         }
     }
 }
 
-int execute_commands(char **args, char **env)
+int execute_commands(char **args, char **env, term_t *term)
 {
     exec_t exec = {0, 1, 0, 0, 0};
 
-    my_parsing(&exec, args, env);
+    my_parsing(&exec, args, env, term);
     exec.last_pid = execute_command(args + exec.cmd_start,
-    exec.input_fd, exec.output_fd, env);
+    exec.input_fd, exec.output_fd, term);
     waitpid(exec.last_pid, NULL, 0);
     (exec.input_fd != STDIN_FILENO) ? close(exec.input_fd) : 0;
     (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;

@@ -30,6 +30,7 @@ int execute_non_builtin_command(char **args, int *input_fd,
 int *output_fd, char **env)
 {
     pid_t pid = fork();
+
     if (pid < 0) {
         perror_exit("fork");
     } else if (pid == 0) {

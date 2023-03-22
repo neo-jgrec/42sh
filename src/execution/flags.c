@@ -17,7 +17,7 @@
 #include <string.h>
 #include <dirent.h>
 
-int execute_command(char **args, int input_fd, int output_fd, char **env);
+int execute_command(char **args, int input_fd, int output_fd, term_t *term);
 void perror_exit(const char *s);
 
 void my_left_redirection(char **args, int *input_fd, int *i, int append)
@@ -39,14 +39,14 @@ void my_right_redirection(char **args, int *output_fd, int *i, int append)
     ++(*i);
 }
 
-int my_pipe(exec_t *exec, int i, char **env, char **args)
+int my_pipe(exec_t *exec, int i, term_t *term, char **args)
 {
     int pipes[2];
     if (pipe(pipes) == -1)
         perror_exit("pipe");
     args[i] = NULL;
     exec->last_pid = execute_command(args + exec->cmd_start,
-    exec->input_fd, pipes[1], env);
+    exec->input_fd, pipes[1], term);
     close(pipes[1]);
     if (exec->input_fd != STDIN_FILENO)
         close(exec->input_fd);
@@ -55,11 +55,11 @@ int my_pipe(exec_t *exec, int i, char **env, char **args)
     return 0;
 }
 
-void my_semicolon(exec_t *exec, int i, char **env, char **args)
+void my_semicolon(exec_t *exec, int i, term_t *term, char **args)
 {
     args[i] = NULL;
     exec->last_pid = execute_command(args + exec->cmd_start,
-    exec->input_fd, exec->output_fd, env);
+    exec->input_fd, exec->output_fd, term);
     waitpid(exec->last_pid, NULL, 0);
 
     if (exec->input_fd != STDIN_FILENO)

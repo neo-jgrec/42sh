@@ -18,6 +18,7 @@
         char *str;
         char **argv;
         char **env;
+        int *exit_status;
     } term_t;
 
     typedef struct commands_s {

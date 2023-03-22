@@ -13,7 +13,8 @@ char *my_getenv(char **env, const char *name)
     int len = my_strlen(name);
 
     for (int i = 0; env[i] != NULL; i++) {
-        for (; env[i][j] == name[j] && env[i][j] != '\0' && name[j] != '\0'; j++);
+        for (; env[i][j] == name[j]
+        && env[i][j] != '\0' && name[j] != '\0'; j++);
         if (j == len && env[i][j] == '=')
             return (env[i] + j + 1);
         j = 0;

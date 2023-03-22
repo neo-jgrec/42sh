@@ -16,7 +16,11 @@ static int my_print_env(char **env)
 
 int my_env(char **args, char **env, int *exit_status)
 {
-
+    if (len_tab(args) > 1) {
+        my_printf("env: Too many arguments.\n");
+        *exit_status = 1;
+        return (1);
+    }
     my_print_env(env);
     *exit_status = 0;
     return (0);

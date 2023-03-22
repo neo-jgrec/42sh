@@ -42,9 +42,7 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
     for (int i = 0; args[i] != NULL; ++i) {
         if (!my_strcmp(args[i], "<")) {
             my_left_redirection(args, &exec->input_fd, &i);
-            continue;
-        }
-        if (!my_strcmp(args[i], "<<")) {
+        } else if (!my_strcmp(args[i], "<<")) {
             heredoc(args, &exec->input_fd, &i);
             continue;
         }
@@ -57,10 +55,8 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
             my_pipe(exec, i, term, args);
             continue;
         }
-        if (!my_strcmp(args[i], ";")) {
+        if (!my_strcmp(args[i], ";"))
             my_semicolon(exec, i, term, args);
-            continue;
-        }
     }
 }
 

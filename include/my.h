@@ -14,6 +14,8 @@
     #include <errno.h>
     #include <stdlib.h>
 
+    #define IS_QUOTE(c) (c == '"' || c == '\'')
+
     typedef struct {
         char *str;
         char **argv;

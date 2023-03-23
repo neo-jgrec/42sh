@@ -7,6 +7,8 @@
 
 #include "my.h"
 
+char *add_space_before_and_after_jokers(char *str);
+
 static void remplace_char(char *new_str, int *j)
 {
     new_str[*j] = ' ';
@@ -16,12 +18,12 @@ static void remplace_char(char *new_str, int *j)
 char *clean_str_minishell(char *str, const char *to_clean)
 {
     char *new_str = malloc(sizeof(char) * (my_strlen(str) + 1));
-    int i = 0;
     int j = 0;
     int in_quote = 0;
 
     if (new_str == NULL) return (NULL);
-    for (; str[i] != '\0'; i++) {
+    str = add_space_before_and_after_jokers(str);
+    for (int i = 0; str[i] != '\0'; i++) {
         if ((str[i] == '"') && (i == 0 || str[i - 1] != '\''))
             in_quote = !in_quote;
         if (in_quote || my_strchr(to_clean, str[i]) == NULL) {

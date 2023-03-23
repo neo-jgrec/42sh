@@ -72,6 +72,5 @@ int execute_commands(char **args, term_t *term)
     (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
     if (WIFEXITED(*term->exit_status))
         *term->exit_status = WEXITSTATUS(*term->exit_status);
-    printf("exit status: %d\n", *term->exit_status);
     return 0;
 }

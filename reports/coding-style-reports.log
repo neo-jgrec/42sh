@@ -1,0 +1,7 @@
+./Makefile:97: illegal token in column 27, giving up (hint: fix the file or remove it from the working set)
+./mars_lib/my_arraylib/Makefile:87: illegal token in column 27, giving up (hint: fix the file or remove it from the working set)
+./mars_lib/my_printf/Makefile:85: illegal token in column 27, giving up (hint: fix the file or remove it from the working set)
+./mars_lib/my_stdlib/Makefile:84: illegal token in column 27, giving up (hint: fix the file or remove it from the working set)
+./src/executable/execute.c:64: MAJOR:C-F3
+./src/executable/execute.c:71: MINOR:C-G2
+./src/executable/execute.c:78: MAJOR:C-F3

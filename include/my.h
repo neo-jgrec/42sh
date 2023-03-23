@@ -24,6 +24,11 @@
         int *exit_status;
     } term_t;
 
+    typedef struct {
+        int *input_fd;
+        int *output_fd;
+    } my_fd_t;
+
     typedef struct commands_s {
         char *name;
         void (*func)(void *args, char **env, int *exit_status);
@@ -67,8 +72,8 @@
     int is_builtins(char **args);
     int execute_builtin_command(char **args, char **env,
     int *exit_status);
-    int execute_non_builtin_command(char **args, int *input_fd,
-    int *output_fd, char **env);
+    int execute_non_builtin_command(char **args, my_fd_t fd,
+    char **env, term_t *term);
 
     void my_left_redirection(char **args, int *input_fd, int *i);
     void my_right_redirection(char **args, int *output_fd, int *i, int append);

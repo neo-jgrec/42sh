@@ -12,6 +12,8 @@
 #include <dirent.h>
 #include "my.h"
 #include <unistd.h>
+#include <signal.h>
+
 void heredoc(char **args, int *input_fd, int *i);
 
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)
@@ -19,6 +21,7 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     int is_builtin = is_builtins(args);
     int is_executable_int = (is_builtin == 0)
     ? is_executable(&args, (char **)term->env) : 0;
+    my_fd_t fd = {&input_fd, &output_fd};
 
     if (is_executable_int == 0 && is_builtin == 0) {
         my_printf("%s: Command not found.\n", args[0]);
@@ -27,9 +30,9 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     if (is_builtin)
         return execute_builtin_command(args, (char **)term->env,
         term->exit_status);
-    if (!is_builtin)
-        return execute_non_builtin_command(args, &input_fd,
-        &output_fd, (char **)term->env);
+    if (!is_builtin) {
+        return execute_non_builtin_command(args, fd, term->env, term);
+    }
     return 0;
 }
 
@@ -69,6 +72,6 @@ int execute_commands(char **args, term_t *term)
     (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
     if (WIFEXITED(*term->exit_status))
         *term->exit_status = WEXITSTATUS(*term->exit_status);
-    sigsegv_handler(term);
+    printf("exit status: %d\n", *term->exit_status);
     return 0;
 }

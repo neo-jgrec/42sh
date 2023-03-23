@@ -17,7 +17,7 @@ static void remplace_char(char *new_str, int *j)
 
 char *clean_str_minishell(char *str, const char *to_clean)
 {
-    char *new_str = malloc(sizeof(char) * (my_strlen(str) + 1));
+    char *new_str = malloc(sizeof(char) * (my_strlen(str) + 3));
     int j = 0;
     int in_quote = 0;
 

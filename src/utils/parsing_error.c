@@ -12,8 +12,8 @@ int parsing_error(char **args)
 {
     for (int i = 0; args[i] != NULL; i++) {
         if (((my_strcmp(args[i], ">") == 0 || my_strcmp(args[i], "<") == 0) &&
-        (my_strcmp(args[i + 1], ">") == 0 || my_strcmp(args[i + 1], "<") == 0)) ||
-        ((my_strcmp(args[i], ">>") == 0 || my_strcmp(args[i], "<<") == 0)
+        (my_strcmp(args[i + 1], ">") == 0 || my_strcmp(args[i + 1], "<") == 0))
+        || ((my_strcmp(args[i], ">>") == 0 || my_strcmp(args[i], "<<") == 0)
         && (my_strcmp(args[i + 1], ">>") == 0
         || my_strcmp(args[i + 1], "<<") == 0))) {
             my_printf("Missing name for redirect.\n");
@@ -24,5 +24,7 @@ int parsing_error(char **args)
             return (1);
         }
     }
+    if (my_strcmp(args[0], ";") == 0 && args[1] == NULL)
+        return (1);
     return (0);
 }

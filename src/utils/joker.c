@@ -30,7 +30,8 @@ char *add_space_before_and_after_jokers(char *str)
         if (in_quote || !is_joker(str[i], my_jokers))
             new_str[j++] = str[i];
         else {
-            (i > 0 && !is_joker(str[i - 1], my_jokers) ? new_str[j++] = ' ' : 0);
+            (i > 0 && !is_joker(str[i - 1], my_jokers)
+            ? new_str[j++] = ' ' : 0);
             new_str[j++] = str[i];
             (str[i + 1] != '\0' && !is_joker(str[i + 1], my_jokers) ?
             new_str[j++] = ' ' : 0);

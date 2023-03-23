@@ -61,7 +61,8 @@ void setup_input_output(int *input_fd, int *output_fd)
 
 void execute_command_execve(char **args, char **env)
 {
-    if (execve(args[0], change_n_value(args, remove_path(args[0]), 0), env) == -1) {
+    if (execve(args[0], change_n_value(args,
+    remove_path(args[0]), 0), env) == -1) {
         perror_exit(args[0]);
     } else {
         exit(0);

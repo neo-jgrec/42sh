@@ -57,7 +57,7 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
             continue;
         }
         if (!my_strcmp(args[i], ";"))
-            my_semicolon(exec, i, term, args);
+            my_semicolon(exec, &i, term, args);
     }
 }
 

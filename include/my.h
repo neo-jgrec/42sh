@@ -58,6 +58,7 @@
 
     void sigsegv_handler(term_t *term);
     void perror_exit(const char *s);
+    void remove_element_at_index(char **args, int index);
 
     int is_executable(char ***args, char **env);
     int is_builtins(char **args);
@@ -69,6 +70,6 @@
     void my_left_redirection(char **args, int *input_fd, int *i);
     void my_right_redirection(char **args, int *output_fd, int *i, int append);
     int my_pipe(exec_t *exec, int i, term_t *term, char **args);
-    void my_semicolon(exec_t *exec, int i, term_t *term, char **args);
+    void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
 
 #endif /* !MY_H_ */

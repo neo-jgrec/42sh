@@ -55,9 +55,15 @@ int my_pipe(exec_t *exec, int i, term_t *term, char **args)
     return 0;
 }
 
-void my_semicolon(exec_t *exec, int i, term_t *term, char **args)
+void my_semicolon(exec_t *exec, int *i, term_t *term, char **args)
 {
-    args[i] = NULL;
+    while (args[*i + 1] != NULL && my_strcmp(args[*i + 1], ";") == 0)
+        remove_element_at_index(args, *i + 1);
+    if (args[*i + 1] == NULL) {
+        remove_element_at_index(args, *i);
+        return;
+    }
+    args[*i] = NULL;
     exec->last_pid = execute_command(args + exec->cmd_start,
     exec->input_fd, exec->output_fd, term);
     waitpid(exec->last_pid, NULL, 0);
@@ -69,5 +75,5 @@ void my_semicolon(exec_t *exec, int i, term_t *term, char **args)
 
     exec->input_fd = 0;
     exec->output_fd = 1;
-    exec->cmd_start = i + 1;
+    exec->cmd_start = *i + 1;
 }

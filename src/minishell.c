@@ -34,10 +34,8 @@ static void my_prompt(void)
 int minishell(char **env)
 {
     term_t term = {
-        .str = NULL,
-        .argv = NULL,
-        .env = env,
-        .exit_status = malloc(sizeof(int))
+        .str = NULL, .argv = NULL,
+        .env = env, .exit_status = malloc(sizeof(int))
     };
 
     while (1) {

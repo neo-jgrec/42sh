@@ -30,22 +30,21 @@ int my_env(char **args, char **env, int *exit_status)
 
 int my_setenv_builtin(char **args, char **env, int *exit_status)
 {
+    if (args[1] == NULL) {
+        my_env(args, env, exit_status);
+        return (0);
+    }
     if (setenv_error_handling(args[1], args) == 1) {
         *exit_status = 1;
         return (1);
     }
-    if (args[1] == NULL) {
-        my_print_env(env);
+    if (args[2] == NULL)
+        args[2] = "";
+    if (my_setenv(args[1], args[2], env) == 1)
         *exit_status = 1;
-        return (1);
-    } else {
-        if (args[2] == NULL)
-            args[2] = "";
-        if (my_setenv(args[1], args[2], env) == 1)
-            *exit_status = 1;
-        else
-            *exit_status = 0;
-    }
+    else
+        *exit_status = 0;
+
     return *exit_status;
 }
 

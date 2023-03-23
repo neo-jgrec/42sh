@@ -10,10 +10,10 @@
 int is_there_only_char(char **args, char *to_find)
 {
     for (int i = 0; args[i] != NULL; i++) {
-        if (my_strcmp(args[i], to_find) == 0)
-            return (1);
+        if (my_strcmp(args[i], to_find) != 0)
+            return (0);
     }
-    return (0);
+    return (1);
 }
 
 int all_char_check(char **args)

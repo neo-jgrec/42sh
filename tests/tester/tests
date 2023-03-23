@@ -106,14 +106,6 @@ TESTS=
   echo "./my_ls -l /usr"
 [910-END]
 
-[911]
-  NAME="Printing Working Directory"
-  SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-  CLEAN=""
-  TESTS=
-  echo 'pwd'
-[911-END]
-
 [912]
 NAME="Creating and Removing Directory"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -397,3 +389,88 @@ TESTS=
   echo 'setenv a! kh'
   echo 'setenv a!¤ kh'
 [935-END]
+
+[936]
+NAME="ls with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e'
+[936-END]
+
+[937]
+NAME="ls with pipe and redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e > .lst'
+  echo 'cat .lst'
+  echo 'rm .lst'
+[937-END]
+
+[938]
+NAME="multiple redirections"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l > .lst1'
+  echo 'cat .lst1 > .lst2'
+  echo 'cat .lst2'
+  echo 'rm .lst1 .lst2'
+[938-END]
+
+[939]
+NAME="multiple redirections with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e > .lst1'
+  echo 'cat .lst1 > .lst2'
+  echo 'cat .lst2'
+  echo 'rm .lst1 .lst2'
+[939-END]
+
+[940]
+NAME="multi commands with semicolon"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l ; cat -e .lst'
+  echo 'ls -l ; cat -e .lst ; ; ;'
+[940-END]
+
+[941]
+NAME="multi commands with semicolon and redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l > .lst1 ; cat -e .lst1'
+  echo 'ls -l > .lst1 ; cat -e .lst1 ; ; ;'
+[941-END]
+
+[942]
+NAME="subject test 1"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l; ls -l | wc -l'
+[942-END]
+
+[943]
+NAME="subject test 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'mkdir test ; cd test ; ls -a ; ls | wc -l > tutu ; cat tutu; cd .. ; rm -rf test'
+[943-END]
+
+[944]
+NAME="A pipe with a builtin ?"
+SETUP="export VAR1=VALEUR1 ; OLDPATH=$PATH ; PATH='/random'"
+CLEAN="PATH=$OLDPATH"
+TESTS=
+  echo 'setenv | /bin/grep VAR1'
+  echo '/bin/ls | cd /usr'
+  echo 'ls -l'
+  echo 'exit 45|cat /etc/resolv.conf'
+[944-END]

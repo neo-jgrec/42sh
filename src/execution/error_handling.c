@@ -16,6 +16,7 @@ void perror_exit(const char *s)
         my_printf("%s: Exec format error. Wrong Architecture.\n", s);
     else
         my_printf("%s: %s.\n", s, strerror(errno));
+    errno = 0;
 }
 
 int get_signal(int process_status)

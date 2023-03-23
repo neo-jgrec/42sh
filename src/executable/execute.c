@@ -7,6 +7,16 @@
 
 #include "my.h"
 
+char *remove_path(char **args)
+{
+    char *command = args[0];
+    int i = 0;
+
+    for (; command[i] != '\0'; i++);
+    for (; command[i] != '/' && i >= 0; i--);
+    return &command[i + 1];
+}
+
 void setup_input_output(int *input_fd, int *output_fd)
 {
     if (*input_fd != STDIN_FILENO) {
@@ -21,7 +31,10 @@ void setup_input_output(int *input_fd, int *output_fd)
 
 void execute_command_execve(char **args, char **env)
 {
-    if (execve(args[0], args, env) == -1) {
+    char **tmp = args;
+
+    tmp[0] = remove_path(args);
+    if (execve(args[0], tmp, env) == -1) {
         perror_exit(args[0]);
     }
 }

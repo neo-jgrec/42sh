@@ -13,6 +13,7 @@
     #include <unistd.h>
     #include <errno.h>
     #include <stdlib.h>
+    #include <aio.h>
 
     #define IS_QUOTE(c) (c == '"' || c == '\'')
 

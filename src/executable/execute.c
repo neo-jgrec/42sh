@@ -7,14 +7,40 @@
 
 #include "my.h"
 
-char *remove_path(char **args)
+char *remove_path(char *str)
 {
-    char *command = args[0];
     int i = 0;
+    int j = 0;
+    char *ret = malloc(sizeof(char) * 100);
 
-    for (; command[i] != '\0'; i++);
-    for (; command[i] != '/' && i >= 0; i--);
-    return &command[i + 1];
+    for (; str[i] != '\0'; i++);
+    for (; str[i] != '/'; i--);
+    for (i++; str[i] != '\0'; i++, j++)
+        ret[j] = str[i];
+    ret[j] = '\0';
+    return (ret);
+}
+
+char **change_n_value(char **tab, char *str, int n)
+{
+    int i = 0;
+    int j = 0;
+    char **ret = malloc(sizeof(char *) * 100);
+
+    for (; tab[i] != NULL; i++);
+    for (int k = 0; k < i; k++) {
+        if (k == n) {
+            ret[j] = malloc(sizeof(char) * 100);
+            my_strcpy(ret[j], str);
+            j++;
+        } else {
+            ret[j] = malloc(sizeof(char) * 100);
+            my_strcpy(ret[j], tab[k]);
+            j++;
+        }
+    }
+    ret[j] = NULL;
+    return (ret);
 }
 
 void setup_input_output(int *input_fd, int *output_fd)
@@ -31,10 +57,8 @@ void setup_input_output(int *input_fd, int *output_fd)
 
 void execute_command_execve(char **args, char **env)
 {
-    char **tmp = args;
-
-    tmp[0] = remove_path(args);
-    if (execve(args[0], tmp, env) == -1) {
+    if (execve(args[0],
+    change_n_value(args,remove_path(args[0]), 0), env) == -1) {
         perror_exit(args[0]);
     }
 }

@@ -68,7 +68,6 @@ int execute_commands(char **args, term_t *term)
     my_parsing(&exec, args, term);
     exec.last_pid = execute_command(args + exec.cmd_start,
     exec.input_fd, exec.output_fd, term);
-    waitpid(exec.last_pid, term->exit_status, 0);
     (exec.input_fd != STDIN_FILENO) ? close(exec.input_fd) : 0;
     (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
     if (WIFEXITED(*term->exit_status))

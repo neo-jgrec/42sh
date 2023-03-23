@@ -461,7 +461,7 @@ NAME="subject test 2"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'mkdir test ; cd test ; ls -a ; ls | wc -l > tutu ; cat tutu; cd .. ; rm -rf test'
+  echo 'mkdir test ; cd test ; ls -a ; ls | cat | wc -c > tutu ; cat tutu'
 [943-END]
 
 [944]

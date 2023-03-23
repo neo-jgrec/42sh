@@ -6,7 +6,10 @@
 */
 
 #include "my.h"
+
 int my_strncmp_tok(char* s1, char* s2, int n);
+
+const char *my_jokers[] = {";", "|", "<", ">", "<<", ">>", NULL};
 
 int is_joker(char c, const char **jokers)
 {
@@ -32,22 +35,21 @@ int get_joker_len(const char *str, int index, const char **jokers)
 
 char *add_space_before_and_after_jokers(char *str)
 {
-    const char *jokers[] = {";", "|", "<", ">", "<<", ">>", NULL};
     char *new_str = malloc(sizeof(char) * my_strlen(str) * 3 + 1);
     int j = 0;
-    int in_quote = 0;
 
-    for (int i = 0; str[i] != '\0'; i++) {
+    for (int i = 0, in_quote = 0; str[i] != '\0'; i++) {
         in_quote = (IS_QUOTE(str[i]) ? !in_quote : in_quote);
-        if (in_quote || !is_joker(str[i], jokers))
+        if (in_quote || !is_joker(str[i], my_jokers))
             new_str[j++] = str[i];
         else {
-            ((i > 0 && !is_joker(str[i - 1], jokers) && !in_quote)
-            ? (new_str[j++] = ' ') : (0));
-            new_str[j++] = str[i];
-            i += get_joker_len(str, i, jokers) - 1;
-            ((str[i + 1] != '\0' && !is_joker(str[i + 1], jokers)
-            && !in_quote) ? (new_str[j++] = ' ') : (0));
+            (i > 0 && !IS_SPACE(str[i - 1])) ? new_str[j++] = ' ' : 0;
+            int joker_len = get_joker_len(str, i, my_jokers);
+            for (int k = 0; k < joker_len; k++)
+                new_str[j++] = str[i+k];
+            i += joker_len - 1;
+            if (str[i+joker_len] != '\0' && !IS_SPACE(str[i+joker_len]))
+                new_str[j++] = ' ';
         }
     }
     new_str[j] = '\0';

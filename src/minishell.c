@@ -9,6 +9,7 @@
 
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
+int parsing_error(char **args);
 
 static char *read_stdin(term_t *term)
 {
@@ -46,6 +47,7 @@ int minishell(char **env)
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = my_str_to_word_array(term.str, ' ');
         if (term.argv == NULL) continue;
+        if (parsing_error(term.argv) == 1) continue;
         execute_commands(term.argv, &term);
         free(term.str);
         free(term.argv);

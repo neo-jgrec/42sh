@@ -17,6 +17,7 @@
     #include <stdbool.h>
 
     #define IS_QUOTE(c) (c == '"' || c == '\'')
+    #define IS_SPACE(c) (c == ' ')
 
     typedef struct {
         char *str;

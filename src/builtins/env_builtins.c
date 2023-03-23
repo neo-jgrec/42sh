@@ -7,6 +7,8 @@
 
 #include "my.h"
 
+int setenv_error_handling(char *name, char **args);
+
 static int my_print_env(char **env)
 {
     for (int i = 0; env[i] != NULL; i++)
@@ -28,8 +30,7 @@ int my_env(char **args, char **env, int *exit_status)
 
 int my_setenv_builtin(char **args, char **env, int *exit_status)
 {
-    if (len_tab(args) > 3) {
-        my_printf("setenv: Too many arguments.\n");
+    if (setenv_error_handling(args[1], args) == 1) {
         *exit_status = 1;
         return (1);
     }

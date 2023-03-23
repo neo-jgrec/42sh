@@ -14,6 +14,7 @@
     #include <errno.h>
     #include <stdlib.h>
     #include <aio.h>
+    #include <stdbool.h>
 
     #define IS_QUOTE(c) (c == '"' || c == '\'')
 
@@ -63,6 +64,7 @@
 
     char **my_str_to_word_array(char *str, const char to_clean);
     int len_tab(char **tab);
+    bool my_str_isalphanum(char *str);
 
     void sigsegv_handler(term_t *term);
     void perror_exit(const char *s);

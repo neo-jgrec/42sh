@@ -23,8 +23,7 @@ int all_char_check(char **args)
     || is_there_only_char(args, "|") || is_there_only_char(args, ";"))
         return (1);
     if ((my_strcmp(args[0], ">") == 0 || my_strcmp(args[0], "<") == 0
-    || my_strcmp(args[0], ">>") == 0 || my_strcmp(args[0], "<<") == 0
-    || my_strcmp(args[0], ";") == 0)
+    || my_strcmp(args[0], ">>") == 0 || my_strcmp(args[0], "<<") == 0)
     && args[1] == NULL)
         return (1);
     if  (my_strcmp(args[0], "|") == 0 && args[1] == NULL) {
@@ -36,6 +35,8 @@ int all_char_check(char **args)
 
 int parsing_error(char **args)
 {
+    if (!my_strcmp(args[0], ";"))
+        remove_element_at_index(args, 0);
     for (int i = 0; args[i + 1] != NULL; i++) {
         if (((my_strcmp(args[i], ">") == 0 || my_strcmp(args[i], "<") == 0) &&
         (my_strcmp(args[i + 1], ">") == 0 || my_strcmp(args[i + 1], "<") == 0))

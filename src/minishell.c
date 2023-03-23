@@ -10,15 +10,16 @@
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
 
-static char *read_stdin(void)
+static char *read_stdin(term_t *term)
 {
     char *str = NULL;
     size_t size = 0;
 
     if (getline(&str, &size, stdin) == EOF) {
         (isatty(0) == 1) ? write(1, "exit\n", 5) : 0;
-        exit(0);
+        exit(*term->exit_status);
     }
+    *term->exit_status = 0;
     str[my_strlen(str) - 1] = '\0';
     return (str);
 }
@@ -40,7 +41,7 @@ int minishell(char **env)
 
     while (1) {
         if (isatty(0) == 1) my_prompt();
-        term.str = read_stdin();
+        term.str = read_stdin(&term);
         if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = my_str_to_word_array(term.str, ' ');

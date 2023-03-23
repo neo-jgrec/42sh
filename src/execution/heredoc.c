@@ -32,7 +32,7 @@ void heredoc_child(int *pipefd, char **args, int *i)
 
     close(pipefd[0]);
     while (1) {
-        printf("? ");
+        my_printf("? ");
         read_len = getline(&line, &line_len, stdin);
         if (read_len < 0)
             break;

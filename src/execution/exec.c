@@ -24,10 +24,6 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
         my_printf("%s: Command not found.\n", args[0]);
         return 0;
     }
-    if (is_executable_int == 0 && is_builtin == 0) {
-        my_printf("%s: Command not found.\n", args[0]);
-        return 0;
-    }
     if (is_builtin)
         return execute_builtin_command(args, (char **)term->env,
         term->exit_status);

@@ -6,6 +6,7 @@
 */
 
 #include "my.h"
+#include <signal.h>
 
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
@@ -31,16 +32,23 @@ static void my_prompt(void)
     my_printf(" \033[1;32m$>\033[0m ");
 }
 
+static void sigint_handler(int sig)
+{
+    (void)sig;
+    my_printf("\n");
+    my_prompt();
+}
+
 int minishell(char **env)
 {
-    term_t term = {
-        .str = NULL, .argv = NULL,
-        .env = env, .exit_status = malloc(sizeof(int))
-    };
+    term_t term = { .str = NULL, .argv = NULL,
+        .env = env, .exit_status = malloc(sizeof(int)) };
 
+    signal(SIGINT, sigint_handler);
     TAILQ_INIT(&term.pid_list);
     while (1) {
-        if (isatty(0) == 1) my_prompt();
+        if (isatty(0) == 1)
+            my_prompt();
         term.str = read_stdin(&term);
         if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");

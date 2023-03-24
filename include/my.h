@@ -81,7 +81,7 @@
     int is_executable(char ***args, char **env);
     int is_builtins(char **args);
     int execute_builtin_command(char **args, char **env,
-    int *exit_status);
+    term_t *term, my_fd_t fd);
     int execute_non_builtin_command(char **args, my_fd_t fd,
     char **env, term_t *term);
 

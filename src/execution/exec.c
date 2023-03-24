@@ -30,7 +30,7 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     }
     if (is_builtin)
         return execute_builtin_command(args, (char **)term->env,
-        term->exit_status);
+        term, fd);
     if (!is_builtin) {
         return execute_non_builtin_command(args, fd, term->env, term);
     }

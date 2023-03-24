@@ -15,6 +15,7 @@
 #include <signal.h>
 
 void heredoc(char **args, int *input_fd, int *i);
+char **edit_args_env(char **args, char **env);
 
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
@@ -23,7 +24,10 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     ? is_executable(&args, (char **)term->env) : 0;
     my_fd_t fd = {&input_fd, &output_fd};
 
-    if (is_executable_int == 0 && is_builtin == 0) {
+    if (edit_args_env(args, (char **)term->env) == NULL) {
+        *term->exit_status = 1;
+        return 0;
+    } else if (is_executable_int == 0 && is_builtin == 0) {
         my_printf("%s: Command not found.\n", args[0]);
         *term->exit_status = 1;
         return 0;
@@ -31,9 +35,8 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     if (is_builtin)
         return execute_builtin_command(args, (char **)term->env,
         term, fd);
-    if (!is_builtin) {
+    if (is_executable_int)
         return execute_non_builtin_command(args, fd, term->env, term);
-    }
     return 0;
 }
 

@@ -9,10 +9,12 @@
 
 static char *check(char **env, char *name)
 {
+    char *tmp = NULL;
     if (name[0] == '$') {
-        if (my_getenv(env, name + 1) != NULL)
-            name = my_getenv(env, name + 1);
-        else {
+        if (my_getenv(env, name + 1) != NULL) {
+            tmp = my_getenv(env, name + 1);
+            return (tmp);
+        } else {
             return (NULL);
         }
     }
@@ -21,13 +23,16 @@ static char *check(char **env, char *name)
 
 char **edit_args_env(char **args, char **env)
 {
+    char *tmp = NULL;
     if (args == NULL)
         return (NULL);
     for (int i = 0; args[i] != NULL; i++) {
-        args[i] = check(env, args[i]);
-        if (args[i] == NULL) {
-            printf("%s: Undefined variable.\n", args[i - 1]);
-            remove_element_at_index(args, i);
+        tmp = check(env, args[i]);
+        if (tmp != NULL) {
+            args[i] = tmp;
+        } else {
+            my_printf("%s: Undefined variable.\n", args[i] + 1);
+            return (NULL);
         }
     }
     return (args);

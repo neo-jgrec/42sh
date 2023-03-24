@@ -21,9 +21,11 @@ static char *construct_result(construct_result_params_t *params)
     if (result == NULL)
         return NULL;
     my_strncpy(result, params->name, params->dollar_ptr - params->name);
-    my_strncpy(result + (params->dollar_ptr - params->name), params->value, params->value_len);
+    my_strncpy(result + (params->dollar_ptr - params->name),
+    params->value, params->value_len);
     my_strncpy(result + (params->dollar_ptr - params->name) + params->value_len,
-            params->dollar_ptr + calculate_name_var_env_len(params->dollar_ptr) + 1,
+            params->dollar_ptr + calculate_name_var_env_len(\
+            params->dollar_ptr) + 1,
             my_strlen(params->dollar_ptr + calculate_name_var_env_len(\
             params->dollar_ptr) + 1) + 1);
     return result;
@@ -37,15 +39,15 @@ static char *check(char **env, char *name, size_t prefix_len, size_t value_len)
     char *result;
     size_t name_var_env_len = 0;
 
-    if (dollar_ptr == NULL)
-        return name;
+    if (dollar_ptr == NULL) return name;
     var_name = dollar_ptr + 1;
     for (int i = 0; env[i] != NULL; i++) {
         name_var_env_len = calculate_name_var_env_len(env[i]);
         if (my_strncmp(env[i], var_name, name_var_env_len) == 0) {
             value = my_strchr(env[i], '=') + 1;
             value_len = my_strlen(value);
-            construct_result_params_t params = {name, dollar_ptr, value, prefix_len, value_len};
+            construct_result_params_t params = {name, dollar_ptr,
+            value, prefix_len, value_len};
             result = construct_result(&params);
             return result;
         }

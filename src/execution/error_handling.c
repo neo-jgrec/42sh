@@ -39,8 +39,7 @@ void sigsegv_handler(term_t *term)
 {
     int sig;
 
-    if (*term->exit_status == 1)
-        return;
+    if (*term->exit_status == 1) return;
     sig = get_signal(*term->exit_status);
     (sig == 139) ? write(1, "Segmentation fault", 18) : 0;
     (sig == 136) ? write(1, "Floating exception", 18) : 0;

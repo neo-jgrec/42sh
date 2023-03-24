@@ -74,8 +74,10 @@ int execute_commands(char **args, term_t *term)
         if (WIFSIGNALED(*term->exit_status))
             sigsegv_handler(term);
     }
-    (exec.input_fd != STDIN_FILENO) ? close(exec.input_fd) : 0;
-    (exec.output_fd != STDOUT_FILENO) ? close(exec.output_fd) : 0;
+    if (exec.input_fd != STDIN_FILENO)
+        close(exec.input_fd);
+    if (exec.output_fd != STDOUT_FILENO)
+        close(exec.output_fd);
     if (WIFEXITED(*term->exit_status))
         *term->exit_status = WEXITSTATUS(*term->exit_status);
     return 0;

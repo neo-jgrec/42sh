@@ -20,6 +20,8 @@ static char *read_stdin(term_t *term)
     if (getline(&str, &size, stdin) == EOF) {
         (isatty(0) == 1) ? write(1, "exit\n", 5) : 0;
         exit((*term->exit_status == 45) ? 1 : *term->exit_status);
+        free(term->str);
+        free(term->argv);
     }
     *term->exit_status = 0;
     str[my_strlen(str) - 1] = '\0';
@@ -50,13 +52,14 @@ int minishell(char **env)
         if (isatty(0) == 1)
             my_prompt();
         term.str = read_stdin(&term);
-        if (term.str[0] == '\0') continue;
+        if (term.str[0] == '\0')
+            continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = my_str_to_word_array(term.str, ' ');
-        if (term.argv == NULL) continue;
-        if (parsing_error(term.argv) == 1) continue;
+        if (term.argv == NULL)
+            continue;
+        if (parsing_error(term.argv) == 1)
+            continue;
         execute_commands(term.argv, &term);
-        free(term.str);
-        free(term.argv);
     }
 }

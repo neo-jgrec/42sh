@@ -459,7 +459,7 @@ TESTS=
 [943]
 NAME="subject test 2"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm -rf test"
 TESTS=
   echo 'mkdir test ; cd test ; ls -a ; ls | cat | wc -c > tutu ; cat tutu'
 [943-END]

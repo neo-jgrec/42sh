@@ -18,7 +18,7 @@ static char *read_stdin(term_t *term)
 
     if (getline(&str, &size, stdin) == EOF) {
         (isatty(0) == 1) ? write(1, "exit\n", 5) : 0;
-        exit(*term->exit_status);
+        exit((*term->exit_status == 45) ? 1 : *term->exit_status);
     }
     *term->exit_status = 0;
     str[my_strlen(str) - 1] = '\0';

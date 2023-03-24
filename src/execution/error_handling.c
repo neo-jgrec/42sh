@@ -37,8 +37,11 @@ int get_signal(int process_status)
 
 void sigsegv_handler(term_t *term)
 {
-    int sig = get_signal(*term->exit_status);
+    int sig;
 
+    if (*term->exit_status == 1)
+        return;
+    sig = get_signal(*term->exit_status);
     (sig == 139) ? write(1, "Segmentation fault", 18) : 0;
     (sig == 136) ? write(1, "Floating exception", 18) : 0;
     (sig == 134) ? write(1, "Abort", 5) : 0;
@@ -53,7 +56,6 @@ void sigsegv_handler(term_t *term)
         write(1, " (core dumped)", 14);
         sig = 139;
     }
-    if (errno == 8) write(1, " Binary file not executable", 27);
     if (sig != 0) write(1, "\n", 1);
     if (sig != 0) *term->exit_status = sig;
 }

@@ -71,8 +71,7 @@ int execute_commands(char **args, term_t *term)
     pid_list_t *pid_list = malloc(sizeof(pid_list_t));
     TAILQ_FOREACH(pid_list, &term->pid_list, entries) {
         waitpid(pid_list->pid, term->exit_status, 0);
-        if (WIFSIGNALED(*term->exit_status))
-            sigsegv_handler(term);
+        sigsegv_handler(term);
     }
     if (exec.input_fd != STDIN_FILENO)
         close(exec.input_fd);

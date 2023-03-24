@@ -38,6 +38,7 @@ int minishell(char **env)
         .env = env, .exit_status = malloc(sizeof(int))
     };
 
+    TAILQ_INIT(&term.pid_list);
     while (1) {
         if (isatty(0) == 1) my_prompt();
         term.str = read_stdin(&term);

@@ -15,15 +15,22 @@
     #include <stdlib.h>
     #include <aio.h>
     #include <stdbool.h>
+    #include <sys/queue.h>
 
     #define IS_QUOTE(c) (c == '"' || c == '\'')
     #define IS_SPACE(c) (c == ' ')
+
+    typedef struct pid_list_s {
+        pid_t pid;
+        TAILQ_ENTRY(pid_list_s) entries;
+    } pid_list_t;
 
     typedef struct {
         char *str;
         char **argv;
         char **env;
         int *exit_status;
+        TAILQ_HEAD(, pid_list_s) pid_list;
     } term_t;
 
     typedef struct {

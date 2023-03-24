@@ -67,12 +67,10 @@ void my_semicolon(exec_t *exec, int *i, term_t *term, char **args)
     exec->last_pid = execute_command(args + exec->cmd_start,
     exec->input_fd, exec->output_fd, term);
     waitpid(exec->last_pid, NULL, 0);
-
     if (exec->input_fd != STDIN_FILENO)
         close(exec->input_fd);
     if (exec->output_fd != STDOUT_FILENO)
         close(exec->output_fd);
-
     exec->input_fd = 0;
     exec->output_fd = 1;
     exec->cmd_start = *i + 1;

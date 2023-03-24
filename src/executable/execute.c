@@ -72,6 +72,7 @@ void execute_command_execve(char **args, char **env)
 int execute_non_builtin_command(char **args, my_fd_t fd,
 char **env, term_t *term)
 {
+    pid_list_t *pid_list;
     pid_t pid = fork();
 
     if (pid == 0) {
@@ -80,9 +81,9 @@ char **env, term_t *term)
     } else if (pid < 0) {
         perror_exit("fork");
     } else {
-        waitpid(pid, term->exit_status, 0);
-        if (WIFSIGNALED(*term->exit_status))
-            sigsegv_handler(term);
+        pid_list = malloc(sizeof(pid_list_t));
+        pid_list->pid = pid;
+        TAILQ_INSERT_TAIL(&term->pid_list, pid_list, entries);
     }
     return pid;
 }

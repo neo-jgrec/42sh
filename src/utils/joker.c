@@ -7,8 +7,6 @@
 
 #include "my.h"
 
-int my_strncmp_tok(char* s1, char* s2, int n);
-
 const char *my_jokers[] = {";", "|", "<<", ">>", ">", "<", NULL};
 
 int is_joker(char c, const char **jokers)

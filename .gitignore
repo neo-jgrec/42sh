@@ -4,3 +4,5 @@ a.out
 report
 .vscode
 *.a
+unit_tests
+build

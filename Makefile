@@ -8,12 +8,14 @@
 PROJECT_NAME			=	mysh
 NAME					=	mysh
 
-SRC 					= 	$(shell find src/ -name '*.c' -type f | grep -v main.c)
+SRC 					= 	$(shell find src/ -name '*.c' -type f \
+| grep -v main.c)
 
 MAIN 					= 	src/main.c
 
 BUILD_DIR				=	build
-OBJ						=	$(SRC:%.c=$(BUILD_DIR)/%.o) $(MAIN:%.c=$(BUILD_DIR)/%.o)
+OBJ						=	$(SRC:%.c=$(BUILD_DIR)/%.o) \
+$(MAIN:%.c=$(BUILD_DIR)/%.o)
 
 LIB_FOLDER				=	mars_lib
 

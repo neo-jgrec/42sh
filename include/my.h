@@ -51,6 +51,14 @@
         pid_t last_pid;
     } exec_t;
 
+    typedef struct {
+        char *name;
+        char *dollar_ptr;
+        char *value;
+        size_t prefix_len;
+        size_t value_len;
+    } construct_result_params_t;
+
     char *my_getenv(char **env, const char *name);
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
@@ -60,6 +68,7 @@
     int my_setenv_builtin(char **args, char **env, int *exit_status);
     int my_env(char **args, char **env, int *exit_status);
     void my_exit(char **args, char **env, int *exit_status);
+    char *my_echo(char **argv, char **env, int *exit_status);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -67,6 +76,7 @@
         {"unsetenv", (void *) my_unsetenv_builtin},
         {"env", (void *) my_env},
         {"exit", (void *) my_exit},
+        // {"echo", (void *) my_echo},
         {NULL, NULL}
     };
 

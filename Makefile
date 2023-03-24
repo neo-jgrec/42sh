@@ -8,10 +8,12 @@
 PROJECT_NAME			=	mysh
 NAME					=	mysh
 
-SRC 					= 	$(shell find src/ -name '*.c')
+SRC 					= 	$(shell find src/ -name '*.c' -type f | grep -v main.c)
+
+MAIN 					= 	src/main.c
 
 BUILD_DIR				=	build
-OBJ						=	$(SRC:%.c=$(BUILD_DIR)/%.o)
+OBJ						=	$(SRC:%.c=$(BUILD_DIR)/%.o) $(MAIN:%.c=$(BUILD_DIR)/%.o)
 
 LIB_FOLDER				=	mars_lib
 
@@ -74,19 +76,20 @@ fclean: clean
 re:	fclean all
 
 tests_run:	CFLAGS += -lcriterion --coverage
-tests_run:	fclean
+tests_run:	re
 	@if [ ! -d "tests" ]; then\
 		echo -e "\033[1;31m[ERROR]\033[0m" "No tests directory";\
 		exit 1;\
 	fi
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_TESTS_DIR)
-	@gcc -o $(TEST_NAME) $(TEST_SRC) $(SRC) $(CFLAGS) $(WFLAGS) $(CRITERION)\
+	@gcc -o $(TEST_NAME) $(TEST_SRC) $(SRC) $(CFLAGS) $(WFLAGS) $(CRITERION) \
+	$(LDLIBS)\
 	&& echo -e "\033[1;32m[OK]\033[0m" $(TEST_NAME)\
 	|| echo -e "\033[1;31m[KO]\033[0m" $(TEST_NAME)
 	@./$(TEST_NAME)
 	mv *.gc* $(BUILD_TESTS_DIR)
-	gcovr --exclude tests/
+	gcovr --exclude tests/ --exclude $(LIB_FOLDER)/
 
 .PHONY: all clean fclean re debug tests_run
 

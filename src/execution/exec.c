@@ -59,6 +59,10 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
             my_pipe(exec, i, term, args);
             continue;
         }
+        if (!my_strcmp(args[i], "&&")) {
+            my_and(exec, &i, term, args);
+            continue;
+        }
         if (!my_strcmp(args[i], ";"))
             my_semicolon(exec, &i, term, args);
     }
@@ -69,8 +73,9 @@ int execute_commands(char **args, term_t *term)
     exec_t exec = {0, 1, 0, 0, 0};
 
     my_parsing(&exec, args, term);
-    exec.last_pid = execute_command(args + exec.cmd_start,
-    exec.input_fd, exec.output_fd, term);
+    if (args[exec.cmd_start] != NULL)
+        exec.last_pid = execute_command(args + exec.cmd_start,
+        exec.input_fd, exec.output_fd, term);
     pid_list_t *pid_list = malloc(sizeof(pid_list_t));
     TAILQ_FOREACH(pid_list, &term->pid_list, entries) {
         waitpid(pid_list->pid, term->exit_status, 0);

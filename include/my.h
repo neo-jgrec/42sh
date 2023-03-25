@@ -105,5 +105,6 @@
     void my_right_redirection(char **args, int *output_fd, int *i, int append);
     int my_pipe(exec_t *exec, int i, term_t *term, char **args);
     void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
+    void my_and(exec_t *exec, int *i, term_t *term, char **args);
 
 #endif /* !MY_H_ */

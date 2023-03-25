@@ -20,7 +20,7 @@ int my_which(char **args, char **env, int *exit_status)
     return (0);
 }
 
-int my_where(char **args, char **env, int *exit_status)
+int my_where(char **args, char **env, UNUSED int *exit_status)
 {
     char *path = my_getenv(env, "PATH");
     char **path_array = my_str_to_word_array(path, ':');

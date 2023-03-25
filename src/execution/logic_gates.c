@@ -26,10 +26,9 @@ void my_and(exec_t *exec, int *i, term_t *term, char **args)
     exec->cmd_start = *i + 1;
     if (!(WIFEXITED(status) && WEXITSTATUS(status) == 0)) {
         while (args[*i + 1] != NULL) {
-            if (my_strcmp(args[*i + 1], "&&") == 0) {
-                remove_element_at_index(args, *i + 1);
-                break;
-            }
+            (my_strcmp(args[*i + 1], "&&") == 0)
+            ? ({remove_element_at_index(args, *i + 1); break;})
+            : 0;
             remove_element_at_index(args, *i + 1);
         }
     }

@@ -69,6 +69,7 @@
     int my_env(char **args, char **env, int *exit_status);
     void my_exit(char **args, char **env, int *exit_status);
     char *my_echo(char **argv, char **env, int *exit_status);
+    void builtin_list(char **args, char **env, int *exit_status);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -77,6 +78,7 @@
         {"env", (void *) my_env},
         {"exit", (void *) my_exit},
         {"echo", (void *) my_echo},
+        {"builtins", (void *) builtin_list},
         {NULL, NULL}
     };
 

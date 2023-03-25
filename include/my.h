@@ -106,5 +106,6 @@
     int my_pipe(exec_t *exec, int i, term_t *term, char **args);
     void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
     void my_and(exec_t *exec, int *i, term_t *term, char **args);
+    void my_or(exec_t *exec, int *i, term_t *term, char **args);
 
 #endif /* !MY_H_ */

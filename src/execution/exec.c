@@ -43,28 +43,16 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 void my_parsing(exec_t *exec, char **args, term_t *term)
 {
     for (int i = 0; args[i] != NULL; ++i) {
-        if (!my_strcmp(args[i], "<")) {
-            my_left_redirection(args, &exec->input_fd, &i);
-        }
-        if (!my_strcmp(args[i], "<<")) {
-            heredoc(args, &exec->input_fd, &i);
-            continue;
-        }
-        if (!my_strcmp(args[i], ">")
-        || !(exec->append = my_strcmp(args[i], ">>"))) {
-            my_right_redirection(args, &exec->output_fd, &i, exec->append);
-            continue;
-        }
-        if (!my_strcmp(args[i], "|")) {
-            my_pipe(exec, i, term, args);
-            continue;
-        }
-        if (!my_strcmp(args[i], "&&")) {
-            my_and(exec, &i, term, args);
-            continue;
-        }
-        if (!my_strcmp(args[i], ";"))
-            my_semicolon(exec, &i, term, args);
+        (!my_strcmp(args[i], "<")) ? my_left_redirection(args,
+        &exec->input_fd, &i)
+        : (!my_strcmp(args[i], "<<")) ? heredoc(args, &exec->input_fd, &i)
+        : (!my_strcmp(args[i], ">") || !(exec->append = my_strcmp(args[i],
+        ">>"))) ? my_right_redirection(args, &exec->output_fd, &i,
+        exec->append)
+        : (!my_strcmp(args[i], "|")) ? my_pipe(exec, i, term, args)
+        : (!my_strcmp(args[i], "&&")) ? my_and(exec, &i, term, args)
+        : (!my_strcmp(args[i], ";")) ? my_semicolon(exec, &i, term, args)
+        : 0;
     }
 }
 

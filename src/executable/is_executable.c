@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-static char *get_command_with_path(char *cmd, char **env)
+char *get_command_with_path(char *cmd, char **env)
 {
     char *path = my_getenv(env, "PATH");
     char **path_array = my_str_to_word_array(path, ':');

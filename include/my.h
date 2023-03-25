@@ -70,6 +70,8 @@
     void my_exit(char **args, char **env, int *exit_status);
     char *my_echo(char **argv, char **env, int *exit_status);
     void builtin_list(char **args, char **env, int *exit_status);
+    int my_which(char **args, char **env, int *exit_status);
+    int my_where(char **args, char **env, int *exit_status);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -79,6 +81,8 @@
         {"exit", (void *) my_exit},
         {"echo", (void *) my_echo},
         {"builtins", (void *) builtin_list},
+        {"which", (void *) my_which},
+        {"where", (void *) my_where},
         {NULL, NULL}
     };
 

@@ -76,7 +76,7 @@
         {"unsetenv", (void *) my_unsetenv_builtin},
         {"env", (void *) my_env},
         {"exit", (void *) my_exit},
-        // {"echo", (void *) my_echo},
+        {"echo", (void *) my_echo},
         {NULL, NULL}
     };
 

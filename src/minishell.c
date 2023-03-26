@@ -28,17 +28,31 @@ static char *read_stdin(term_t *term)
     return (str);
 }
 
-static void my_prompt(void)
+static char *remove_home(char *str, char **env)
 {
-    my_printf("%s", getcwd(NULL, 0));
-    my_printf(" \033[1;32m$>\033[0m ");
+    char *home = my_getenv(env, "HOME");
+
+    if (home == NULL)
+        return (str);
+    if (my_strncmp(str, home, my_strlen(home)) == 0)
+        return (my_strcat_inf(2, "~", str + my_strlen(home)));
+    return (str);
+}
+
+static void my_prompt(char **env)
+{
+    my_printf("\033[1;32m%s\033[0m", " ➜ ");
+    my_printf("\033[1;34m%s\033[0m", remove_home(getcwd(NULL, 0), env));
+    my_printf("\033[1;32m%s\033[0m", " ");
 }
 
 static void sigint_handler(int sig)
 {
+    char *temp_env[] = {"", NULL};
+
     (void)sig;
     my_printf("\n");
-    my_prompt();
+    my_prompt(temp_env);
 }
 
 int minishell(char **env)
@@ -50,7 +64,7 @@ int minishell(char **env)
     TAILQ_INIT(&term.pid_list);
     while (1) {
         if (isatty(0) == 1)
-            my_prompt();
+            my_prompt(env);
         term.str = read_stdin(&term);
         if (term.str[0] == '\0')
             continue;

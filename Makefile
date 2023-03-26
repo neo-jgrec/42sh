@@ -8,8 +8,8 @@
 PROJECT_NAME			=	mysh
 NAME					=	mysh
 
-SRC 					= 	$(shell find src/ -name '*.c' -type f \
-| grep -v main.c)
+SRC 					:= $(shell find src/ -name '*.c' -type f \
+| xargs grep -L "int main")
 
 MAIN 					= 	src/main.c
 

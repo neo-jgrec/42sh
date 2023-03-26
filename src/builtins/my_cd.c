@@ -14,13 +14,13 @@ static void cd_error(char *message, int *exit_status)
     *exit_status = 1;
 }
 
-static void error_handling(char **argv, char **env)
+static void error_handling(char **argv, char **env, char *pwd)
 {
     if (errno != 0) {
         my_printf("%s: %s.\n", argv[1], strerror(errno));
         errno = 0;
     } else {
-        my_setenv("OLDPWD", my_getenv(env, "PWD"), env);
+        my_setenv("OLDPWD", pwd, env);
         my_setenv("PWD", getcwd(NULL, 0), env);
     }
 }
@@ -29,6 +29,7 @@ void my_cd(char **argv, char **env, int *exit_status)
 {
     char *home = my_getenv(env, "HOME");
     char *oldpwd = my_getenv(env, "OLDPWD");
+    char *pwd = getcwd(NULL, 0);
 
     errno = 0;
     if (argv[1] == NULL) {
@@ -45,5 +46,5 @@ void my_cd(char **argv, char **env, int *exit_status)
         chdir(oldpwd);
     } else
         chdir(argv[1]);
-    error_handling(argv, env);
+    error_handling(argv, env, pwd);
 }

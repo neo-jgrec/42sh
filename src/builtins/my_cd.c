@@ -32,7 +32,12 @@ void my_cd(char **argv, char **env, int *exit_status)
 
     errno = 0;
     if (argv[1] == NULL) {
-        chdir(home);
+        if (home == NULL) {
+            cd_error("cd: No home directory", exit_status);
+            return;
+        } else {
+            chdir(home);
+        }
     } else if (my_strcmp(argv[1], "-") == 0) {
         (oldpwd == NULL) ? ({
             cd_error(": No such file or directory", exit_status);

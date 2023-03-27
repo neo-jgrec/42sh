@@ -486,3 +486,39 @@ TESTS=
   echo 'ls || echo "ok" && echo "ok"'
   echo 'ls ki && echo "ok" || echo "ko"'
 [945-END]
+
+[946]
+NAME="&& and || with redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f .lst"
+TESTS=
+  echo 'ls ki && echo "ok" > .lst'
+  echo 'ls ki || echo "ok" > .lst'
+  echo 'ls ki || echo "ok" > .lst && echo "ko" > .lst'
+  echo 'ls > .lst || echo "ok" > .lst && echo "ok" > .lst'
+  echo 'ls ki && echo "ok" > .lst || echo "ko" > .lst'
+[946-END]
+
+[947]
+NAME="&& and || with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f .lst"
+TESTS=
+  echo 'ls ki && echo "ok" | cat -e > .lst'
+  echo 'ls ki || echo "ok" | cat -e > .lst'
+  echo 'ls ki || echo "ok" | cat -e > .lst && echo "ko" | cat -e > .lst'
+  echo 'ls | cat -e > .lst || echo "ok" | cat -e > .lst && echo "ok" | cat -e > .lst'
+  echo 'ls ki && echo "ok" | cat -e > .lst || echo "ko" | cat -e > .lst'
+[947-END]
+
+[948]
+NAME="echo"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "hello"'
+  echo 'echo -n "hello"'
+  echo 'echo "$PATH"'
+  echo 'echo -n "$PATH"'
+  echo 'echo "oui $PATH"'
+[948-END]

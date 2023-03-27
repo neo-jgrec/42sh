@@ -91,7 +91,7 @@ jobs:
           done
       - name: Clean
         run: |
-          cd -
+          cd ../..
           make clean
   mirror:
     needs: check_program_compilation

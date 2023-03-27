@@ -83,18 +83,19 @@ jobs:
         if: always()
         shell: bash
         run: |
-          cat tests/tester/report.log | while read line; do
-            # if KO on line, print error
-            if [[ $line == *"KO"* ]]; then
-              file_error=$(echo "$line" | sed 's/^[^(]*(\([^)]*\)).*$/\1/')
-              echo "::error file=$file_error::$line"
-            fi
-          done
+          if [ ! -f tests/tester/report.log ]; then
+            cat tests/tester/report.log | while read line; do
+              if [[ $line == *"KO"* ]]; then
+                file_error=$(echo "$line" | sed 's/^[^(]*(\([^)]*\)).*$/\1/')
+                echo "::error file=$file_error::$line"
+              fi
+            done
+          fi
       - name: Clean
         run: |
           cd -
           make clean
-  push_to_mirror:
+  tests:
     needs: check_program_compilation
     runs-on: ubuntu-latest
     if: github.event_name == 'push'

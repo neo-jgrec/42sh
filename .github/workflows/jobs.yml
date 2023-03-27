@@ -62,6 +62,38 @@ jobs:
               echo "::error file=Makefile::Missing executable $executable"
             fi
           done
+  tests:
+    needs: check_program_compilation
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Compilation
+        timeout-minutes: 2
+        run: |
+          make
+      - name: bin to tests
+        run: |
+          cp mysh tests/tester/mysh
+      - name: Run tests
+        run: |
+          cd tests/tester
+          ./tester.sh > report.log
+      - name: Output tests report
+        if: always()
+        shell: bash
+        run: |
+          cat tests/tester/report.log | while read line; do
+            # if KO on line, print error
+            if [[ $line == *"KO"* ]]; then
+              file_error=$(echo "$line" | sed 's/^[^(]*(\([^)]*\)).*$/\1/')
+              echo "::error file=$file_error::$line"
+            fi
+          done
+      - name: Clean
+        run: |
+          cd -
+          make clean
   push_to_mirror:
     needs: check_program_compilation
     runs-on: ubuntu-latest

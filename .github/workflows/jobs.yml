@@ -89,10 +89,6 @@ jobs:
               echo "::error file=$file_error::$line"
             fi
           done
-      - name: Clean
-        run: |
-          cd ../..
-          make clean
   mirror:
     needs: check_program_compilation
     runs-on: ubuntu-latest

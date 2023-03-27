@@ -474,3 +474,15 @@ TESTS=
   echo 'ls -l'
   echo 'exit 45|cat /etc/resolv.conf'
 [944-END]
+
+[945]
+NAME="&& and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls ki && echo "ok"'
+  echo 'ls ki || echo "ok"'
+  echo 'ls ki || echo "ok" && echo "ko"'
+  echo 'ls || echo "ok" && echo "ok"'
+  echo 'ls ki && echo "ok" || echo "ko"'
+[945-END]

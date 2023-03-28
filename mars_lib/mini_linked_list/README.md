@@ -1,12 +1,14 @@
 # Mini Linked-list lib
 
 ## Description
-This is a small library for arrays in using void pointers to store any type of data.
+This is a small library that implements a linked-list in C.
 
 ## Usage
 ```make``` to compile the library.
 
 ```make unit_tests``` to compile the tests.
+
+```make tests_run``` to run the tests.
 
 ```make clean``` to clean the repository.
 
@@ -16,7 +18,7 @@ This is a small library for arrays in using void pointers to store any type of d
 
 ## Coverage
 ##### There is a 100% of coverage
-[![codecov](https://codecov.io/github/JGrecLeVrai/mini_array_list/branch/master/graph/badge.svg?token=O8W5ZN8WU4)](https://codecov.io/github/JGrecLeVrai/mini_array_list)
+[![codecov](https://codecov.io/gh/JGrecLeVrai/mini_linked_list/branch/master/graph/badge.svg?token=93KJYCVHPL)](https://codecov.io/gh/JGrecLeVrai/mini_linked_list)
 
 
 ## DISCLAIMER

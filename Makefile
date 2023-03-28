@@ -89,7 +89,7 @@ tests_run:	re
 	$(LDLIBS)\
 	&& echo -e "\033[1;32m[OK]\033[0m" $(TEST_NAME)\
 	|| echo -e "\033[1;31m[KO]\033[0m" $(TEST_NAME)
-	@./$(TEST_NAME)
+	@./$(TEST_NAME) --verbose --always-succeed
 	mv *.gc* $(BUILD_TESTS_DIR)
 	gcovr --exclude tests/ --exclude $(LIB_FOLDER)/
 

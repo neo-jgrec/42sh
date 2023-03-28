@@ -119,5 +119,5 @@ Test(basics, m_is_builtin, .init = cr_redirect_stdout)
 {
     char *args[] = {"env", NULL};
 
-    cr_assert_eq(is_builtin(args), 0);
+    cr_assert_eq(is_builtins(args), 0);
 }

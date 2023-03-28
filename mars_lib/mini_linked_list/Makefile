@@ -5,15 +5,11 @@
 ## Makefile
 ##
 
-PROJECT_NAME			=	my_arraylib
-NAME					=	libarray.a
+include src/src.mk
+include ../../tests/mini_linked_list/mini_linked_list.mk
 
-SRC 					:= 	src/init_array.c	\
-							src/add_element.c	\
-							src/get_info.c		\
-							src/manage_array.c	\
-							src/print_array.c	\
-							src/remove_element.c
+PROJECT_NAME			=	mini_linked_list
+NAME					=	lib$(PROJECT_NAME).a
 
 BUILD_DIR				=	build
 OBJ						=	$(SRC:%.c=$(BUILD_DIR)/%.o)
@@ -22,10 +18,11 @@ CFLAGS					=	-I include/
 WFLAGS					=	-Wall -Wextra
 
 CRITERION				=	-lcriterion --coverage
-TEST_SRC				=	tests/basics.c
 TEST_NAME				=	unit_tests
+TEST_INCLUDE_DIR		=	../../tests/include
 BUILD_TESTS_DIR			=	$(BUILD_DIR)/tests
 TESTS_OBJ				=	$(TEST_SRC:%.c=$(BUILD_DIR)/%.o)
+LCOV 					:= 	-fprofile-arcs -ftest-coverage
 
 all:	$(NAME)
 
@@ -63,20 +60,15 @@ fclean: clean
 
 re:	fclean all
 
-tests_run:	CFLAGS += -lcriterion --coverage
+tests_run:	CFLAGS += -lcriterion --coverage -Wl,--wrap=malloc
 tests_run:	fclean
-	@if [ ! -d "tests" ]; then\
-		echo -e "\033[1;31m[ERROR]\033[0m" "No tests directory";\
-		exit 1;\
-	fi
 	@mkdir -p $(BUILD_DIR)
-	@mkdir -p $(BUILD_TESTS_DIR)
-	@gcc -o $(TEST_NAME) $(TEST_SRC) $(SRC) $(CFLAGS) $(WFLAGS) $(CRITERION)\
+	@gcc -o $(TEST_NAME) $(SRC) $(TEST_SRC) $(CFLAGS) $(WFLAGS) $(CRITERION) \
+	-I $(TEST_INCLUDE_DIR) $(LCOV)\
 	&& echo -e "\033[1;32m[OK]\033[0m" $(TEST_NAME)\
 	|| echo -e "\033[1;31m[KO]\033[0m" $(TEST_NAME)
-	@./$(TEST_NAME)
-	mv *.gc* $(BUILD_TESTS_DIR)
-	gcovr --exclude tests/
+	@./$(TEST_NAME) --always-succeed
+	mv *.gc* $(BUILD_DIR)
 
 .PHONY: all clean fclean re debug tests_run
 

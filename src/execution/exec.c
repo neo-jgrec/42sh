@@ -17,6 +17,14 @@
 void heredoc(char **args, int *input_fd, int *i);
 char **edit_args_env(char **args, char **env);
 
+static void error_message(char *str)
+{
+    if (access(str, F_OK) == 0)
+        my_printf("%s: Permission denied.\n", str);
+    else
+        my_printf("%s: Command not found.\n", str);
+}
+
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
     int is_builtin = is_builtins(args);
@@ -24,11 +32,12 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     ? is_executable(&args, (char **)term->env) : 0;
     my_fd_t fd = {&input_fd, &output_fd};
 
+    if (args[0] == NULL) return 0;
     if (edit_args_env(args, (char **)term->env) == NULL) {
         *term->exit_status = 1;
         return 0;
     } else if (is_executable_int == 0 && is_builtin == 0) {
-        my_printf("%s: Command not found.\n", args[0]);
+        error_message(args[0]);
         *term->exit_status = 1;
         return 0;
     }
@@ -49,7 +58,7 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
         : (!my_strcmp(args[i], ">") || !(exec->append = my_strcmp(args[i],
         ">>"))) ? my_right_redirection(args, &exec->output_fd, &i,
         exec->append)
-        : (!my_strcmp(args[i], "|")) ? my_pipe(exec, i, term, args)
+        : (!my_strcmp(args[i], "|")) ? my_pipe(exec, &i, term, args)
         : (!my_strcmp(args[i], "&&")) ? my_and(exec, &i, term, args)
         : (!my_strcmp(args[i], ";")) ? my_semicolon(exec, &i, term, args)
         : (!my_strcmp(args[i], "||")) ? my_or(exec, &i, term, args)
@@ -68,7 +77,9 @@ int execute_commands(char **args, term_t *term)
     pid_list_t *pid_list = malloc(sizeof(pid_list_t));
     TAILQ_FOREACH(pid_list, &term->pid_list, entries) {
         waitpid(pid_list->pid, term->exit_status, 0);
-        sigsegv_handler(term);
+        if (WIFSIGNALED(*term->exit_status))
+            sigsegv_handler(term);
+
     }
     if (exec.input_fd != STDIN_FILENO)
         close(exec.input_fd);

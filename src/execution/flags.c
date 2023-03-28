@@ -22,6 +22,11 @@ void perror_exit(const char *s);
 
 void my_left_redirection(char **args, int *input_fd, int *i)
 {
+    if (*i == 0) {
+        my_printf("Invalid null command.\n");
+        args[*i] = NULL;
+        return;
+    }
     *input_fd = open(args[*i + 1], O_RDONLY);
     if (*input_fd < 0)
         perror_exit(args[*i + 1]);
@@ -31,6 +36,11 @@ void my_left_redirection(char **args, int *input_fd, int *i)
 
 void my_right_redirection(char **args, int *output_fd, int *i, int append)
 {
+    if (args[*i + 1] == NULL) {
+        my_printf("Missing name for redirect.\n");
+        args[*i] = NULL;
+        return;
+    }
     *output_fd = open(args[*i + 1], append ? O_WRONLY | O_CREAT | O_TRUNC
     : O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (*output_fd < 0)
@@ -39,19 +49,20 @@ void my_right_redirection(char **args, int *output_fd, int *i, int append)
     ++(*i);
 }
 
-int my_pipe(exec_t *exec, int i, term_t *term, char **args)
+int my_pipe(exec_t *exec, int *i, term_t *term, char **args)
 {
     int pipes[2];
+
     if (pipe(pipes) == -1)
         perror_exit("pipe");
-    args[i] = NULL;
+    args[*i] = NULL;
     exec->last_pid = execute_command(args + exec->cmd_start,
     exec->input_fd, pipes[1], term);
     close(pipes[1]);
     if (exec->input_fd != STDIN_FILENO)
         close(exec->input_fd);
     exec->input_fd = pipes[0];
-    exec->cmd_start = i + 1;
+    exec->cmd_start = *i + 1;
     return 0;
 }
 

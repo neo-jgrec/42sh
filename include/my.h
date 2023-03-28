@@ -30,6 +30,7 @@
         char **argv;
         char **env;
         int *exit_status;
+        int last_return;
         TAILQ_HEAD(, pid_list_s) pid_list;
     } term_t;
 
@@ -103,7 +104,7 @@
 
     void my_left_redirection(char **args, int *input_fd, int *i);
     void my_right_redirection(char **args, int *output_fd, int *i, int append);
-    int my_pipe(exec_t *exec, int i, term_t *term, char **args);
+    int my_pipe(exec_t *exec, int *i, term_t *term, char **args);
     void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
     void my_and(exec_t *exec, int *i, term_t *term, char **args);
     void my_or(exec_t *exec, int *i, term_t *term, char **args);

@@ -22,16 +22,19 @@ void perror_exit(const char *s);
 
 void my_left_redirection(char **args, int *input_fd, int *i)
 {
-    if (*i == 0) {
-        my_printf("Invalid null command.\n");
-        args[*i] = NULL;
+    if (my_strcmp(args[0], "<") == 0) {
+        *input_fd = open(args[*i + 1], O_RDONLY);
+        if (*input_fd < 0)
+            perror_exit(args[*i + 1]);
+        remove_element_at_index(args, *i);
+        remove_element_at_index(args, *i);
         return;
     }
     *input_fd = open(args[*i + 1], O_RDONLY);
     if (*input_fd < 0)
         perror_exit(args[*i + 1]);
-    args[*i] = NULL;
-    ++(*i);
+    remove_element_at_index(args, *i);
+    remove_element_at_index(args, *i);
 }
 
 void my_right_redirection(char **args, int *output_fd, int *i, int append)

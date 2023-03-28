@@ -24,13 +24,12 @@ void my_and(exec_t *exec, int *i, term_t *term, char **args)
     exec->input_fd = STDIN_FILENO;
     exec->output_fd = STDOUT_FILENO;
     exec->cmd_start = *i + 1;
-    if (!(WIFEXITED(status) && WEXITSTATUS(status) != 0)) {
-        while (args[*i + 1] != NULL) {
-            (my_strcmp(args[*i + 1], "&&") == 0)
-            ? ({remove_element_at_index(args, *i + 1); break;})
-            : 0;
+    if ((WIFEXITED(status) && WEXITSTATUS(status) != 0)) {
+        for (int j = exec->cmd_start; args[j]; j++)
+            args[j] = args[j + 1];
+        if (args[*i + 1])
             remove_element_at_index(args, *i + 1);
-        }
+        *i = exec->cmd_start - 1;
     }
 }
 
@@ -48,12 +47,11 @@ void my_or(exec_t *exec, int *i, term_t *term, char **args)
     exec->input_fd = STDIN_FILENO;
     exec->output_fd = STDOUT_FILENO;
     exec->cmd_start = *i + 1;
-    if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-        while (args[*i + 1] != NULL) {
-            (my_strcmp(args[*i + 1], "||") == 0)
-            ? ({remove_element_at_index(args, *i + 1); break;})
-            : 0;
+    if ((WIFEXITED(status) && WEXITSTATUS(status) == 0)) {
+        for (int j = exec->cmd_start; args[j]; j++)
+            args[j] = args[j + 1];
+        if (args[*i + 1])
             remove_element_at_index(args, *i + 1);
-        }
+        *i = exec->cmd_start - 1;
     }
 }

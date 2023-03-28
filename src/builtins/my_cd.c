@@ -32,6 +32,7 @@ void my_cd(char **argv, char **env, int *exit_status)
     char *pwd = getcwd(NULL, 0);
 
     errno = 0;
+    *exit_status = 0;
     if (argv[1] == NULL) {
         if (home == NULL) {
             cd_error("cd: No home directory", exit_status);

@@ -522,3 +522,15 @@ TESTS=
   echo 'echo -n "$PATH"'
   echo 'echo "oui $PATH"'
 [948-END]
+
+[949]
+NAME="pipe with builtins"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -rf src"
+TESTS=
+  echo 'setenv | /usr/bin/grep PLOP | /usr/bin/sed s/PLOP/YEAH/g'
+  echo 'mkdir src'
+  echo '/bin/ls | cd src'
+  echo '/bin/ls -l'
+  echo 'exit 45 | /usr/bin/cat /etc/resolv.conf'
+[949-END]

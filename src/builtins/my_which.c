@@ -16,7 +16,7 @@ int my_which(char **args, char **env, int *exit_status)
         *exit_status = 1;
         return (1);
     }
-    printf("%s\n", cmd_with_path);
+    my_printf("%s\n", cmd_with_path);
     return (0);
 }
 
@@ -31,7 +31,7 @@ int my_where(char **args, char **env, UNUSED int *exit_status)
     for (int i = 0; path_array[i] != NULL; i++) {
         tmp = my_strcat_inf(3, path_array[i], "/", args[1]);
         if (access(tmp, F_OK) == 0)
-            printf("%s\n", tmp);
+            my_printf("%s\n", tmp);
         free(tmp);
     }
     return (0);

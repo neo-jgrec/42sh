@@ -11,6 +11,6 @@ void builtin_list(UNUSED char **args, UNUSED char **env,
 UNUSED int *exit_status)
 {
     for (int i = 0; commands[i].name != NULL; i++) {
-        printf("%s\n", commands[i].name);
+        my_printf("%s\n", commands[i].name);
     }
 }

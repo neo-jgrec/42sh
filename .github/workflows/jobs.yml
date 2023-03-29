@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Repository size
         run: |
-          echo "::notice::Repository size: $(du -sh --exclude=.git . | cut -f1)
+          echo "::notice::Repository size: $(du -sh --exclude=.git . | cut -f1)"
       - name: Number of files
         run: |
           echo "::notice::Number of files: $(find . -type f | wc -l)"

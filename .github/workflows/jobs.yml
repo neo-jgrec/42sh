@@ -17,9 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: ls
-        run: |
-          echo "::notice::$(ls -a)"
       - name: Repository size
         run: |
           echo "::notice::Repository size: $(du -sh --exclude=.git . | cut -f1)"

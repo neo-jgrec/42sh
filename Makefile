@@ -93,6 +93,8 @@ tests_run:	re
 	@./$(TEST_NAME) --verbose --always-succeed
 	mv *.gc* $(BUILD_TESTS_DIR)
 	gcovr --exclude tests/
+	make fclean
+	@make -s fclean -C $(LIB_FOLDER)
 
 .PHONY: all clean fclean re debug tests_run
 

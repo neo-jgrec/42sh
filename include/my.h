@@ -31,7 +31,7 @@
         char **env;
         int *exit_status;
         int last_return;
-        TAILQ_HEAD(, pid_list_s) pid_list;
+        TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
     } term_t;
 
     typedef struct {

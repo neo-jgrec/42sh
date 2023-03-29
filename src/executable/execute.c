@@ -74,6 +74,7 @@ char **env, term_t *term)
 {
     pid_list_t *pid_list;
     pid_t pid = fork();
+    pid_list_t *tail = TAILQ_LAST(&term->pid_list, pid_list_head_s);
 
     if (pid == 0) {
         setup_input_output(fd.input_fd, fd.output_fd);
@@ -81,6 +82,9 @@ char **env, term_t *term)
     } else if (pid < 0) {
         perror_exit("fork");
     } else {
+        if (tail && tail->pid != 0
+        && (*fd.output_fd == STDOUT_FILENO || *fd.input_fd == STDIN_FILENO))
+            waitpid(tail->pid, NULL, 0);
         pid_list = malloc(sizeof(pid_list_t));
         pid_list->pid = pid;
         TAILQ_INSERT_TAIL(&term->pid_list, pid_list, entries);

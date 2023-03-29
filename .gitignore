@@ -6,3 +6,4 @@ report
 *.a
 unit_tests
 build
+big_file

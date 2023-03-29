@@ -30,7 +30,6 @@ void my_cd(char **argv, char **env, int *exit_status)
     char *home = my_getenv(env, "HOME");
     char *oldpwd = my_getenv(env, "OLDPWD");
     char *pwd = getcwd(NULL, 0);
-
     errno = 0;
     *exit_status = 0;
     if (argv[1] == NULL) {

@@ -29,15 +29,16 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
 {
     int is_builtin = is_builtins(args);
     int is_executable_int = (is_builtin == 0)
-    ? is_executable(&args, (char **)term->env) : 0;
+    ? is_executable(&args, (char **)term->env, term) : 0;
     my_fd_t fd = {&input_fd, &output_fd};
 
     if (args[0] == NULL) return 0;
-    if (edit_args_env(args, (char **)term->env) == NULL) {
+    if (is_executable_int == 0 && is_builtin == 0) {
+        error_message(args[0]);
         *term->exit_status = 1;
         return 0;
-    } else if (is_executable_int == 0 && is_builtin == 0) {
-        error_message(args[0]);
+    }
+    if (edit_args_env(args, (char **)term->env) == NULL) {
         *term->exit_status = 1;
         return 0;
     }

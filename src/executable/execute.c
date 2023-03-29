@@ -59,13 +59,19 @@ void setup_input_output(int *input_fd, int *output_fd)
     }
 }
 
-void execute_command_execve(char **args, char **env)
+void execute_command_execve(char **args, char **env, term_t *term)
 {
-    if (execve(args[0], change_n_value(args,
-    remove_path(args[0]), 0), env) == -1) {
-        perror_exit(args[0]);
+    if (term->is_from_path) {
+        if (execve(args[0], change_n_value(args,
+        remove_path(args[0]), 0), env) == -1) {
+            perror_exit(args[0]);
+        } else
+            exit(0);
     } else {
-        exit(0);
+        if (execve(args[0], args, env) == -1) {
+            perror_exit(args[0]);
+        } else
+            exit(0);
     }
 }
 
@@ -78,7 +84,7 @@ char **env, term_t *term)
 
     if (pid == 0) {
         setup_input_output(fd.input_fd, fd.output_fd);
-        execute_command_execve(args, env);
+        execute_command_execve(args, env, term);
     } else if (pid < 0) {
         perror_exit("fork");
     } else {

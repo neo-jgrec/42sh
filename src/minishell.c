@@ -51,8 +51,10 @@ static void sigint_handler(int sig)
     char *temp_env[] = {"", NULL};
 
     (void)sig;
-    my_printf("\n");
-    my_prompt(temp_env);
+    if (isatty(STDIN_FILENO) == 1) {
+        my_printf("\n");
+        my_prompt(temp_env);
+    }
 }
 
 int minishell(char **env)
@@ -63,7 +65,7 @@ int minishell(char **env)
     signal(SIGINT, sigint_handler);
     TAILQ_INIT(&term.pid_list);
     while (1) {
-        if (isatty(0) == 1)
+        if (isatty(STDIN_FILENO) == 1)
             my_prompt(env);
         term.str = read_stdin(&term);
         if (term.str[0] == '\0')

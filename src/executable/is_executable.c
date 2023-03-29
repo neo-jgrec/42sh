@@ -24,8 +24,9 @@ char *get_command_with_path(char *cmd, char **env)
     return (NULL);
 }
 
-int is_executable(char ***args, char **env)
+int is_executable(char ***args, char **env, term_t *term)
 {
+    term->is_from_path = 0;
     if (*args[0] == NULL)
         return (0);
     if (access(*args[0], F_OK) == 0)
@@ -34,5 +35,6 @@ int is_executable(char ***args, char **env)
     if (cmd_with_path == NULL)
         return (0);
     *args[0] = cmd_with_path;
+    term->is_from_path = 1;
     return (1);
 }

@@ -8,9 +8,9 @@
 #include "my.h"
 void setup_input_output(int *input_fd, int *output_fd);
 
-int is_changing_input_output(int *input_fd, int *output_fd)
+int is_changing_input_output(UNUSED int *input_fd, int *output_fd)
 {
-    if (*input_fd != STDIN_FILENO || *output_fd != STDOUT_FILENO)
+    if (*output_fd != STDOUT_FILENO)
         return 1;
     return 0;
 }

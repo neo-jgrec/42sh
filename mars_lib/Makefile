@@ -54,7 +54,6 @@ tests_run:
 	@make -s -C my_printf/ tests_run
 	@make -s -C my_stdlib/ tests_run
 	@make -s -C mini_linked_list/ tests_run
-	gcovr --exclude tests/
 
 .PHONY: all clean fclean re debug
 

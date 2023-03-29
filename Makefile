@@ -83,6 +83,7 @@ tests_run:	re
 		echo -e "\033[1;31m[ERROR]\033[0m" "No tests directory";\
 		exit 1;\
 	fi
+	@make -s tests_run -C $(LIB_FOLDER)
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BUILD_TESTS_DIR)
 	@gcc -o $(TEST_NAME) $(TEST_SRC) $(SRC) $(CFLAGS) $(WFLAGS) $(CRITERION) \
@@ -91,7 +92,7 @@ tests_run:	re
 	|| echo -e "\033[1;31m[KO]\033[0m" $(TEST_NAME)
 	@./$(TEST_NAME) --verbose --always-succeed
 	mv *.gc* $(BUILD_TESTS_DIR)
-	gcovr --exclude tests/ --exclude $(LIB_FOLDER)/
+	gcovr --exclude tests/
 
 .PHONY: all clean fclean re debug tests_run
 

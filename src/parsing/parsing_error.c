@@ -18,6 +18,10 @@ int is_there_only_char(char **args, char *to_find)
 
 int all_char_check(char **args)
 {
+    if (my_strcmp(args[0], "|") == 0 && args[1] == NULL) {
+        my_printf("Invalid null command.\n");
+        return (1);
+    }
     if (is_there_only_char(args, ">") || is_there_only_char(args, "<") ||
     is_there_only_char(args, ">>") || is_there_only_char(args, "<<")
     || is_there_only_char(args, "|") || is_there_only_char(args, ";"))
@@ -26,10 +30,6 @@ int all_char_check(char **args)
     || my_strcmp(args[0], ">>") == 0 || my_strcmp(args[0], "<<") == 0)
     && args[1] == NULL)
         return (1);
-    if (my_strcmp(args[0], "|") == 0 && args[1] == NULL) {
-        my_printf("Invalid null command.\n");
-        return (1);
-    }
     return (0);
 }
 

@@ -33,6 +33,24 @@ int all_char_check(char **args)
     return (0);
 }
 
+void handle_exit(char **args, int i)
+{
+    if (my_strcmp(args[i], "exit") == 0 &&
+        (i == 0 || my_strcmp(args[i - 1], ";") == 0) &&
+        (args[i + 1] == NULL || my_strcmp(args[i + 1], ";") == 0)) {
+        if (i > 0 && my_strcmp(args[i - 1], ";") == 0) {
+            remove_element_at_index(args, i - 1);
+            i--;
+        }
+        remove_element_at_index(args, i);
+        int end_index;
+        for (end_index = 0; args[end_index] != NULL; end_index++);
+        args[end_index] = my_strdup(";");
+        args[end_index + 1] = my_strdup("exit");
+        args[end_index + 2] = NULL;
+    }
+}
+
 int parsing_error(char **args)
 {
     if (!my_strcmp(args[0], ";"))
@@ -50,6 +68,7 @@ int parsing_error(char **args)
             my_printf("Invalid null command.\n");
             return (1);
         }
+        handle_exit(args, i);
     }
     if (all_char_check(args) == 1)
         return (1);

@@ -401,7 +401,7 @@ TESTS=
 [937]
 NAME="ls with pipe and redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm .lst"
 TESTS=
   echo 'ls -l | cat -e > .lst'
   echo 'cat .lst'
@@ -411,7 +411,7 @@ TESTS=
 [938]
 NAME="multiple redirections"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm .lst1 .lst2"
 TESTS=
   echo 'ls -l > .lst1'
   echo 'cat .lst1 > .lst2'
@@ -422,7 +422,7 @@ TESTS=
 [939]
 NAME="multiple redirections with pipe"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm .lst1 .lst2"
 TESTS=
   echo 'ls -l | cat -e > .lst1'
   echo 'cat .lst1 > .lst2'
@@ -433,7 +433,7 @@ TESTS=
 [940]
 NAME="multi commands with semicolon"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm .lst"
 TESTS=
   echo 'ls -l ; cat -e .lst'
   echo 'ls -l ; cat -e .lst ; ; ;'
@@ -442,7 +442,7 @@ TESTS=
 [941]
 NAME="multi commands with semicolon and redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
+CLEAN="rm .lst1"
 TESTS=
   echo 'ls -l > .lst1 ; cat -e .lst1'
   echo 'ls -l > .lst1 ; cat -e .lst1 ; ; ;'

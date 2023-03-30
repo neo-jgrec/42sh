@@ -37,8 +37,7 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
         error_message(args[0]);
         *term->exit_status = 1;
         return 0;
-    }
-    if (edit_args_env(args, (char **)term->env) == NULL) {
+    } else if (edit_args_env(args, (char **)term->env) == NULL) {
         *term->exit_status = 1;
         return 0;
     }

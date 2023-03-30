@@ -111,7 +111,10 @@ Test(basics, m_is_executable, .init = cr_redirect_stdout)
     environ[2] = NULL;
     char *args[] = {"ls", NULL};
 
-    cr_assert_eq(is_executable(&environ, args), 0);
+    term_t *term = malloc(sizeof(term_t));
+    term->is_from_path = 0;
+
+    cr_assert_eq(is_executable(&environ, args, term), 0);
     free(environ);
 }
 

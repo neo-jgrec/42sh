@@ -405,7 +405,6 @@ CLEAN="rm .lst"
 TESTS=
   echo 'ls -l | cat -e > .lst'
   echo 'cat .lst'
-  echo 'rm .lst'
 [937-END]
 
 [938]
@@ -416,7 +415,6 @@ TESTS=
   echo 'ls -l > .lst1'
   echo 'cat .lst1 > .lst2'
   echo 'cat .lst2'
-  echo 'rm .lst1 .lst2'
 [938-END]
 
 [939]
@@ -427,12 +425,11 @@ TESTS=
   echo 'ls -l | cat -e > .lst1'
   echo 'cat .lst1 > .lst2'
   echo 'cat .lst2'
-  echo 'rm .lst1 .lst2'
 [939-END]
 
 [940]
 NAME="multi commands with semicolon"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; touch .lst"
 CLEAN="rm .lst"
 TESTS=
   echo 'ls -l ; cat -e .lst'
@@ -534,3 +531,11 @@ TESTS=
   echo '/bin/ls -l'
   echo 'exit 45 | /usr/bin/cat /etc/resolv.conf'
 [949-END]
+
+[950]
+NAME="big test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'grep CDH < data | tr R T > /tmp/fic ; cat /tmp/fic | sed s/A// > /tmp/fic2 ; cat /tmp/fic2 | tr Z R'
+[950-END]

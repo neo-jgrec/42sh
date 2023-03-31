@@ -22,19 +22,16 @@ void perror_exit(const char *s);
 
 void my_left_redirection(char **args, int *input_fd, int *i)
 {
-    if (my_strcmp(args[0], "<") == 0) {
-        *input_fd = open(args[*i + 1], O_RDONLY);
-        if (*input_fd < 0)
-            perror_exit(args[*i + 1]);
-        remove_element_at_index(args, *i);
-        remove_element_at_index(args, *i);
+    if (args[*i + 1] == NULL) {
+        my_printf("Missing name for redirect.\n");
+        args[*i] = NULL;
         return;
     }
     *input_fd = open(args[*i + 1], O_RDONLY);
     if (*input_fd < 0)
         perror_exit(args[*i + 1]);
-    remove_element_at_index(args, *i);
-    remove_element_at_index(args, *i);
+    args[*i] = NULL;
+    ++(*i);
 }
 
 void my_right_redirection(char **args, int *output_fd, int *i, int append)

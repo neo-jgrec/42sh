@@ -139,10 +139,6 @@ Test(basics, command_echo)
     free(status);
 }
 
-// char *my_getenv(char **env, const char *name);
-// int my_setenv(char *name, char *value, char **env);
-// int my_unsetenv(char *str, char **env);
-
 Test(basics, m_unsetenv, .init = cr_redirect_stdout)
 {
     char *name = "PATH";
@@ -154,9 +150,6 @@ Test(basics, m_unsetenv, .init = cr_redirect_stdout)
     cr_assert_eq(my_unsetenv(name, environ), 0);
     free(environ);
 }
-
-// int my_which(char **args, char **env, int *exit_status);
-// int my_where(char **args, char **env, int *exit_status);
 
 Test(basics, m_which, .init = cr_redirect_stdout)
 {
@@ -188,8 +181,6 @@ Test(basics, m_where, .init = cr_redirect_stdout)
     free(environ);
 }
 
-//     void builtin_list(char **args, char **env, int *exit_status);
-
 Test(basics, m_builtin_list, .init = cr_redirect_stdout)
 {
     char **environ = malloc(sizeof(char *) * 10);
@@ -205,8 +196,6 @@ Test(basics, m_builtin_list, .init = cr_redirect_stdout)
     free(status);
     free(environ);
 }
-
-//     void my_exit(char **args, char **env, int *exit_status);
 
 Test(basics, m_exit, .init = cr_redirect_stdout)
 {
@@ -240,8 +229,6 @@ Test(basics, m_exit2, .init = cr_redirect_stdout)
     free(environ);
 }
 
-//     int my_env(char **args, char **env, int *exit_status);
-
 Test(basics, m_env_x, .init = cr_redirect_stdout)
 {
     char **environ = malloc(sizeof(char *) * 10);
@@ -256,8 +243,6 @@ Test(basics, m_env_x, .init = cr_redirect_stdout)
     free(status);
     free(environ);
 }
-
-//    int my_setenv_builtin(char **args, char **env, int *exit_status);
 
 Test(basics, m_setezdnv, .init = cr_redirect_stdout)
 {
@@ -289,8 +274,6 @@ Test(basics, m_setezdnvf, .init = cr_redirect_stdout)
     free(environ);
 }
 
-//    int my_unsetenv_builtin(char **args, char **env, int *exit_status);
-
 Test(basics, m_unsetenszdv, .init = cr_redirect_stdout)
 {
     char **environ = malloc(sizeof(char *) * 10);
@@ -306,8 +289,6 @@ Test(basics, m_unsetenszdv, .init = cr_redirect_stdout)
     free(environ);
 }
 
-//    char **my_str_to_word_array(char *str, const char to_clean);
-
 Test(basics, m_str_to_word_array, .init = cr_redirect_stdout)
 {
     char *str = "ls -l";
@@ -318,8 +299,6 @@ Test(basics, m_str_to_word_array, .init = cr_redirect_stdout)
     cr_assert_eq(array[2], NULL);
     free(array);
 }
-
-//    int len_tab(char **tab);
 
 Test(basics, len_tab, .init = cr_redirect_stdout)
 {
@@ -332,21 +311,12 @@ Test(basics, len_tab, .init = cr_redirect_stdout)
     free(tab);
 }
 
-    //bool my_str_isalphanum(char *str);
-
 Test(basics, my_str_isalphanum, .init = cr_redirect_stdout)
 {
     char *str = "ls -l";
 
     cr_assert_eq(my_str_isalphanum(str), false);
 }
-
-    // void my_left_redirection(char **args, int *input_fd, int *i);
-    // void my_right_redirection(char **args, int *output_fd, int *i, int append);
-    // int my_pipe(exec_t *exec, int *i, term_t *term, char **args);
-    // void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
-    // void my_and(exec_t *exec, int *i, term_t *term, char **args);
-    // void my_or(exec_t *exec, int *i, term_t *term, char **args);
 
 Test(basics, my_left_redirection, .init = cr_redirect_stdout)
 {

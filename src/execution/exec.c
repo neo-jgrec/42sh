@@ -19,7 +19,7 @@ char **edit_args_env(char **args, char **env);
 
 static void error_message(char *str)
 {
-    if (access(str, F_OK) == 0)
+    if (access(str, F_OK) == 0 && access(str, X_OK) != 0)
         my_printf("%s: Permission denied.\n", str);
     else
         my_printf("%s: Command not found.\n", str);

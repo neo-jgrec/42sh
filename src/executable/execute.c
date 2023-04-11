@@ -65,13 +65,11 @@ void execute_command_execve(char **args, char **env, term_t *term)
         if (execve(args[0], change_n_value(args,
         remove_path(args[0]), 0), env) == -1) {
             perror_exit(args[0]);
-            exit(1);
         } else
             exit(0);
     } else {
         if (execve(args[0], args, env) == -1) {
             perror_exit(args[0]);
-            exit(1);
         } else
             exit(0);
     }

@@ -1,4 +1,4 @@
-name: minishell2
+name: 42sh
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
       - ga-ignore-
 
 env:
-  EXECUTABLES: "./mysh"
-  MIRROR_URL: git@github.com:EpitechPromo2027/B-PSU-200-REN-2-1-minishell2-jean-yanis.jeffroy.git
+  EXECUTABLES: "./42sh"
+  MIRROR_URL: git@github.com:EpitechPromo2027/B-PSU-200-REN-2-1-42sh-alexis.boitel.git
 
 jobs:
   utils:
@@ -97,7 +97,7 @@ jobs:
           make
       - name: bin to tests
         run: |
-          cp mysh tests/tester/mysh
+          cp 42sh tests/tester/42sh
       - name: Run tests
         run: |
           cd tests/tester

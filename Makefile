@@ -5,8 +5,8 @@
 ## Makefile
 ##
 
-PROJECT_NAME			=	mysh
-NAME					=	mysh
+PROJECT_NAME			=	42sh
+NAME					=	42sh
 
 SRC 					:= $(shell find src/ -name '*.c' -type f \
 | xargs grep -L "int main")
@@ -22,8 +22,7 @@ LIB_FOLDER				=	mars_lib
 CFLAGS					:=	-I include/ 							\
 							-I $(LIB_FOLDER)/include/				\
 							-I $(LIB_FOLDER)/my_printf/include/		\
-							-I $(LIB_FOLDER)/my_stdlib/include/		\
-							-I $(LIB_FOLDER)/my_arraylib/include/
+							-I $(LIB_FOLDER)/my_stdlib/include/
 
 WFLAGS					:=	-Wall -Wextra
 

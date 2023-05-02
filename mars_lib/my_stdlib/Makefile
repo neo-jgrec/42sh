@@ -8,6 +8,7 @@
 include src/string/string.mk
 include src/memory/memory.mk
 include src/numbers/numbers.mk
+include src/array/array.mk
 include ../../tests/my_stdlib/my_stdlib_tests.mk
 
 PROJECT_NAME			=	my_stdlib

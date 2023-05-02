@@ -5,6 +5,8 @@
 ** minishell
 */
 
+#include <time.h>
+#include <string.h>
 #include "my.h"
 #include <signal.h>
 

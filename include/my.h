@@ -20,6 +20,20 @@
     #define IS_QUOTE(c) (c == '"' || c == '\'')
     #define IS_SPACE(c) (c == ' ')
 
+    typedef struct history_s {
+        char **command;
+        char *time;
+        int pos;
+        struct history_s *next;
+        struct history_s *prev;
+    } history_t;
+
+    typedef struct {
+        history_t *head;
+        history_t *tail;
+        size_t size;
+    } history_list_t;
+
     typedef struct pid_list_s {
         pid_t pid;
         TAILQ_ENTRY(pid_list_s) entries;

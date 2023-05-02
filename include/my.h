@@ -124,4 +124,10 @@
     void my_and(exec_t *exec, int *i, term_t *term, char **args);
     void my_or(exec_t *exec, int *i, term_t *term, char **args);
 
+    history_list_t *init_history_list(void);
+    void rm_history_node(history_t *node, history_list_t *list);
+    void destroy_history(history_list_t *list);
+    void create_history_node(history_list_t *list, char **command);
+    bool command_is_in_history(char **command, history_list_t *list);
+
 #endif /* !MY_H_ */

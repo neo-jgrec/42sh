@@ -44,6 +44,7 @@
         char **argv;
         char **env;
         int *exit_status;
+        history_list_t *history;
         int last_return;
         bool is_from_path;
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
@@ -56,7 +57,7 @@
 
     typedef struct commands_s {
         char *name;
-        void (*func)(void *args, char **env, int *exit_status);
+        void (*func)(void *args, char **env, int *exit_status, void *data);
     } commands_t;
 
     typedef struct {
@@ -79,15 +80,20 @@
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
 
-    void my_cd(char **args, char **env, int *exit_status);
-    int my_unsetenv_builtin(char **args, char **env, int *exit_status);
-    int my_setenv_builtin(char **args, char **env, int *exit_status);
-    int my_env(char **args, char **env, int *exit_status);
-    void my_exit(char **args, char **env, int *exit_status);
-    char *my_echo(char **argv, char **env, int *exit_status);
-    void builtin_list(char **args, char **env, int *exit_status);
-    int my_which(char **args, char **env, int *exit_status);
-    int my_where(char **args, char **env, int *exit_status);
+    void my_cd(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_unsetenv_builtin(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_setenv_builtin(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_env(char **args, char **env, int *exit_status, UNUSED void *data);
+    void my_exit(char **args, char **env, int *exit_status, UNUSED void *data);
+    char *my_echo(char **argv, char **env, int *exit_status,
+    UNUSED void *data);
+    void builtin_list(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_which(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_history(char **args, char **env, int *exit_status, void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -99,6 +105,8 @@
         {"builtins", (void *) builtin_list},
         {"which", (void *) my_which},
         {"where", (void *) my_where},
+        {"history", (void *) my_history},
+        {"!", (void *) my_history},
         {NULL, NULL}
     };
 
@@ -128,6 +136,9 @@
     void rm_history_node(history_t *node, history_list_t *list);
     void destroy_history(history_list_t *list);
     void create_history_node(history_list_t *list, char **command);
-    bool command_is_in_history(char **command, history_list_t *list);
+    void command_is_in_history(char **command, history_list_t *list);
+    void manage_history(history_list_t *list, char **command);
+    void display_history(history_list_t *list);
+    int exec_history_display(char **args, UNUSED history_list_t *list);
 
 #endif /* !MY_H_ */

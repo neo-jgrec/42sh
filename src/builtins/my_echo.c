@@ -19,7 +19,8 @@ static char *get_string_echo(char **argv, int i)
     return str;
 }
 
-char *my_echo(char **argv, UNUSED char **env, UNUSED int *exit_status)
+char *my_echo(char **argv, UNUSED char **env, UNUSED int *exit_status,
+UNUSED void *data)
 {
     int n = 0;
     char *str = my_calloc(my_strlen(argv[1]) + 1, sizeof(char));

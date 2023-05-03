@@ -21,15 +21,17 @@ static int array_compare(const char **arr1, const char **arr2)
     return (0);
 }
 
-bool command_is_in_history(char **command, history_list_t *list)
+void command_is_in_history(char **command, history_list_t *list)
 {
-    history_t *temp = list->head;
-
-    if (!temp)
-        return (false);
-    for (; temp; temp = temp->next)
+    history_t *node = NULL;
+    if (!list)
+        return;
+    node = list->head;
+    for (; node->next; node = node->next) {
         if (array_compare((const char **)command,
-        (const char **)temp->command) == 0)
-            return (true);
-    return (false);
+        (const char **)node->command) == 0) {
+            rm_history_node(node, list);
+            break;
+        }
+    }
 }

@@ -16,7 +16,6 @@ static char *get_time(void)
 
     complete_time[my_strlen(complete_time)-1] = '\0';
     time = my_strndup(&complete_time[11], 5);
-    free(complete_time);
     return (time);
 }
 
@@ -28,7 +27,10 @@ static history_t *init_node(const char **command, history_list_t *list)
         return (NULL);
     node->command = my_dup_array(command);
     node->time = get_time();
-    node->pos = list->tail->pos + 1;
+    if (list->tail)
+        node->pos = list->tail->pos + 1;
+    else
+        node->pos = 1;
     node->next = NULL;
     node->prev = list->tail;
     return (node);
@@ -44,7 +46,7 @@ void create_history_node(history_list_t *list, char **command)
         list->head = node;
         list->tail = node;
     } else {
-        list->tail->next = NULL;
+        list->tail->next = node;
         list->tail = node;
     }
     list->size++;

@@ -17,7 +17,8 @@ static bool my_str_isnum(char *str)
     return (true);
 }
 
-void my_exit(char **argv, UNUSED char **env, int *exit_status)
+void my_exit(char **argv, UNUSED char **env, int *exit_status,
+UNUSED void *data)
 {
     int status = *exit_status;
     if (len_tab(argv) > 2) {

@@ -8,5 +8,4 @@
 SRC	+=	src/basics/my_getnbr.c \
 		src/basics/my_strlen.c \
 		src/basics/flags_tools.c \
-		src/basics/my_put_nbr.c \
-		src/basics/my_strdup.c
+		src/basics/my_put_nbr.c

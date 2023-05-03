@@ -28,7 +28,8 @@ bool command_is_in_history(char **command, history_list_t *list)
     if (!temp)
         return (false);
     for (; temp; temp = temp->next)
-        if (array_compare(command, temp->command) == 0)
+        if (array_compare((const char **)command,
+        (const char **)temp->command) == 0)
             return (true);
     return (false);
 }

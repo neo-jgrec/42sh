@@ -29,5 +29,5 @@ void destroy_history(history_list_t *list)
     for (; node->prev; node = node->prev)
         rm_history_node(node, list);
     rm_history_node(node, list);
-    free(list); 
+    free(list);
 }

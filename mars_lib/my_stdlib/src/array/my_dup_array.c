@@ -5,9 +5,8 @@
 ** ml_dup_array
 */
 
-#include <stdlib.h>
+#include <string.h>
 #include "array.h"
-#include "my_stdlib.h"
 
 char **my_dup_array(const char **array)
 {
@@ -18,7 +17,7 @@ char **my_dup_array(const char **array)
     if (!dup_array)
         return (NULL);
     for (; array[parser]; parser++)
-        dup_array[parser] = my_strdup(array[parser]);
+        dup_array[parser] = strdup(array[parser]);
     dup_array[parser] = NULL;
     return (dup_array);
 }

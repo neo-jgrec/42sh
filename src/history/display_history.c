@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "my.h"
 
-static void display_command_array(char **command)
+void display_command_array(char **command)
 {
     size_t parser = 0;
 

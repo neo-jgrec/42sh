@@ -139,6 +139,7 @@
     void command_is_in_history(char **command, history_list_t *list);
     void manage_history(history_list_t *list, char **command);
     void display_history(history_list_t *list);
-    int exec_history_display(char **args, UNUSED history_list_t *list);
+    int exec_history_display(char **args, history_list_t *list);
+    void display_command_array(char **command);
 
 #endif /* !MY_H_ */

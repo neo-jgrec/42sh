@@ -22,7 +22,7 @@ static bool handle_error_args(char **args)
     if (!args)
         return (true);
     if (nb_args > 3) {
-        printf("history: Too many arguments.");
+        printf("history: Too many arguments.\n");
         return (true);
     }
     for (size_t i = 1; args[i]; i++) {

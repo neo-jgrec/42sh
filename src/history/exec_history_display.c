@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-static bool my_str_isnum(const char *str)
+bool my_str_isnum(char *str)
 {
     for (size_t i = 0; str[i] != '\0'; i++)
         if (!IS_NUM(str[i]))

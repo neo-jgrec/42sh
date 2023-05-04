@@ -106,7 +106,6 @@
         {"which", (void *) my_which},
         {"where", (void *) my_where},
         {"history", (void *) my_history},
-        {"!", (void *) my_history},
         {NULL, NULL}
     };
 
@@ -140,6 +139,9 @@
     void manage_history(history_list_t *list, char **command);
     void display_history(history_list_t *list);
     int exec_history_display(char **args, history_list_t *list);
+    bool my_str_isnum(char *str);
+    bool is_existant_event(char *str, history_list_t *list);
+    int exec_history_command(char **args, history_list_t *list);
     void display_command_array(char **command);
 
 #endif /* !MY_H_ */

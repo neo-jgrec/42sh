@@ -112,6 +112,7 @@
     char **my_str_to_word_array(char *str, const char to_clean);
     int len_tab(char **tab);
     bool my_str_isalphanum(char *str);
+    bool my_str_isnum(char *str);
 
     void sigsegv_handler(term_t *term);
     void perror_exit(const char *s);
@@ -132,17 +133,19 @@
     void my_or(exec_t *exec, int *i, term_t *term, char **args);
 
     history_list_t *init_history_list(void);
-    void rm_history_node(history_t *node, history_list_t *list);
     void destroy_history(history_list_t *list);
     void create_history_node(history_list_t *list, char **command);
-    void command_is_in_history(char **command, history_list_t *list);
+    void rm_history_node(history_t *node, history_list_t *list);
+
     void manage_history(history_list_t *list, char **command);
+    void command_is_in_history(char **command, history_list_t *list);
+    char **convert_args(char **args, history_list_t *list, bool is_num);
     void display_history(history_list_t *list);
-    int exec_history_display(char **args, history_list_t *list);
-    bool my_str_isnum(char *str);
-    bool is_existant_event(char *str, history_list_t *list);
-    int exec_history_command(char **args, history_list_t *list, term_t *term);
     void display_command_array(char **command);
+
+    int exec_history_display(char **args, history_list_t *list);
+    int exec_history_command(char **args, history_list_t *list, term_t *term);
+    bool is_existant_event(char *str, history_list_t *list);
     char **convert_args(char **args, history_list_t *list, bool is_num);
 
 #endif /* !MY_H_ */

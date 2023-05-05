@@ -48,8 +48,28 @@
     */
     char **my_dup_array(const char **array);
 
+    /**
+     * @brief ml_copy_array function copies the content of a string array
+     * `array_src` into another string array `array_dest` considering that
+     * 'array_dest' haves enough space allocated to get the content.
+     *
+     * @param array_dest: The array that will get the 'array_src' content.
+     * @param array_src: The array to be copied.
+     * @return 'array_dest' with the content of 'array_src' in it (char **).
+     * NULL in case of error.
+    */
     char **my_copy_array(char **array_dest, const char **array_src);
 
+    /**
+     * @brief ml_add_str_to_array function add a string into a string
+     * array "array" by destroying the array enter in parameter and returning a
+     * new one with the copy of the previous one and the string inside.
+     *
+     * @param array: The string array that will stock the string.
+     * @param str: the string to add.
+     * @return New array containing the string (char **).
+     * NULL in case of error.
+    */
     char **my_add_str_to_array(char **array, const char *str);
 
 #endif /* !ARRAY_ */

@@ -48,4 +48,8 @@
     */
     char **my_dup_array(const char **array);
 
+    char **my_copy_array(char **array_dest, const char **array_src);
+
+    char **my_add_str_to_array(char **array, const char *str);
+
 #endif /* !ARRAY_ */

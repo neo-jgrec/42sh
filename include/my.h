@@ -141,7 +141,8 @@
     int exec_history_display(char **args, history_list_t *list);
     bool my_str_isnum(char *str);
     bool is_existant_event(char *str, history_list_t *list);
-    int exec_history_command(char **args, history_list_t *list);
+    int exec_history_command(char **args, history_list_t *list, term_t *term);
     void display_command_array(char **command);
+    char **convert_args(char **args, history_list_t *list, bool is_num);
 
 #endif /* !MY_H_ */

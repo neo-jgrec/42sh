@@ -7,14 +7,6 @@
 
 #include "my.h"
 
-bool my_str_isnum(char *str)
-{
-    for (size_t i = 0; str[i] != '\0'; i++)
-        if (!IS_NUM(str[i]))
-            return (false);
-    return (true);
-}
-
 static bool handle_error_args(char **args)
 {
     size_t nb_args = my_count_array_size((const char **)args);

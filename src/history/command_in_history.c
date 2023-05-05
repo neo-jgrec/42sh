@@ -24,6 +24,7 @@ static int array_compare(const char **arr1, const char **arr2)
 void command_is_in_history(char **command, history_list_t *list)
 {
     history_t *node = NULL;
+
     if (!list)
         return;
     node = list->head;

@@ -18,7 +18,7 @@ int my_history(char **args, UNUSED char **env, int *exit_status, void *data)
         (*exit_status) = exec_history_display(args, term->history);
         return ((*exit_status));
     } else {
-        (*exit_status) = exec_history_command(args, term->history);
+        (*exit_status) = exec_history_command(args, term->history, term);
         return ((*exit_status));
     }
     printf("History error\n");

@@ -15,6 +15,8 @@ int is_builtins(char **args)
         if (my_strcmp(args[0], commands[i].name) == 0) {
             return 1;
         }
+        if (my_strncmp(args[0], "!", 1) == 0)
+            return (1);
     }
     return 0;
 }

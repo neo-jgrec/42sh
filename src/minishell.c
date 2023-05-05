@@ -5,6 +5,8 @@
 ** minishell
 */
 
+#include <time.h>
+#include <string.h>
 #include "my.h"
 #include <signal.h>
 
@@ -60,7 +62,7 @@ static void sigint_handler(int sig)
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = malloc(sizeof(int)) };
+        .env = env, .exit_status = malloc(sizeof(int)), init_history_list()};
 
     signal(SIGINT, sigint_handler);
     TAILQ_INIT(&term.pid_list);
@@ -72,6 +74,7 @@ int minishell(char **env)
             continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = my_str_to_word_array(term.str, ' ');
+        manage_history(term.history, term.argv);
         if (term.argv == NULL)
             continue;
         if (parsing_error(term.argv) == 1)

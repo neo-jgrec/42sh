@@ -16,7 +16,8 @@ static int my_print_env(char **env)
     return (0);
 }
 
-int my_env(char **args, char **env, int *exit_status)
+int my_env(char **args, char **env, int *exit_status,
+UNUSED void *data)
 {
     if (len_tab(args) > 1) {
         my_printf("env: Too many arguments.\n");
@@ -28,10 +29,11 @@ int my_env(char **args, char **env, int *exit_status)
     return (0);
 }
 
-int my_setenv_builtin(char **args, char **env, int *exit_status)
+int my_setenv_builtin(char **args, char **env, int *exit_status,
+UNUSED void *data)
 {
     if (args[1] == NULL) {
-        my_env(args, env, exit_status);
+        my_env(args, env, exit_status, data);
         return (0);
     }
     if (setenv_error_handling(args[1], args) == 1) {
@@ -48,7 +50,8 @@ int my_setenv_builtin(char **args, char **env, int *exit_status)
     return *exit_status;
 }
 
-int my_unsetenv_builtin(char **args, char **env, int *exit_status)
+int my_unsetenv_builtin(char **args, char **env, int *exit_status,
+UNUSED void *data)
 {
     if (args[1] == NULL) {
         my_printf("unsetenv: Too few arguments.\n");

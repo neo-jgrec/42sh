@@ -9,7 +9,8 @@
 
 char *get_command_with_path(char *cmd, char **env);
 
-int my_which(char **args, char **env, int *exit_status)
+int my_which(char **args, char **env, int *exit_status,
+UNUSED void *data)
 {
     char *cmd_with_path = get_command_with_path(args[1], env);
     if (cmd_with_path == NULL) {
@@ -20,7 +21,8 @@ int my_which(char **args, char **env, int *exit_status)
     return (0);
 }
 
-int my_where(char **args, char **env, UNUSED int *exit_status)
+int my_where(char **args, char **env, UNUSED int *exit_status,
+UNUSED void *data)
 {
     char *path = my_getenv(env, "PATH");
     char **path_array = my_str_to_word_array(path, ':');

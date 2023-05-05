@@ -19,7 +19,11 @@ void execute_builtin(char **args, char **env, term_t *term)
 {
     for (int i = 0; commands[i].name != NULL; i++) {
         if (my_strcmp(args[0], commands[i].name) == 0) {
-            commands[i].func(args, env, term->exit_status);
+            commands[i].func(args, env, term->exit_status, term);
+        }
+        if (my_strncmp(args[0], "!", 1) == 0) {
+            my_history(args, env, term->exit_status, term);
+            break;
         }
     }
 }

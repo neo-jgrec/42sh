@@ -25,7 +25,7 @@ static void error_handling(char **argv, char **env, char *pwd)
     }
 }
 
-void my_cd(char **argv, char **env, int *exit_status)
+void my_cd(char **argv, char **env, int *exit_status, UNUSED void *data)
 {
     char *home = my_getenv(env, "HOME");
     char *oldpwd = my_getenv(env, "OLDPWD");

@@ -8,17 +8,20 @@
 #include "my.h"
 #include <stdbool.h>
 
-static bool my_str_isnum(char *str)
+bool my_str_isnum(char *str)
 {
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] < '0' || str[i] > '9')
+    if (!str)
+        return (false);
+    for (size_t i = 0; str[i] != '\0'; i++)
+        if (!IS_NUM(str[i]))
             return (false);
-    }
     return (true);
 }
 
-void my_exit(char **argv, UNUSED char **env, int *exit_status)
+void my_exit(char **argv, UNUSED char **env, int *exit_status, void *data)
 {
+    term_t *term = data;
+
     int status = *exit_status;
     if (len_tab(argv) > 2) {
         my_printf("exit: Expression Syntax.\n");
@@ -29,7 +32,9 @@ void my_exit(char **argv, UNUSED char **env, int *exit_status)
             my_printf("exit: Badly formed number.\n");
             return;
         }
+        destroy_history(term->history);
         exit(my_atoi(argv[1]));
     }
+    destroy_history(term->history);
     exit(status);
 }

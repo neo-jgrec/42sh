@@ -20,6 +20,20 @@
     #define IS_QUOTE(c) (c == '"' || c == '\'')
     #define IS_SPACE(c) (c == ' ')
 
+    typedef struct history_s {
+        char **command;
+        char *time;
+        int pos;
+        struct history_s *next;
+        struct history_s *prev;
+    } history_t;
+
+    typedef struct {
+        history_t *head;
+        history_t *tail;
+        size_t size;
+    } history_list_t;
+
     typedef struct pid_list_s {
         pid_t pid;
         TAILQ_ENTRY(pid_list_s) entries;
@@ -30,6 +44,7 @@
         char **argv;
         char **env;
         int *exit_status;
+        history_list_t *history;
         int last_return;
         bool is_from_path;
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
@@ -42,7 +57,7 @@
 
     typedef struct commands_s {
         char *name;
-        void (*func)(void *args, char **env, int *exit_status);
+        void (*func)(void *args, char **env, int *exit_status, void *data);
     } commands_t;
 
     typedef struct {
@@ -65,15 +80,20 @@
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
 
-    void my_cd(char **args, char **env, int *exit_status);
-    int my_unsetenv_builtin(char **args, char **env, int *exit_status);
-    int my_setenv_builtin(char **args, char **env, int *exit_status);
-    int my_env(char **args, char **env, int *exit_status);
-    void my_exit(char **args, char **env, int *exit_status);
-    char *my_echo(char **argv, char **env, int *exit_status);
-    void builtin_list(char **args, char **env, int *exit_status);
-    int my_which(char **args, char **env, int *exit_status);
-    int my_where(char **args, char **env, int *exit_status);
+    void my_cd(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_unsetenv_builtin(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_setenv_builtin(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_env(char **args, char **env, int *exit_status, UNUSED void *data);
+    void my_exit(char **args, char **env, int *exit_status, UNUSED void *data);
+    char *my_echo(char **argv, char **env, int *exit_status,
+    UNUSED void *data);
+    void builtin_list(char **args, char **env, int *exit_status,
+    UNUSED void *data);
+    int my_which(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
+    int my_history(char **args, char **env, int *exit_status, void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -85,12 +105,14 @@
         {"builtins", (void *) builtin_list},
         {"which", (void *) my_which},
         {"where", (void *) my_where},
+        {"history", (void *) my_history},
         {NULL, NULL}
     };
 
     char **my_str_to_word_array(char *str, const char to_clean);
     int len_tab(char **tab);
     bool my_str_isalphanum(char *str);
+    bool my_str_isnum(char *str);
 
     void sigsegv_handler(term_t *term);
     void perror_exit(const char *s);
@@ -109,5 +131,21 @@
     void my_semicolon(exec_t *exec, int *i, term_t *term, char **args);
     void my_and(exec_t *exec, int *i, term_t *term, char **args);
     void my_or(exec_t *exec, int *i, term_t *term, char **args);
+
+    history_list_t *init_history_list(void);
+    void destroy_history(history_list_t *list);
+    void create_history_node(history_list_t *list, char **command);
+    void rm_history_node(history_t *node, history_list_t *list);
+
+    void manage_history(history_list_t *list, char **command);
+    void command_is_in_history(char **command, history_list_t *list);
+    char **convert_args(char **args, history_list_t *list, bool is_num);
+    void display_history(history_list_t *list);
+    void display_command_array(char **command);
+
+    int exec_history_display(char **args, history_list_t *list);
+    int exec_history_command(char **args, history_list_t *list, term_t *term);
+    bool is_existant_event(char *str, history_list_t *list);
+    char **convert_args(char **args, history_list_t *list, bool is_num);
 
 #endif /* !MY_H_ */

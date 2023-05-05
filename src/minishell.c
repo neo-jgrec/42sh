@@ -11,22 +11,7 @@
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
 int parsing_error(char **args);
-
-static char *read_stdin(term_t *term)
-{
-    char *str = NULL;
-    size_t size = 0;
-
-    if (getline(&str, &size, stdin) == EOF) {
-        (isatty(0) == 1) ? write(1, "exit\n", 5) : 0;
-        exit((*term->exit_status == 45) ? 1 : *term->exit_status);
-        free(term->str);
-        free(term->argv);
-    }
-    *term->exit_status = 0;
-    str[my_strlen(str) - 1] = '\0';
-    return (str);
-}
+char *read_stdin(term_t *term);
 
 static char *remove_home(char *str, char **env)
 {

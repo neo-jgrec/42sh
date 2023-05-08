@@ -5,6 +5,8 @@
 ** my
 */
 
+#include "list.h"
+
 #ifndef MY_H_
     #define MY_H_
 
@@ -45,6 +47,7 @@
         char **env;
         int *exit_status;
         history_list_t *history;
+        linked_list_t *alias;
         int last_return;
         bool is_from_path;
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
@@ -94,6 +97,7 @@
     int my_which(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_history(char **args, char **env, int *exit_status, void *data);
+    int my_alias(char **args, char **env, int *exit_status, void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -106,6 +110,7 @@
         {"which", (void *) my_which},
         {"where", (void *) my_where},
         {"history", (void *) my_history},
+        {"alias", (void *) my_alias},
         {NULL, NULL}
     };
 

@@ -27,8 +27,7 @@ char *clean_str_minishell(char *str, const char *to_clean)
         if ((str[i] == '"') && (i == 0 || str[i - 1] != '\''))
             in_quote = !in_quote;
         if (in_quote || my_strchr(to_clean, str[i]) == NULL) {
-            new_str[j] = str[i];
-            j++;
+            new_str[j++] = str[i];
             continue;
         }
         if (i > 0 && my_strchr(to_clean, str[i - 1]) == NULL && !in_quote)

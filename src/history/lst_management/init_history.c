@@ -67,6 +67,7 @@ static void get_old_history(UNUSED history_list_t *history)
     }
     commands = my_str_tok(buffer, "\n");
     add_file_content_to_list(commands, history);
+    close(fd);
 }
 
 history_list_t *init_history_list(void)

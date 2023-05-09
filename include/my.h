@@ -154,6 +154,7 @@
     void destroy_history(history_list_t *list);
     void create_history_node(history_list_t *list, char **command);
     void rm_history_node(history_t *node, history_list_t *list);
+    void store_history(history_list_t *history);
 
     void manage_history(history_list_t *list, char **command);
     void command_is_in_history(char **command, history_list_t *list);

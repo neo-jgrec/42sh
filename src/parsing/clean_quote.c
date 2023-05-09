@@ -7,8 +7,7 @@
 
 #include "my.h"
 
-static const char backslash[4][2] = 
-{
+static const char backslash[4][2] = {
     "\\",
     "  ",
     "t\t",

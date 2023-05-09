@@ -49,7 +49,8 @@ static int add_word(char *str, char **stw, int word, char *sep)
     int len = 0;
 
     for (;in_list(str[i], str[i - 1], sep) && str[i] != '\0'; i++);
-    for (int j = i; !in_list(str[j], str[j - 1], sep) && str[j] != '\0'; j++, len++)
+    for (int j = i; !in_list(str[j], str[j - 1], sep) &&
+        str[j] != '\0'; j++, len++)
         if (str[j] == '"' || str[j] == '\'')
             skip_quote_2(str, &j, &len, str[j]);
     stw[word] = malloc(sizeof(char) * (len + 1));

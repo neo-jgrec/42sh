@@ -35,7 +35,6 @@
         history_t *head;
         history_t *tail;
         size_t size;
-        bool loded;
     } history_list_t;
 
     typedef struct pid_list_s {

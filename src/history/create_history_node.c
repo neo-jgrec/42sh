@@ -21,9 +21,12 @@ static char *get_time(void)
 
 static history_t *init_node(const char **command, history_list_t *list)
 {
-    history_t *node = malloc(sizeof(history_t));
+    history_t *node = NULL;
 
-    if (!node || !list)
+    if (!list || !command)
+        return (NULL);
+    node = malloc(sizeof(history_t));
+    if (!node)
         return (NULL);
     node->command = my_dup_array(command);
     node->time = get_time();

@@ -77,7 +77,7 @@ int minishell(char **env)
         manage_history(term.history, term.argv);
         if (term.argv == NULL)
             continue;
-        if (parsing_error(term.argv) == 1)
+        if (parsing_error(term.argv) == 1 || handle_parenthese(&term))
             continue;
         execute_commands(term.argv, &term);
     }

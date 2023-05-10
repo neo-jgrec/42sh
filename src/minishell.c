@@ -12,7 +12,7 @@
 
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
-int parsing_error(char **args);
+int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
 char **a_mkstw(char *str, char *sep);
 char **edit_args_env(char **args, char **env);

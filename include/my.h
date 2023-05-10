@@ -48,6 +48,7 @@
         char **env;
         int *exit_status;
         history_list_t *history;
+        char **var;
         int last_return;
         bool is_from_path;
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
@@ -137,6 +138,7 @@
     void remove_element_at_index(char **args, int index);
 
     int is_executable(char ***args, char **env, term_t *term);
+    bool error_variable(char **args, term_t *term);
     int is_builtins(char **args);
     int execute_builtin_command(char **args, char **env,
     term_t *term, my_fd_t fd);

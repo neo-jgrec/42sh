@@ -15,7 +15,6 @@ static void write_into_file(FILE *stream, history_list_t *history)
     history_t *node = history->head;
 
     for (; node; node = node->next){
-        printf("%i %s\n", node->pos, node->time);
         fprintf(stream, "%i %s ", node->pos, node->time);
         for (size_t i = 0; node->command[i]; i++){
             fprintf(stream, "%s ", node->command[i]);
@@ -36,7 +35,6 @@ static void modify_chmod(void)
         close(fd);
         chmod("history.txt", 0755);
     }
-    printf("%i\n", fd);
 }
 
 void store_history(history_list_t *history)

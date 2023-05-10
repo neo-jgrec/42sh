@@ -34,7 +34,6 @@ void manage_quote(char *str, int *quote, int *d_quote)
 {
     for (int i = 0; str[i]; i++)
         check_quote(str, quote, d_quote, i);
-
 }
 
 char *whole_read_stdin(term_t *term, char *buff)

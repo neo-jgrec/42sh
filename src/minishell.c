@@ -16,7 +16,7 @@ int parsing_error(char **args);
 char *read_stdin(term_t *term);
 char **a_mkstw(char *str, char *sep);
 
-static char *remove_home(char *str, char **env)
+char *remove_home(char *str, char **env)
 {
     char *home = my_getenv(env, "HOME");
 
@@ -27,34 +27,24 @@ static char *remove_home(char *str, char **env)
     return (str);
 }
 
-static void my_prompt(char **env)
+size_t my_prompt(char **env)
 {
-    my_printf("\033[1;32m%s\033[0m", " ➜ ");
-    my_printf("\033[1;34m%s\033[0m", remove_home(getcwd(NULL, 0), env));
-    my_printf("\033[1;32m%s\033[0m", " ");
-}
+    size_t size = 0;
 
-static void sigint_handler(int sig)
-{
-    char *temp_env[] = {"", NULL};
-
-    (void)sig;
-    if (isatty(STDIN_FILENO) == 1) {
-        my_printf("\n");
-        my_prompt(temp_env);
-    }
+    size += my_printf("\033[1;32m%s\033[0m", " ➜ ");
+    size += my_printf("\033[1;34m%s\033[0m", remove_home(getcwd(NULL, 0), env));
+    size += my_printf("\033[1;32m%s\033[0m", " ");
+    return (size);
 }
 
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = malloc(sizeof(int)), init_history_list()};
+        .env = env, .exit_status = &(int){0},
+        init_history_list()};
 
-    signal(SIGINT, sigint_handler);
     TAILQ_INIT(&term.pid_list);
     while (1) {
-        if (isatty(STDIN_FILENO) == 1)
-            my_prompt(env);
         term.str = read_stdin(&term);
         if (term.str[0] == '\0')
             continue;

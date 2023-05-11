@@ -37,6 +37,11 @@ size_t my_prompt(char **env)
     return (size);
 }
 
+void handle_sigint_program(int sig)
+{
+    (void)sig;
+}
+
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
@@ -55,6 +60,7 @@ int minishell(char **env)
         manage_history(term.history, term.argv);
         if (parsing_error(term.argv) == 1)
             continue;
+        signal(SIGINT, handle_sigint_program);
         execute_commands(term.argv, &term);
     }
 }

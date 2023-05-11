@@ -13,6 +13,7 @@
 
 void process_keypress(char *str, struct termios *orig_termios, term_t *term);
 char *strcat_len(char *dest, char *str, int len);
+size_t my_prompt(char **env);
 
 void enable_raw_mode(struct termios *orig_termios)
 {
@@ -36,6 +37,7 @@ char *whole_read_stdin(term_t *term, char *buff)
     struct termios orig_termios;
 
     enable_raw_mode(&orig_termios);
+    my_prompt(term->env);
     process_keypress(buff, &orig_termios, term);
     disable_raw_mode(&orig_termios);
 

@@ -10,11 +10,18 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 const term_t *term_ptr;
 const struct handler_args_s *handler_args_ptr;
 
 void disable_raw_mode(struct termios *orig_termios);
+void autocomplete(char *str, size_t *index);
+
 
 void handle_sigint(int sig)
 {
@@ -72,7 +79,10 @@ void handle_action(char *str, size_t *index, char c,
         printf("exit\n");
         exit((*term_ptr->exit_status == 45) ? 1 : *term_ptr->exit_status);
     }
-    handle_arrowkeys(str, index);
+    if (c == '\t')
+        autocomplete(str, index);
+    if (c == '\033')
+        handle_arrowkeys(str, index);
 }
 
 void default_action_case(char *str, size_t *index, char c)
@@ -99,7 +109,7 @@ void process_keypress(char *str, struct termios *orig_termios, term_t *term)
     while (true) {
         read(STDIN_FILENO, &c, 1);
         if (!c || c == '\n') break;
-        if (c == '\177' || c == '\004' || c == '\033')
+        if (c == '\177' || c == '\004' || c == '\033' || c == '\t')
             handle_action(str, &index, c, orig_termios);
         else
             default_action_case(str, &index, c);

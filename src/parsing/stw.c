@@ -11,6 +11,7 @@ void clean_quote(char *str);
 
 void skip_quote_2(char *str, int *i, int *j, char quote);
 void skip_quote(char *str, int *i, char quote);
+int check_quote(char *str);
 
 void a_freestw(char **stw)
 {
@@ -68,7 +69,7 @@ char **a_mkstw(char *str, char *sep)
 {
     int nb = count_words(str, sep);
     char **stw = malloc(sizeof(char *) * (nb + 1));
-    if (stw == NULL) return NULL;
+    if (stw == NULL || !check_quote(str)) return NULL;
     int index = 0;
 
     for (int i = 0; i < nb + 1; i++)

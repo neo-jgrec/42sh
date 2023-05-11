@@ -50,9 +50,9 @@ int minishell(char **env)
             continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.argv = a_mkstw(term.str, " ");
-        manage_history(term.history, term.argv);
         if (term.argv == NULL)
             continue;
+        manage_history(term.history, term.argv);
         if (parsing_error(term.argv) == 1)
             continue;
         execute_commands(term.argv, &term);

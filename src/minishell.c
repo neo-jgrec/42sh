@@ -11,6 +11,7 @@
 #include <signal.h>
 
 char *clean_str_minishell(char *str, const char *to_clean);
+char *replace_alias(char *str, linked_list_t *alias);
 int execute_commands(char **args, term_t *term);
 int parsing_error(char **args);
 char *read_stdin(term_t *term);
@@ -47,7 +48,8 @@ static void sigint_handler(int sig)
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = malloc(sizeof(int)), init_history_list()};
+        .env = env, .exit_status = malloc(sizeof(int)), init_history_list(),
+        .alias = ll_init_linked_list()};
 
     signal(SIGINT, sigint_handler);
     TAILQ_INIT(&term.pid_list);
@@ -58,6 +60,7 @@ int minishell(char **env)
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
+        term.str = replace_alias(term.str, term.alias);
         term.argv = my_str_to_word_array(term.str, ' ');
         manage_history(term.history, term.argv);
         if (term.argv == NULL)

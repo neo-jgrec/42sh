@@ -72,6 +72,7 @@ void handle_action(char *str, size_t *index, char c,
         printf("exit\n");
         exit((*term_ptr->exit_status == 45) ? 1 : *term_ptr->exit_status);
     }
+    handle_arrowkeys(str, index);
 }
 
 void default_action_case(char *str, size_t *index, char c)
@@ -92,21 +93,20 @@ void process_keypress(char *str, struct termios *orig_termios, term_t *term)
     size_t index = 0;
     handler_args_ptr = &(struct handler_args_s){str, orig_termios, &index, &c};
     term_ptr = term;
-    struct sigaction sa;
-    sa = (struct sigaction){.sa_handler = handle_sigint, .sa_flags = 0};
+    struct sigaction sa = {.sa_handler = handle_sigint, .sa_flags = 0};
     sigemptyset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
     while (true) {
         read(STDIN_FILENO, &c, 1);
         if (!c || c == '\n') break;
-        if (c == '\033') handle_arrowkeys(str, &index);
-        if (c == '\177' || c == '\004')
+        if (c == '\177' || c == '\004' || c == '\033')
             handle_action(str, &index, c, orig_termios);
-        if (c != '\033' && c != '\177' && c != '\004')
+        else
             default_action_case(str, &index, c);
         fflush(stdout);
     }
-    sa = (struct sigaction){.sa_handler = SIG_DFL, .sa_flags = 0};
+    sa = (struct sigaction){.sa_handler = SIG_DFL, .sa_flags = 0\
+    };
     sigemptyset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
 }

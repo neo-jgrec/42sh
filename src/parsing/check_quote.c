@@ -21,8 +21,6 @@ int check_quote(char *str)
     }
     if (quote == 0)
         return 1;
-    write(2, "Unmatched '", 11);
-    write(2, &quote, 1);
-    write(2, "'.\n", 3);
+    dprintf(2, "Unmatched '%c'.\n", quote);
     return 0;
 }

@@ -15,6 +15,7 @@ int execute_commands(char **args, term_t *term);
 int parsing_error(char **args);
 char *read_stdin(term_t *term);
 char **a_mkstw(char *str, char *sep);
+char **edit_args_env(char **args, char **env);
 
 char *remove_home(char *str, char **env)
 {
@@ -45,8 +46,7 @@ void handle_sigint_program(int sig)
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = &(int){0},
-        init_history_list()};
+        .env = env, .exit_status = &(int){0}, init_history_list()};
 
     TAILQ_INIT(&term.pid_list);
     while (1) {
@@ -58,8 +58,8 @@ int minishell(char **env)
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);
-        if (parsing_error(term.argv) == 1)
-            continue;
+        if (parsing_error(term.argv) == 1) continue;
+        if (edit_args_env(term.argv, term.env) == NULL) continue;
         signal(SIGINT, handle_sigint_program);
         execute_commands(term.argv, &term);
     }

@@ -29,7 +29,8 @@ int is_executable(char ***args, char **env, term_t *term)
     term->is_from_path = 0;
     if (*args[0] == NULL)
         return (0);
-    if (access(*args[0], F_OK) == 0 && access(*args[0], X_OK) == 0)
+    if ((access(*args[0], F_OK) == 0 && access(*args[0], X_OK) == 0)
+        && (!strncasecmp(*args[0], "./", 2) || !strncasecmp(*args[0], "/", 1)))
         return (1);
     char *cmd_with_path = get_command_with_path(*args[0], env);
     if (cmd_with_path == NULL)

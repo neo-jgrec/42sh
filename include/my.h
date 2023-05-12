@@ -98,6 +98,8 @@
     char *my_getenv(char **env, const char *name);
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
+    int my_set(char *name, char *value, char ***var);
+    int my_unset(char *name, char ***var);
 
     void my_cd(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_unsetenv_builtin(char **args, char **env, int *exit_status,
@@ -113,6 +115,10 @@
     int my_which(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_history(char **args, char **env, int *exit_status, void *data);
+    int my_unset_builtin(char **args, UNUSED char **env, int *exit_status,
+    void *data);
+    int my_set_builtin(char **args, UNUSED char **env, int *exit_status,
+    void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -125,6 +131,8 @@
         {"which", (void *) my_which},
         {"where", (void *) my_where},
         {"history", (void *) my_history},
+        {"set", (void *) my_set_builtin},
+        {"unset", (void *) my_unset_builtin},
         {NULL, NULL}
     };
 

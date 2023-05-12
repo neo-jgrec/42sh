@@ -61,7 +61,7 @@ int minishell(char **env)
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);
-        if (parsing_error(term.argv) == 1) continue;
+        if (parsing_error(term.argv, &term) == 1) continue;
         if (edit_args_env(term.argv, term.env) == NULL) continue;
         signal(SIGINT, handle_sigint_program);
         execute_commands(term.argv, &term);

@@ -5,7 +5,7 @@
 ** handle_null
 */
 
-int handle_null(void)
+int handle_null(char **argv)
 {
     return 0;
 }

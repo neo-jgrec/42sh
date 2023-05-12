@@ -148,6 +148,9 @@
     bool is_existant_event(char *str, history_list_t *list);
     char **convert_args(char **args, history_list_t *list, bool is_num);
 
+    int print_par_error(int err_id);
+    int handle_tm(char *input);
     int handle_parenthese(term_t *term);
+
 
 #endif /* !MY_H_ */

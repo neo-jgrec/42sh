@@ -193,6 +193,8 @@
 
     int print_par_error(int err_id);
     int handle_tm(char *input);
+    int handle_bp(char **argv);
+    int handle_tm_argv(char **argv);
     int handle_parenthese(term_t *term);
 
     void display_variables(char **var, history_list_t *history);

@@ -5,7 +5,7 @@
 ** my_set
 */
 
-int my_set(void)
+int my_set(char *name, char *value, char ***var)
 {
     return (0);
 }

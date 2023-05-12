@@ -24,22 +24,7 @@ void disable_raw_mode(struct termios *orig_termios);
 void autocomplete(char *str, size_t *index);
 void handle_history(char *str, size_t *index,
     size_t *history_pos, bool to_head);
-
-void handle_sigint(int sig)
-{
-    char *str = handler_args_ptr->str;
-    size_t *index = handler_args_ptr->index;
-    char *c = handler_args_ptr->c;
-    int *exit_status = term_ptr->exit_status;
-
-    (void)sig;
-    memset(str, 0, BUFFER_SIZE);
-    *exit_status = 1;
-    *c = 0;
-    *index = 0;
-    fflush(stdout);
-    write(STDOUT_FILENO, "^C", 2);
-}
+void handle_sigint(int sig);
 
 void handle_arrowkeys(char *str, size_t *index, size_t *history_pos)
 {
@@ -67,26 +52,25 @@ void handle_arrowkeys(char *str, size_t *index, size_t *history_pos)
 
 void handle_action(char *str, size_t *index, char c, size_t *history_pos)
 {
-    if (c == '\177') {
-        if (*index > 0) {
-            memset(&str[*index - 1], 0, 1);
-            memmove(&str[*index - 1], &str[*index], strlen(str) - *index + 1);
-            (*index)--;
-            printf("\033[D\033[K%s \033[%zuD", &str[*index],
-                strlen(str) - *index + 1);
-            fflush(stdout);
-        }
+    if (c == '\177' && *index > 0) {
+        (*index)--;
+        memmove(&str[*index], &str[*index + 1], strlen(str) - *index + 1);
+        printf("\033[D\033[K%s \033[%zuD", &str[*index],
+            strlen(str) - *index + 1);
+        fflush(stdout);
     }
-    if (c == '\004') {
-        if (strlen(str)) return;
+    if (c == '\004' && strlen(str) == 0) {
         disable_raw_mode((struct termios *)orig_termios_ptr);
         printf("exit\n");
         exit((*term_ptr->exit_status == 45) ? 1 : *term_ptr->exit_status);
+    } else if (c == '\004' && *index < strlen(str) && strlen(str) > 0) {
+        memmove(&str[*index], &str[*index + 1], strlen(str) - *index + 1);
+        printf("\033[K%s \033[%zuD", &str[*index],
+            strlen(str) - *index + 1);
+        fflush(stdout);
     }
-    if (c == '\t')
-        autocomplete(str, index);
-    if (c == '\033')
-        handle_arrowkeys(str, index, history_pos);
+    if (c == '\t') autocomplete(str, index);
+    if (c == '\033') handle_arrowkeys(str, index, history_pos);
 }
 
 void default_action_case(char *str, size_t *index, char c)

@@ -14,10 +14,12 @@ static void cd_error(char *message, int *exit_status)
     *exit_status = 1;
 }
 
-static void error_handling(char **argv, char **env, char *pwd)
+static void error_handling(char **argv, char **env, char *pwd,
+int *exit_status)
 {
     if (errno != 0) {
         my_printf("%s: %s.\n", argv[1], strerror(errno));
+        *exit_status = 1;
         errno = 0;
     } else {
         my_setenv("OLDPWD", pwd, env);
@@ -46,5 +48,5 @@ void my_cd(char **argv, char **env, int *exit_status, UNUSED void *data)
         chdir(oldpwd);
     } else
         chdir(argv[1]);
-    error_handling(argv, env, pwd);
+    error_handling(argv, env, pwd, exit_status);
 }

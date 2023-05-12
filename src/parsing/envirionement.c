@@ -21,13 +21,10 @@ static char *construct_result(construct_result_params_t *params)
     if (result == NULL)
         return NULL;
     my_strncpy(result, params->name, params->dollar_ptr - params->name);
-    my_strncpy(result + (params->dollar_ptr - params->name),
-    params->value, params->value_len);
+    my_strncpy(result + (params->dollar_ptr - params->name), params->value,
+        params->value_len);
     my_strncpy(result + (params->dollar_ptr - params->name) + params->value_len,
-            params->dollar_ptr + calculate_name_var_env_len(\
-            params->dollar_ptr) + 1,
-            my_strlen(params->dollar_ptr + calculate_name_var_env_len(\
-            params->dollar_ptr) + 1) + 1);
+        params->dollar_ptr + 1, my_strlen(params->dollar_ptr + 1));
     return result;
 }
 

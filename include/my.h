@@ -16,9 +16,12 @@
     #include <aio.h>
     #include <stdbool.h>
     #include <sys/queue.h>
+    #include <string.h>
 
     #define IS_QUOTE(c) (c == '"' || c == '\'')
     #define IS_SPACE(c) (c == ' ')
+
+    #define BUFFER_SIZE 4096
 
     typedef struct history_s {
         char **command;
@@ -50,6 +53,13 @@
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
     } term_t;
 
+    struct handler_args_s {
+        char *str;
+        struct termios *orig_termios;
+        size_t *index;
+        char *c;
+    };
+
     typedef struct {
         int *input_fd;
         int *output_fd;
@@ -75,6 +85,14 @@
         size_t prefix_len;
         size_t value_len;
     } construct_result_params_t;
+
+    typedef struct {
+        char **tokens;
+        char *token;
+        char *save_ptr;
+        int j;
+        int in_quotes;
+    } tokenize_params_t;
 
     char *my_getenv(char **env, const char *name);
     int my_setenv(char *name, char *value, char **env);

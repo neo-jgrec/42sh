@@ -27,7 +27,8 @@ int handle_tm(char *input)
 int handle_tm_argv(char **argv)
 {
     for (size_t i = 0; argv[i] != NULL; i++) {
-        if (i + 1 != NULL && (argv[i][0] == '(' && argv[i + 1][0] == '('))
+        if (argv[i + 1] != NULL &&
+        (argv[i][0] == '(' && argv[i + 1][0] == '('))
             return print_par_error(1);
     }
     return 0;

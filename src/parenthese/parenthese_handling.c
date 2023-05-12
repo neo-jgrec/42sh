@@ -15,7 +15,7 @@ int handle_parenthese(term_t *term)
         return 1;
     if (handle_tm_argv(term->argv))
         return 1;
-    if (handle_null(term->argv));
+    if (handle_null(term->argv))
         return 1;
     return 0;
 }

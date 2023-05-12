@@ -15,10 +15,10 @@ static int is_valid_pos(char **argv, ssize_t i)
 {
     if (i == 0 && !is_joker(argv[i + 1][0], jokers))
         return 0;
-    if (i + 1 != NULL && (!is_joker(argv[i + 1][0], jokers) ||
+    if (argv[i + 1] != NULL && (!is_joker(argv[i + 1][0], jokers) ||
     !is_joker(argv[i - 1][0], jokers)))
         return 0;
-    if (i + 1 == NULL && !is_joker(argv[i - 1][0], jokers))
+    if (argv[i + 1] == NULL && !is_joker(argv[i - 1][0], jokers))
         return 0;
     return 1;
 }

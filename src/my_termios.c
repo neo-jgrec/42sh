@@ -66,6 +66,7 @@ void handle_action(char *str, size_t *index, char c,
 {
     if (c == '\177') {
         if (*index > 0) {
+            memset(&str[*index - 1], 0, 1);
             memmove(&str[*index - 1], &str[*index], strlen(str) - *index + 1);
             (*index)--;
             printf("\033[D\033[K%s \033[%zuD", &str[*index],

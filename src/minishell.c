@@ -28,11 +28,14 @@ char *remove_home(char *str, char **env)
     return (str);
 }
 
-size_t my_prompt(char **env)
+size_t my_prompt(char **env, term_t *term)
 {
     size_t size = 0;
 
-    size += my_printf("\033[1;32m%s\033[0m", " ➜ ");
+    if (*term->exit_status == 0)
+        size += my_printf("\033[1;32m%s\033[0m", " ➜ ");
+    else
+        size += my_printf("\033[1;31m%s\033[0m", " ➜ ");
     size += my_printf("\033[1;34m%s\033[0m", remove_home(getcwd(NULL, 0), env));
     size += my_printf("\033[1;32m%s\033[0m", " ");
     return (size);

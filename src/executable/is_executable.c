@@ -17,6 +17,10 @@ char *get_command_with_path(char *cmd, char **env)
         return (NULL);
     for (int i = 0; path_array[i] != NULL; i++) {
         tmp = my_strcat_inf(3, path_array[i], "/", cmd);
+        if (strchr(cmd, '/') != NULL && access(tmp, F_OK) == 0) {
+            free(tmp);
+            continue;
+        }
         if (access(tmp, F_OK) == 0)
             return (tmp);
         free(tmp);

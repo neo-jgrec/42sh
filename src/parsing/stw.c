@@ -69,7 +69,7 @@ char **a_mkstw(char *str, char *sep)
 {
     int nb = count_words(str, sep);
     char **stw = malloc(sizeof(char *) * (nb + 1));
-    if (stw == NULL || !check_quote(str)) return NULL;
+    if (stw == NULL) return NULL;
     int index = 0;
 
     for (int i = 0; i < nb + 1; i++)

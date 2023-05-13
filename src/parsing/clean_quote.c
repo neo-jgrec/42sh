@@ -7,14 +7,15 @@
 
 #include "my.h"
 
-static const char backslash[4][2] = {
+static const char backslash[5][2] = {
     "\\",
     "  ",
     "t\t",
-    "n\n"
+    "n\n",
+    "``"
 };
 
-static void remove_char(char *str)
+void remove_char(char *str)
 {
     for (int i = 0; str[i]; i++)
         str[i] = str[i + 1];
@@ -38,7 +39,7 @@ static void pass_quote(char *str, int *i, char quote)
     remove_char(str + *i);
 
     for (; str[*i]; *i += 1) {
-        check_backslash(str + *i, 4);
+        check_backslash(str + *i, 5);
         if (str[*i] == quote) {
             remove_char(str + *i);
             break;

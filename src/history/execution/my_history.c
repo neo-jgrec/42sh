@@ -21,7 +21,7 @@ int my_history(char **args, UNUSED char **env, int *exit_status, void *data)
         (*exit_status) = exec_history_command(args, term->history, term);
         return ((*exit_status));
     }
-    printf("History error\n");
-    *exit_status = 84;
-    return (84);
+    dprintf(2, "history error\n");
+    *exit_status = 1;
+    return (1);
 }

@@ -19,9 +19,9 @@ void heredoc(char **args, int *input_fd, int *i);
 static void error_message(char *str)
 {
     if (access(str, F_OK) == 0)
-        my_printf("%s: Permission denied.\n", str);
+        dprintf(2, "%s: Permission denied.\n", str);
     else
-        my_printf("%s: Command not found.\n", str);
+        dprintf(2, "%s: Command not found.\n", str);
 }
 
 int execute_command(char **args, int input_fd, int output_fd, term_t *term)

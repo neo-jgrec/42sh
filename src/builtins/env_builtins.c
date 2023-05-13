@@ -20,7 +20,7 @@ int my_env(char **args, char **env, int *exit_status,
 UNUSED void *data)
 {
     if (len_tab(args) > 1) {
-        my_printf("env: Too many arguments.\n");
+        dprintf(2, "env: Too many arguments.\n");
         *exit_status = 1;
         return (1);
     }
@@ -54,7 +54,7 @@ int my_unsetenv_builtin(char **args, char **env, int *exit_status,
 UNUSED void *data)
 {
     if (args[1] == NULL) {
-        my_printf("unsetenv: Too few arguments.\n");
+        dprintf(2, "unsetenv: Too few arguments.\n");
         *exit_status = 1;
         return (1);
     }

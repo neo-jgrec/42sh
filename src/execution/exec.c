@@ -15,7 +15,6 @@
 #include <signal.h>
 
 void heredoc(char **args, int *input_fd, int *i);
-char **edit_args_env(char **args, char **env);
 
 static void error_message(char *str)
 {
@@ -35,9 +34,6 @@ int execute_command(char **args, int input_fd, int output_fd, term_t *term)
     if (args[0] == NULL) return 0;
     if (is_executable_int == 0 && is_builtin == 0) {
         error_message(args[0]);
-        *term->exit_status = 1;
-        return 0;
-    } else if (edit_args_env(args, (char **)term->env) == NULL) {
         *term->exit_status = 1;
         return 0;
     }

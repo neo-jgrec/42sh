@@ -12,9 +12,9 @@
 
 void perror_exit(const char *s)
 {
-    if (errno == 8)
+    if (errno == 8) {
         my_printf("%s: Exec format error. Wrong Architecture.\n", s);
-    else
+    } else
         my_printf("%s: %s.\n", s, strerror(errno));
     errno = 0;
 }

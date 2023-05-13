@@ -24,7 +24,8 @@ static char *construct_result(construct_result_params_t *params)
     my_strncpy(result + (params->dollar_ptr - params->name), params->value,
         params->value_len);
     my_strncpy(result + (params->dollar_ptr - params->name) + params->value_len,
-        params->dollar_ptr + 1, my_strlen(params->dollar_ptr + 1));
+        params->dollar_ptr + params->value_len + 1,
+        my_strlen(params->dollar_ptr + params->value_len + 1));
     return result;
 }
 
@@ -62,6 +63,7 @@ char **edit_args_env(char **args, char **env)
         if (tmp != NULL) {
             args[i] = tmp;
         } else {
+            dprintf(2, "%s: Undefined variable.\n", args[i]);
             return (NULL);
         }
     }

@@ -32,9 +32,9 @@ void my_exit(char **argv, UNUSED char **env, int *exit_status, void *data)
             my_printf("exit: Badly formed number.\n");
             return;
         }
-        destroy_history(term->history);
+        store_history(term->history);
         exit(my_atoi(argv[1]));
     }
-    destroy_history(term->history);
+    store_history(term->history);
     exit(status);
 }

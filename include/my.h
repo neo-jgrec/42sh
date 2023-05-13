@@ -177,4 +177,6 @@
     bool is_existant_event(char *str, history_list_t *list);
     char **convert_args(char **args, history_list_t *list, bool is_num);
 
+    void display_variables(char **var, history_list_t *history);
+
 #endif /* !MY_H_ */

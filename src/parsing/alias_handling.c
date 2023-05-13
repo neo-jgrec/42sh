@@ -9,15 +9,7 @@
 #include "list.h"
 #include <string.h>
 
-static int len_of_array_content(char **array)
-{
-    int size = 0;
-
-    for (int i = 0; array[i] != NULL; i++) {
-        size += strlen(array[i]);
-    }
-    return (size);
-}
+int len_of_array_content(char **array);
 
 static char *get_new_str(char **temp)
 {
@@ -60,6 +52,29 @@ static char *get_alias_value(char **temp, int i, linked_list_t *alias)
     return (temp[i]);
 }
 
+static int check_alias_loop(char **temp, int i, linked_list_t *alias)
+{
+    linked_list_node_t *node;
+    char *temp_str = NULL;
+    char *alias_value = NULL;
+
+    TAILQ_FOREACH(node, &alias->head, nodes) {
+        if (strcmp(((char **)node->data)[0], temp[i]) == 0) {
+            temp_str = strdup(((char **)node->data)[1]);
+            alias_value = strdup(((char **)node->data)[0]);
+        }
+    }
+    TAILQ_FOREACH(node, &alias->head, nodes) {
+        if (strcmp(((char **)node->data)[0], temp_str) == 0) {
+            if (strcmp(((char **)node->data)[1], alias_value) == 0) {
+                printf("Alias Loop\n");
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 char *replace_alias(char *str, linked_list_t *alias)
 {
     char **temp = my_str_to_word_array(str, ' ');
@@ -69,7 +84,8 @@ char *replace_alias(char *str, linked_list_t *alias)
     for (int i = 0; temp[i] != NULL; i++) {
         if (temp[i][0] == '\0')
             continue;
-        if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0) {
+        if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0
+            || check_alias_loop(temp, i, alias) == 1) {
             i = get_next_arg(temp, i);
             continue;
         }

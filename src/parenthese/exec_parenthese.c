@@ -10,6 +10,7 @@
 
 char **a_mkstw(char *str, char *sep);
 char **cpy_env(char **env);
+int execute_commands(char **args, term_t *term);
 
 static char *remove_parenthese(char *input)
 {
@@ -24,13 +25,14 @@ static char *remove_parenthese(char *input)
 
 static int exc_par_child(term_t *n_term)
 {
+    execute_commands(n_term->argv, n_term);
+    exit(errno);
     return 0;
 }
 
 static int exec_par_input(term_t *n_term)
 {
     pid_t pid;
-    int state;
 
     pid = fork();
     if (pid == -1)
@@ -38,7 +40,7 @@ static int exec_par_input(term_t *n_term)
     if (pid == 0) {
         exc_par_child(n_term);
     } else {
-        pid = wait(&state);
+        waitpid(pid, n_term->exit_status, 0);
     }
     return 0;
 }

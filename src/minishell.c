@@ -14,7 +14,7 @@ char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
 int parsing_error(char **args);
 char *read_stdin(term_t *term);
-char **a_mkstw(char *str, char *sep);
+char **check_str(char *str, term_t *term);
 
 char *remove_home(char *str, char **env)
 {
@@ -54,7 +54,7 @@ int minishell(char **env)
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
-        term.argv = a_mkstw(term.str, " ");
+        term.argv = check_str(term.str, &term);
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);

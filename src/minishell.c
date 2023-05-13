@@ -17,6 +17,7 @@ char *read_stdin(term_t *term);
 char **check_str(char *str, term_t *term);
 char **a_mkstw(char *str, char *sep);
 char **edit_args_env(char **args, char **env);
+char **check_str(char *str, term_t *term);
 
 char *remove_home(char *str, char **env)
 {

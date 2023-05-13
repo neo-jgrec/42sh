@@ -13,9 +13,9 @@
 void perror_exit(const char *s)
 {
     if (errno == 8) {
-        my_printf("%s: Exec format error. Wrong Architecture.\n", s);
+        dprintf(2, "%s: Exec format error. Wrong Architecture.\n", s);
     } else
-        my_printf("%s: %s.\n", s, strerror(errno));
+        dprintf(2, "%s: %s.\n", s, strerror(errno));
     errno = 0;
 }
 
@@ -41,20 +41,20 @@ void sigsegv_handler(term_t *term)
 
     if (*term->exit_status == 1) return;
     sig = get_signal(*term->exit_status);
-    (sig == 139) ? write(1, "Segmentation fault", 18) : 0;
-    (sig == 136) ? write(1, "Floating exception", 18) : 0;
-    (sig == 134) ? write(1, "Abort", 5) : 0;
-    (sig == 132) ? write(1, "Illegal instruction", 19) : 0;
-    (sig == 135) ? write(1, "Bus error", 9) : 0;
-    (sig == 133) ? write(1, "Trace/breakpoint trap", 21) : 0;
-    (sig == 132) ? write(1, "Illegal instruction", 19) : 0;
-    (sig == 131) ? write(1, "Quit", 4) : 0;
-    (sig == 130) ? write(1, "Interrupt", 9) : 0;
-    (sig == 129) ? write(1, "Hangup", 6) : 0;
+    (sig == 139) ? write(2, "Segmentation fault", 18) : 0;
+    (sig == 136) ? write(2, "Floating exception", 18) : 0;
+    (sig == 134) ? write(2, "Abort", 5) : 0;
+    (sig == 132) ? write(2, "Illegal instruction", 19) : 0;
+    (sig == 135) ? write(2, "Bus error", 9) : 0;
+    (sig == 133) ? write(2, "Trace/breakpoint trap", 21) : 0;
+    (sig == 132) ? write(2, "Illegal instruction", 19) : 0;
+    (sig == 131) ? write(2, "Quit", 4) : 0;
+    (sig == 130) ? write(2, "Interrupt", 9) : 0;
+    (sig == 129) ? write(2, "Hangup", 6) : 0;
     if (WCOREDUMP(*term->exit_status)) {
-        write(1, " (core dumped)", 14);
+        write(2, " (core dumped)", 14);
         sig = 139;
     }
-    if (sig != 0) write(1, "\n", 1);
+    if (sig != 0) write(2, "\n", 1);
     if (sig != 0) *term->exit_status = sig;
 }

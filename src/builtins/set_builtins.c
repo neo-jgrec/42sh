@@ -44,7 +44,7 @@ void *data)
 
     *exit_status = 0;
     if (args && args[1] == NULL) {
-        my_printf("unset: Too few arguments.\n");
+        dprintf(2, "unset: Too few arguments.\n");
         *exit_status = 1;
         return (*exit_status);
     }

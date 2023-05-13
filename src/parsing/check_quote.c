@@ -16,7 +16,7 @@ int check_quote(char *str)
             quote = 0;
             continue;
         }
-        if (quote == 0 && (str[i] == '"' || str[i] == '\''))
+        if (quote == 0 && (str[i] == '"' || str[i] == '\'' || str[i] == '`'))
             quote = str[i];
     }
     if (quote == 0)

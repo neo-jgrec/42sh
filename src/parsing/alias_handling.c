@@ -67,7 +67,7 @@ static int check_alias_loop(char **temp, int i, linked_list_t *alias)
     TAILQ_FOREACH(node, &alias->head, nodes) {
         if (strcmp(((char **)node->data)[0], temp_str) == 0) {
             if (strcmp(((char **)node->data)[1], alias_value) == 0) {
-                printf("Alias Loop\n");
+                printf("Alias loop.\n");
                 return 1;
             }
         }
@@ -82,11 +82,12 @@ char *replace_alias(char *str, linked_list_t *alias)
     if (temp == NULL || alias == NULL )
         return (str);
     for (int i = 0; temp[i] != NULL; i++) {
-        if (temp[i][0] == '\0')
-            continue;
-        if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0
-            || check_alias_loop(temp, i, alias) == 1) {
+        if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0) {
             i = get_next_arg(temp, i);
+            continue;
+        }
+        if (check_alias_loop(temp, i, alias) == 1) {
+            temp[i] = NULL;
             continue;
         }
         temp[i] = get_alias_value(temp, i, alias);

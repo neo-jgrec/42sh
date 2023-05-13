@@ -33,11 +33,11 @@ static int get_alias(char **args, linked_list_t *alias)
     struct linked_list_node *node;
 
     TAILQ_FOREACH(node, &alias->head, nodes) {
-        if (strcmp(((char **)node->data)[0], args[1]) == 0) {
-            if (is_sentence(((char **)node->data)[1]))
-                my_printf("%s\t(%s)\n", ((char **)node->data)[0],
-                ((char **)node->data)[1]);
-            else
+        if (strcmp(((char **)node->data)[0], args[1]) == 0 &&
+            is_sentence(((char **)node->data)[1])) {
+            my_printf("%s\t(%s)\n", ((char **)node->data)[0],
+            ((char **)node->data)[1]);
+        } else if (strcmp(((char **)node->data)[0], args[1]) == 0) {
                 my_printf("%s\t%s\n", ((char **)node->data)[0],
                 ((char **)node->data)[1]);
         }

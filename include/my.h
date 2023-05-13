@@ -116,6 +116,8 @@
     int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_history(char **args, char **env, int *exit_status, void *data);
     int my_alias(char **args, UNUSED char **env, int *exit_status, void *data);
+    int my_unalias(char **args, UNUSED char **env, int *exit_status,
+    void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -129,6 +131,7 @@
         {"where", (void *) my_where},
         {"history", (void *) my_history},
         {"alias", (void *) my_alias},
+        {"unalias", (void *) my_unalias},
         {NULL, NULL}
     };
 

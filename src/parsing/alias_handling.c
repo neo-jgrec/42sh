@@ -48,9 +48,20 @@ static int get_next_arg(char **temp, int i)
     return (i - 1);
 }
 
-char *replace_alias(char *str, linked_list_t *alias)
+static char *get_alias_value(char **temp, int i, linked_list_t *alias)
 {
     linked_list_node_t *node;
+
+    TAILQ_FOREACH(node, &alias->head, nodes) {
+        if (strcmp(((char **)node->data)[0], temp[i]) == 0) {
+            temp[i] = strdup(((char **)node->data)[1]);
+        }
+    }
+    return (temp[i]);
+}
+
+char *replace_alias(char *str, linked_list_t *alias)
+{
     char **temp = my_str_to_word_array(str, ' ');
 
     if (temp == NULL || alias == NULL )
@@ -62,11 +73,7 @@ char *replace_alias(char *str, linked_list_t *alias)
             i = get_next_arg(temp, i);
             continue;
         }
-        TAILQ_FOREACH(node, &alias->head, nodes) {
-            if (strcmp(((char **)node->data)[0], temp[i]) == 0) {
-                temp[i] = strdup(((char **)node->data)[1]);
-            }
-        }
+        temp[i] = get_alias_value(temp, i, alias);
     }
     str = get_new_str(temp);
     str[strlen(str)] = '\0';

@@ -67,11 +67,10 @@ static int check_alias_loop(char **temp, int i, linked_list_t *alias)
     if (temp_str == NULL || alias_value == NULL)
         return 0;
     TAILQ_FOREACH(node, &alias->head, nodes) {
-        if (strcmp(((char **)node->data)[0], temp_str) == 0) {
-            if (strcmp(((char **)node->data)[1], alias_value) == 0) {
-                printf("Alias loop.\n");
-                return 1;
-            }
+        if (strcmp(((char **)node->data)[0], temp_str) == 0 &&
+            strcmp(((char **)node->data)[1], alias_value) == 0) {
+            printf("Alias loop.\n");
+            return 1;
         }
     }
     return 0;

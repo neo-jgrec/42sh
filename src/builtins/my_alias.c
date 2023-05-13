@@ -9,16 +9,7 @@
 #include "list.h"
 #include <string.h>
 
-static int is_sentence(char const *str)
-{
-    int i = 0;
-
-    for (; str[i] != '\0'; i++) {
-        if (str[i] == ' ')
-            return 1;
-    }
-    return 0;
-}
+int is_sentence(char const *str);
 
 static int print_alias(linked_list_t *alias)
 {
@@ -41,8 +32,6 @@ static int get_alias(char **args, linked_list_t *alias)
 {
     struct linked_list_node *node;
 
-    if (alias == NULL)
-        return (0);
     TAILQ_FOREACH(node, &alias->head, nodes) {
         if (strcmp(((char **)node->data)[0], args[1]) == 0) {
             if (is_sentence(((char **)node->data)[1]))
@@ -58,13 +47,18 @@ static int get_alias(char **args, linked_list_t *alias)
 
 static int add_alias(char **args, linked_list_t *alias)
 {
-    char **command = malloc(sizeof(char *) * 2);
+    char **command = calloc(3, sizeof(char *));
     struct linked_list_node *node;
 
+    if (strcmp(args[1], "alias") == 0) {
+        my_printf("alias: Too dangerous to alias that.\n");
+        return (84);
+    }
     if (command == NULL || alias == NULL)
         return (84);
-    command[0] = strdup(args[1]);
-    command[1] = strdup(args[2]);
+    command[0] = my_strdup(args[1]);
+    command[1] = my_strdup(args[2]);
+    command[2] = NULL;
     TAILQ_FOREACH(node, &alias->head, nodes) {
         if (my_strcmp(((char **)node->data)[0], args[1]) == 0) {
             ((char **)node->data)[1] = my_strdup(args[2]);
@@ -82,10 +76,11 @@ static int create_multi_word_alias(char **args, linked_list_t *alias)
     if (com == NULL || alias == NULL)
         return (84);
     for (int i = 3; args[i] != NULL; i++) {
-        com = strcat(com, " ");
-        com = strcat(com, args[i]);
+        com = my_strcat_inf(2, com, " ");
+        com = my_strcat_inf(2, com, args[i]);
+        com = my_strcat_inf(2, com, "\0");
     }
-    args[2] = com;
+    args[2] = strdup(com);
     add_alias(args, alias);
     return (0);
 }

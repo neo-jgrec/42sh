@@ -21,39 +21,55 @@ static int len_of_array_content(char **array)
 
 static char *get_new_str(char **temp)
 {
-    int len_of_array = len_of_array_content(temp) + 1;
-    char *new_str = malloc(sizeof(char) * (len_of_array));
+    int len_of_array = len_of_array_content(temp) + len_tab(temp) - 1;
+    char *new_str = calloc(len_of_array, sizeof(char));
 
     if (new_str == NULL)
         return (NULL);
     new_str[0] = '\0';
     for (int i = 0; temp[i] != NULL; i++) {
-        new_str = strcat(new_str, temp[i]);
+        new_str = my_strcat_inf(2, new_str, temp[i]);
         if (temp[i + 1] != NULL)
-            new_str = strcat(new_str, " ");
+            new_str = my_strcat_inf(2, new_str, " ");
     }
     return (new_str);
 }
 
+static int get_next_arg(char **temp, int i)
+{
+    for (; temp[i] != NULL; i++) {
+        if (strcmp(temp[i], "&&") == 0 || strcmp(temp[i], "||") == 0 ||
+            strcmp(temp[i], "|") == 0 || strcmp(temp[i], ";") == 0 ||
+            strcmp(temp[i], "<") == 0 || strcmp(temp[i], ">") == 0 ||
+            strcmp(temp[i], ">>") == 0 || strcmp(temp[i], "<<") == 0) {
+            return (i);
+        }
+    }
+    return (i - 1);
+}
+
 char *replace_alias(char *str, linked_list_t *alias)
 {
-    struct linked_list_node *node;
+    linked_list_node_t *node;
     char **temp = my_str_to_word_array(str, ' ');
 
-    if (temp == NULL || alias == NULL)
+    if (temp == NULL || alias == NULL )
         return (str);
     for (int i = 0; temp[i] != NULL; i++) {
-        if (strcmp(temp[i], "alias") == 0) {
-            i++;
+        if (temp[i][0] == '\0')
+            continue;
+        if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0) {
+            i = get_next_arg(temp, i);
             continue;
         }
         TAILQ_FOREACH(node, &alias->head, nodes) {
-            if (strcmp(temp[i], ((char **)node->data)[0]) == 0) {
+            if (strcmp(((char **)node->data)[0], temp[i]) == 0) {
                 temp[i] = strdup(((char **)node->data)[1]);
             }
         }
     }
     str = get_new_str(temp);
+    str[strlen(str)] = '\0';
     my_destroy_str_array(temp);
     return (str);
 }

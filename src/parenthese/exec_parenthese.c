@@ -6,6 +6,7 @@
 */
 
 #include "my.h"
+#include <sys/wait.h>
 
 char **a_mkstw(char *str, char *sep);
 char **cpy_env(char **env);
@@ -19,6 +20,11 @@ static char *remove_parenthese(char *input)
     if (new_str == NULL)
         return NULL;
     return new_str;
+}
+
+static int exc_par_child(term_t *n_term)
+{
+    return 0;
 }
 
 static int exec_par_input(term_t *n_term)

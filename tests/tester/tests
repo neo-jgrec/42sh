@@ -539,3 +539,11 @@ CLEAN=""
 TESTS=
   echo 'grep CDH < data | tr R T > /tmp/fic ; cat /tmp/fic | sed s/A// > /tmp/fic2 ; cat /tmp/fic2 | tr Z R'
 [950-END]
+
+[951]
+NAME="arm"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo './../arm'
+[951-END]

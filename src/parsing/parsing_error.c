@@ -54,6 +54,8 @@ void handle_exit(char **args, int i)
 
 int parsing_error(char **args, term_t *term)
 {
+    if (args[0] == NULL)
+        return (1);
     if (!my_strcmp(args[0], ";"))
         remove_element_at_index(args, 0);
     for (int i = 0; args[i + 1] != NULL; i++) {

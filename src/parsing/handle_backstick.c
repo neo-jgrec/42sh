@@ -69,7 +69,6 @@ char *handle_backstick(char *str, term_t *term)
             buff = backstick(str + i + 1, term);
             clean_backstick(str + i + 1);
             str = put_backstick(str, buff);
-            printf("%d '%s'\n", strlen(str)  ,str);
         }
     }
     return str;

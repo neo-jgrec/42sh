@@ -8,6 +8,7 @@
 #include "my.h"
 
 char *add_space_before_and_after_jokers(char *str);
+char **check_str(char *str, char **args, term_t *term);
 
 static void remplace_char(char *new_str, int *j)
 {

@@ -24,12 +24,14 @@ void my_exit(char **argv, UNUSED char **env, int *exit_status, void *data)
 
     int status = *exit_status;
     if (len_tab(argv) > 2) {
-        my_printf("exit: Expression Syntax.\n");
+        dprintf(2, "exit: Expression Syntax.\n");
+        *exit_status = 1;
         return;
     }
     if (argv[1] != NULL) {
         if (my_str_isnum(argv[1]) == 0) {
-            my_printf("exit: Badly formed number.\n");
+            dprintf(2, "exit: Badly formed number.\n");
+            *exit_status = 1;
             return;
         }
         store_history(term->history);

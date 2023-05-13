@@ -31,11 +31,11 @@ static bool handle_error(char **args, history_list_t *list)
     if (!args || !list)
         return (true);
     if (strcmp(args[0], "!") == 0){
-        printf("!: Command not found.\n");
+        dprintf(2, "!: Command not found.\n");
         return (true);
     }
     if (!is_existant_event(&args[0][1], list)) {
-        printf("%s: Event not found.\n", &args[0][1]);
+        dprintf(2, "%s: Event not found.\n", &args[0][1]);
         return (true);
     }
     return (false);

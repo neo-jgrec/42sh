@@ -14,12 +14,12 @@ static bool handle_error_args(char **args)
     if (!args)
         return (true);
     if (nb_args > 3) {
-        printf("history: Too many arguments.\n");
+        dprintf(2, "history: Too many arguments.\n");
         return (true);
     }
     for (size_t i = 1; args[i]; i++) {
         if (!my_str_isnum(args[i])){
-            printf("Usage: history [number of events].\n");
+            dprintf(2, "Usage: history [number of events].\n");
             return (true);
         }
     }

@@ -23,7 +23,7 @@ void perror_exit(const char *s);
 void my_left_redirection(char **args, int *input_fd, int *i)
 {
     if (args[*i + 1] == NULL) {
-        my_printf("Missing name for redirect.\n");
+        dprintf(2, "Missing name for redirect.\n");
         args[*i] = NULL;
         return;
     }
@@ -37,7 +37,7 @@ void my_left_redirection(char **args, int *input_fd, int *i)
 void my_right_redirection(char **args, int *output_fd, int *i, int append)
 {
     if (args[*i + 1] == NULL) {
-        my_printf("Missing name for redirect.\n");
+        dprintf(2, "Missing name for redirect.\n");
         args[*i] = NULL;
         return;
     }

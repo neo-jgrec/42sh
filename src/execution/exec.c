@@ -18,8 +18,7 @@ void heredoc(char **args, int *input_fd, int *i);
 
 static void error_message(char *str)
 {
-    if (access(str, F_OK) == 0 && (!strncasecmp(str, "./", 2)
-    || !strncasecmp(str, "/", 1)))
+    if (access(str, F_OK) == 0)
         my_printf("%s: Permission denied.\n", str);
     else
         my_printf("%s: Command not found.\n", str);

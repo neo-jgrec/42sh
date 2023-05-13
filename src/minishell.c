@@ -12,7 +12,7 @@
 
 char *clean_str_minishell(char *str, const char *to_clean);
 int execute_commands(char **args, term_t *term);
-int parsing_error(char **args);
+int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
 char **check_str(char *str, term_t *term);
 char **a_mkstw(char *str, char *sep);
@@ -62,7 +62,7 @@ int minishell(char **env)
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);
-        if (parsing_error(term.argv) == 1) continue;
+        if (parsing_error(term.argv, &term) == 1) continue;
         if (edit_args_env(term.argv, term.env) == NULL) continue;
         signal(SIGINT, handle_sigint_program);
         execute_commands(term.argv, &term);

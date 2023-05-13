@@ -48,7 +48,7 @@ static char **get_env_cpy(char **env, size_t args)
     if (cpy == NULL)
         return NULL;
     while (i < args) {
-        cpy[i] = lb_strdup(env[i]);
+        cpy[i] = my_strdup(env[i]);
         i++;
     }
     cpy[i] = NULL;

@@ -25,7 +25,7 @@ int my_unset(char *name, char ***var)
         return (0);
     for (size_t i = 0; (*var)[i]; i++){
         if (strncmp(name, (*var)[i], len) == 0 &&
-        (*var)[i][len] == '=') {
+        (*var)[i][len] == '\t') {
             destroy_var_elm(i, var);
             break;
         }

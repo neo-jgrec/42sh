@@ -13,12 +13,13 @@ const char *jokers[] = {";", "||", "|", "<<", ">>", ">", "<", "&&", "(", NULL};
 
 static int is_valid_pos(char **argv, ssize_t i)
 {
-    if (i == 0 && !is_joker(argv[i + 1][0], jokers))
+    if (i == 0 && argv[i + 1] != NULL && !is_joker(argv[i + 1][0], jokers))
+        return 0;
+    if (i != 0 && argv[i + 1] == NULL && !is_joker(argv[i - 1][0], jokers)
+    && my_strcmp(argv[i - 1], "echo") != 0)
         return 0;
     if (argv[i + 1] != NULL && (!is_joker(argv[i + 1][0], jokers) ||
-    !is_joker(argv[i - 1][0], jokers)))
-        return 0;
-    if (argv[i + 1] == NULL && !is_joker(argv[i - 1][0], jokers))
+    !is_joker(argv[i - 1][0], jokers)) && my_strcmp(argv[i - 1], "echo") != 0)
         return 0;
     return 1;
 }

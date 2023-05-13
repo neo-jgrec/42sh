@@ -21,7 +21,7 @@ static char **transform_command(char **command, history_list_t *list)
 void manage_history(history_list_t *list, char **command)
 {
     char **new_cmd = NULL;
-    if (!list)
+    if (!list || !command[0])
         return;
     if (strncmp(command[0], "!", 1) == 0)
         new_cmd = transform_command(command, list);

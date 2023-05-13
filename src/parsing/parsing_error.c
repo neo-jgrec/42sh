@@ -5,6 +5,7 @@
 ** parsing_error
 */
 
+#include "parsing.h"
 #include "my.h"
 
 int is_there_only_char(char **args, char *to_find)
@@ -51,16 +52,14 @@ void handle_exit(char **args, int i)
     }
 }
 
-int parsing_error(char **args)
+int parsing_error(char **args, term_t *term)
 {
     if (!my_strcmp(args[0], ";"))
         remove_element_at_index(args, 0);
     for (int i = 0; args[i + 1] != NULL; i++) {
-        if (((my_strcmp(args[i], ">") == 0 || my_strcmp(args[i], "<") == 0) &&
-        (my_strcmp(args[i + 1], ">") == 0 || my_strcmp(args[i + 1], "<") == 0))
-        || ((my_strcmp(args[i], ">>") == 0 || my_strcmp(args[i], "<<") == 0)
-        && (my_strcmp(args[i + 1], ">>") == 0
-        || my_strcmp(args[i + 1], "<<") == 0))) {
+        if (((IS_RDOUT(args[i]) || IS_RDIN(args[i])) && (IS_RDOUT(args[i + 1])
+        || IS_RDIN(args[i + 1]))) || ((IS_DRDOUT(args[i]) || IS_DRDIN(args[i]))
+        && (IS_DRDOUT(args[i + 1]) || IS_DRDIN(args[i + 1])))) {
             my_printf("Missing name for redirect.\n");
             return (1);
         }
@@ -70,7 +69,7 @@ int parsing_error(char **args)
         }
         handle_exit(args, i);
     }
-    if (all_char_check(args) == 1)
+    if (all_char_check(args) == 1 || error_variable(args, term))
         return (1);
     return (0);
 }

@@ -51,6 +51,7 @@
         int *exit_status;
         history_list_t *history;
         linked_list_t *alias;
+        char **var;
         int last_return;
         bool is_from_path;
         TAILQ_HEAD(pid_list_head_s, pid_list_s) pid_list;
@@ -100,6 +101,8 @@
     char *my_getenv(char **env, const char *name);
     int my_setenv(char *name, char *value, char **env);
     int my_unsetenv(char *str, char **env);
+    int my_set(char *name, char *value, char ***var);
+    int my_unset(char *name, char ***var);
 
     void my_cd(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_unsetenv_builtin(char **args, char **env, int *exit_status,
@@ -145,6 +148,7 @@
     void remove_element_at_index(char **args, int index);
 
     int is_executable(char ***args, char **env, term_t *term);
+    bool error_variable(char **args, term_t *term);
     int is_builtins(char **args);
     int execute_builtin_command(char **args, char **env,
     term_t *term, my_fd_t fd);
@@ -162,6 +166,7 @@
     void destroy_history(history_list_t *list);
     void create_history_node(history_list_t *list, char **command);
     void rm_history_node(history_t *node, history_list_t *list);
+    void store_history(history_list_t *history);
 
     void manage_history(history_list_t *list, char **command);
     void command_is_in_history(char **command, history_list_t *list);
@@ -173,5 +178,7 @@
     int exec_history_command(char **args, history_list_t *list, term_t *term);
     bool is_existant_event(char *str, history_list_t *list);
     char **convert_args(char **args, history_list_t *list, bool is_num);
+
+    void display_variables(char **var, history_list_t *history);
 
 #endif /* !MY_H_ */

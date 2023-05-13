@@ -12,9 +12,9 @@ static char *get_string_echo(char **argv, int i)
     char *str = my_calloc(my_strlen(argv[i]) + 1, sizeof(char));
 
     for (; argv[i] != NULL; i++) {
-        str = my_strcat(str, argv[i]);
+        str = my_strcat_inf(2, str, argv[i]);
         if (argv[i + 1] != NULL)
-            str = my_strcat(str, " ");
+            str = my_strcat_inf(2, str, " ");
     }
     return str;
 }

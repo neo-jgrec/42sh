@@ -72,4 +72,6 @@
     */
     char **my_add_str_to_array(char **array, const char *str);
 
+    char **my_str_tok(char const *str, char const *token);
+
 #endif /* !ARRAY_ */

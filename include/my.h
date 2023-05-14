@@ -127,6 +127,10 @@
     int my_alias(char **args, UNUSED char **env, int *exit_status, void *data);
     int my_unalias(char **args, UNUSED char **env, int *exit_status,
     void *data);
+    int my_unset_builtin(char **args, UNUSED char **env, int *exit_status,
+    void *data);
+    int my_set_builtin(char **args, UNUSED char **env, int *exit_status,
+    void *data);
 
     static const struct commands_s commands[] = {
         {"cd", (void *) my_cd},
@@ -141,6 +145,8 @@
         {"history", (void *) my_history},
         {"alias", (void *) my_alias},
         {"unalias", (void *) my_unalias},
+        {"set", (void *) my_set_builtin},
+        {"unset", (void *) my_unsetenv_builtin},
         {NULL, NULL}
     };
 

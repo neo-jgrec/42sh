@@ -18,6 +18,7 @@ char **check_str(char *str, term_t *term);
 char **a_mkstw(char *str, char *sep);
 char **edit_args_env(char **args, char **env);
 char **check_str(char *str, term_t *term);
+bool does_var_exist(char *name, char **var);
 
 char *remove_home(char *str, char **env)
 {
@@ -48,6 +49,24 @@ void handle_sigint_program(int sig)
     (void)sig;
 }
 
+void set_special_vars(term_t *term)
+{
+    size_t size = confstr(_CS_PATH, NULL, 0);
+    char *path = my_getenv(term->env, "PATH");
+
+    if (!path && !does_var_exist("path", term->var)) {
+        path = malloc(sizeof(char) * size);
+        confstr(_CS_PATH, path, size);
+        my_set("path", path, &term->var);
+        return;
+    }
+    if (path) {
+        for (size_t i = 0; path[i]; i++)
+            path[i] = (path[i] == ':') ? ' ' : path[i];
+        my_set("path", path, &term->var);
+    }
+}
+
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL,
@@ -55,6 +74,7 @@ int minishell(char **env)
 
     TAILQ_INIT(&term.pid_list);
     while (1) {
+        set_special_vars(&term);
         term.str = read_stdin(&term);
         if (term.str[0] == '\0')
             continue;

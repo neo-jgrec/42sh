@@ -11,6 +11,7 @@
 
 int len_of_array_content(char **array);
 int get_next_arg_pos(char **temp, int i);
+char **a_mkstw(char *str, char *sep, int check_quote);
 
 static char *get_new_str(char **temp)
 {
@@ -80,7 +81,7 @@ static int check_alias_loop(char **temp, int i, linked_list_t *alias)
 
 char *replace_alias(char *str, linked_list_t *alias)
 {
-    char **temp = my_str_to_word_array(str, ' ');
+    char **temp = a_mkstw(str, " ", 0);
 
     if (temp == NULL || alias == NULL || temp[0] == NULL)
         return (str);

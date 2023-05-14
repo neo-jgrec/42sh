@@ -16,10 +16,10 @@ int execute_commands(char **args, term_t *term);
 int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
 char **check_str(char *str, term_t *term);
-char **a_mkstw(char *str, char *sep);
+char **a_mkstw(char *str, char *sep, int check_quote);
 char **edit_args_env(char **args, char **env);
-char **check_str(char *str, term_t *term);
 bool does_var_exist(char *name, char **var);
+int check_quote(char *str);
 
 char *remove_home(char *str, char **env)
 {
@@ -84,10 +84,10 @@ int minishell(char **env)
         term.str = read_stdin(&term);
         if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
-        term.ac = len_tab(my_str_to_word_array(term.str, ' '));
-        if ((term.str = replace_alias(term.str, term.alias)) == NULL)
-            continue;
-        if ((term.argv = check_str(term.str, &term)) == NULL)
+        term.ac = len_tab(a_mkstw(term.str, " ", 0));
+        if (!check_quote(term.str) ||
+            !(term.str = replace_alias(term.str, term.alias)) ||
+            !(term.argv = a_mkstw(term.str, " \t", 1)))
             continue;
         manage_history(term.history, term.argv);
         if (parsing_error(term.argv, &term) == 1) continue;

@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 char *clean_str_minishell(char *str, const char *to_clean);
-char **a_mkstw(char *str, char *sep);
+char **a_mkstw(char *str, char *sep, int check_quote);
 
 void handle_token(char *token, glob_t *glob_result, char *new_str)
 {
@@ -70,7 +70,7 @@ void edit_args_with_globbing(char ***args)
 {
     char *str = merge_all_args(*args);
     char *new_str = edit_str_with_globbing(str);
-    *args = a_mkstw(new_str, " ");
+    *args = a_mkstw(new_str, " ", 0);
     free(str);
     free(new_str);
 }

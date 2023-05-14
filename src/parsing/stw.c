@@ -8,7 +8,6 @@
 #include "my.h"
 
 void clean_quote(char *str);
-
 void skip_quote_2(char *str, int *i, int *j, char quote);
 void skip_quote(char *str, int *i, char quote);
 int check_quote(char *str);
@@ -65,7 +64,7 @@ static int add_word(char *str, char **stw, int word, char *sep)
     return i + len;
 }
 
-char **a_mkstw(char *str, char *sep)
+char **a_mkstw(char *str, char *sep, int check_quote)
 {
     int nb = count_words(str, sep);
     char **stw = malloc(sizeof(char *) * (nb + 1));
@@ -80,7 +79,8 @@ char **a_mkstw(char *str, char *sep)
         a_freestw(stw);
         return NULL;
     }
-    for (int i = 0; i < nb; i++)
-        clean_quote(stw[i]);
+    if (check_quote)
+        for (int i = 0; i < nb; i++)
+            clean_quote(stw[i]);
     return stw;
 }

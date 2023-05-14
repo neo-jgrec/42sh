@@ -12,11 +12,12 @@ int check_quote(char *str)
     char quote = 0;
 
     for (int i = 0; str[i]; i++) {
-        if (quote != 0 && quote == str[i]) {
+        if (quote != 0 && (quote == str[i] && str[i - 1] != '\\')) {
             quote = 0;
             continue;
         }
-        if (quote == 0 && (str[i] == '"' || str[i] == '\'' || str[i] == '`'))
+        if (quote == 0 && ((str[i] == '"' || str[i] == '\'')
+            && str[i - 1] != '\\'))
             quote = str[i];
     }
     if (quote == 0)

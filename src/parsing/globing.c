@@ -51,31 +51,19 @@ char *merge_all_args(char **args)
 {
     int total_length = 0;
     int num_args = 0;
-    
-    // Calculate the total length of all strings and the number of arguments
     for (int i = 0; args[i] != NULL; i++) {
         total_length += strlen(args[i]);
         num_args++;
     }
-    
-    // Add space for separating spaces and a null terminator
     int total_size = total_length + num_args - 1 + 1;
-    
-    // Allocate memory for the destination string
     char *str = malloc(sizeof(char) * total_size);
-    
-    if (str == NULL) {
-        // Error handling for failed allocation
+    if (str == NULL)
         return NULL;
-    }
-    
-    // Copy the strings from args to str
     strcpy(str, args[0]);
     for (int i = 1; args[i] != NULL; i++) {
         strcat(str, " ");
         strcat(str, args[i]);
     }
-    
     return str;
 }
 

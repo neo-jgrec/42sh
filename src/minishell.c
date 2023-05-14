@@ -82,8 +82,7 @@ int minishell(char **env)
     while (1) {
         set_special_vars(&term);
         term.str = read_stdin(&term);
-        if (term.str[0] == '\0')
-            continue;
+        if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.ac = len_tab(my_str_to_word_array(term.str, ' '));
         if ((term.str = replace_alias(term.str, term.alias)) == NULL)

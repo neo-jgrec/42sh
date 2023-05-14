@@ -85,10 +85,8 @@ int minishell(char **env)
         if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.ac = len_tab(my_str_to_word_array(term.str, ' '));
-        if ((term.str = replace_alias(term.str, term.alias)) == NULL)
-            continue;
-        if ((term.argv = check_str(term.str, &term)) == NULL)
-            continue;
+        if (!(term.str = replace_alias(term.str, term.alias))) continue;
+        if (!(term.argv = check_str(term.str, &term))) continue;
         manage_history(term.history, term.argv);
         if (parsing_error(term.argv, &term) || check_parenthesis(&term))
             continue;

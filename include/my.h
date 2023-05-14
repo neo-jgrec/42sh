@@ -56,6 +56,7 @@
         int *exit_status;
         history_list_t *history;
         linked_list_t *alias;
+        int ac;
         char **var;
         int last_return;
         bool is_from_path;

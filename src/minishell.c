@@ -76,7 +76,7 @@ void set_special_vars(term_t *term)
 int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL, .env = env, .exit_status =
-    &(int){0}, init_history_list(), .alias = ll_init_linked_list()};
+    &(int){0}, init_history_list(), .alias = ll_init_linked_list(), .ac = 0};
 
     TAILQ_INIT(&term.pid_list);
     while (1) {
@@ -85,6 +85,7 @@ int minishell(char **env)
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
+        term.ac = len_tab(my_str_to_word_array(term.str, ' '));
         if ((term.str = replace_alias(term.str, term.alias)) == NULL)
             continue;
         if ((term.argv = check_str(term.str, &term)) == NULL)

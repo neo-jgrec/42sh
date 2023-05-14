@@ -63,6 +63,7 @@ int minishell(char **env)
         term.str = clean_str_minishell(term.str, " \t");
         term.str = replace_alias(term.str, term.alias);
         term.argv = check_str(term.str, &term);
+        for (int i = 0; term.argv[i] != NULL; i++)
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);

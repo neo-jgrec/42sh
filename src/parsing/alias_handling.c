@@ -80,7 +80,7 @@ char *replace_alias(char *str, linked_list_t *alias)
 {
     char **temp = my_str_to_word_array(str, ' ');
 
-    if (temp == NULL || alias == NULL )
+    if (temp == NULL || alias == NULL)
         return (str);
     for (int i = 0; temp[i] != NULL; i++) {
         if (strcmp(temp[i], "alias") == 0 || strcmp(temp[i], "unalias") == 0) {

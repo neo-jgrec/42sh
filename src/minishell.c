@@ -11,6 +11,7 @@
 #include <signal.h>
 
 char *clean_str_minishell(char *str, const char *to_clean);
+char *replace_alias(char *str, linked_list_t *alias);
 int execute_commands(char **args, term_t *term);
 int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
@@ -74,18 +75,19 @@ void set_special_vars(term_t *term)
 
 int minishell(char **env)
 {
-    term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = &(int){0}, init_history_list()};
+    term_t term = { .str = NULL, .argv = NULL, .env = env, .exit_status =
+    &(int){0}, init_history_list(), .alias = ll_init_linked_list(), .ac = 0};
 
     TAILQ_INIT(&term.pid_list);
     while (1) {
         set_special_vars(&term);
         term.str = read_stdin(&term);
-        if (term.str[0] == '\0')
-            continue;
+        if (term.str[0] == '\0') continue;
         term.str = clean_str_minishell(term.str, " \t");
-        term.argv = check_str(term.str, &term);
-        if (term.argv == NULL)
+        term.ac = len_tab(my_str_to_word_array(term.str, ' '));
+        if ((term.str = replace_alias(term.str, term.alias)) == NULL)
+            continue;
+        if ((term.argv = check_str(term.str, &term)) == NULL)
             continue;
         manage_history(term.history, term.argv);
         if (parsing_error(term.argv, &term) == 1) continue;

@@ -5,6 +5,8 @@
 ** my
 */
 
+#include "list.h"
+
 #ifndef MY_H_
     #define MY_H_
 
@@ -37,6 +39,11 @@
         size_t size;
     } history_list_t;
 
+    typedef struct alias_s {
+        char **command;
+        int status;
+    } alias_t;
+
     typedef struct pid_list_s {
         pid_t pid;
         TAILQ_ENTRY(pid_list_s) entries;
@@ -48,6 +55,8 @@
         char **env;
         int *exit_status;
         history_list_t *history;
+        linked_list_t *alias;
+        int ac;
         char **var;
         int last_return;
         bool is_from_path;
@@ -115,9 +124,8 @@
     int my_which(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_where(char **args, char **env, int *exit_status, UNUSED void *data);
     int my_history(char **args, char **env, int *exit_status, void *data);
-    int my_unset_builtin(char **args, UNUSED char **env, int *exit_status,
-    void *data);
-    int my_set_builtin(char **args, UNUSED char **env, int *exit_status,
+    int my_alias(char **args, UNUSED char **env, int *exit_status, void *data);
+    int my_unalias(char **args, UNUSED char **env, int *exit_status,
     void *data);
 
     static const struct commands_s commands[] = {
@@ -131,8 +139,8 @@
         {"which", (void *) my_which},
         {"where", (void *) my_where},
         {"history", (void *) my_history},
-        {"set", (void *) my_set_builtin},
-        {"unset", (void *) my_unset_builtin},
+        {"alias", (void *) my_alias},
+        {"unalias", (void *) my_unalias},
         {NULL, NULL}
     };
 

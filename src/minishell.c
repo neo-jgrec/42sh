@@ -60,7 +60,6 @@ void set_special_vars(term_t *term)
         for (size_t i = 0; path[i]; i++)
             path[i] = (path[i] == ':') ? ' ' : path[i];
         my_set("path", path, &term->var);
-        return;
     }
     if (path) {
         path = strdup(path);
@@ -68,6 +67,9 @@ void set_special_vars(term_t *term)
             path[i] = (path[i] == ':') ? ' ' : path[i];
         my_set("path", path, &term->var);
     }
+    if (my_getenv(term->env, "HOME"))
+        my_set("home", my_getenv(term->env, "HOME"), &term->var);
+    my_set("?", my_itoa(*term->exit_status), &term->var);
 }
 
 int minishell(char **env)

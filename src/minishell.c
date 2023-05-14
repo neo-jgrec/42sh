@@ -19,6 +19,7 @@ char **check_str(char *str, term_t *term);
 char **a_mkstw(char *str, char *sep, int check_quote);
 char **edit_args_env(char **args, char **env);
 bool does_var_exist(char *name, char **var);
+int check_parenthesis(term_t *term);
 int check_quote(char *str);
 
 char *remove_home(char *str, char **env)
@@ -77,7 +78,6 @@ int minishell(char **env)
 {
     term_t term = { .str = NULL, .argv = NULL, .env = env, .exit_status =
     &(int){0}, init_history_list(), .alias = ll_init_linked_list(), .ac = 0};
-
     TAILQ_INIT(&term.pid_list);
     while (1) {
         set_special_vars(&term);

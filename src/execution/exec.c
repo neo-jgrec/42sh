@@ -15,6 +15,7 @@
 #include <signal.h>
 
 void heredoc(char **args, int *input_fd, int *i);
+void my_parenthesis(UNUSED exec_t *exec, int *i, term_t *term, char **args);
 
 static void error_message(char *str)
 {

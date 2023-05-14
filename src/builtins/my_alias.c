@@ -10,25 +10,7 @@
 #include <string.h>
 
 int is_sentence(char const *str);
-
-static int print_alias(linked_list_t *alias)
-{
-    struct linked_list_node *node;
-    alias_t *alias_struct;
-
-    if (alias == NULL)
-        return (0);
-    TAILQ_FOREACH(node, &alias->head, nodes) {
-        alias_struct = node->data;
-        if (alias_struct->status == 1)
-            my_printf("%s\t(%s)\n", ((alias_t *)alias_struct)->command[0],
-            ((alias_t *)alias_struct)->command[1]);
-        else
-            my_printf("%s\t%s\n", ((alias_t *)alias_struct)->command[0],
-            ((alias_t *)alias_struct)->command[1]);
-    }
-    return (0);
-}
+int print_alias(linked_list_t *alias);
 
 static int get_alias(char **args, linked_list_t *alias)
 {
@@ -92,6 +74,8 @@ alias_t *alias_struct)
 {
     char *com = my_strdup(args[2]);
 
+    if (alias_struct->status != 1)
+        alias_struct->status = 0;
     if (com == NULL || alias == NULL)
         return (84);
     for (int i = 3; args[i] != NULL; i++) {
@@ -112,7 +96,6 @@ void *data)
 
     if (alias_struct == NULL) return (84);
     alias_struct->command = malloc(sizeof(char *) * 3);
-    alias_struct->status = 0;
     if (term->alias == NULL)
         term->alias = ll_init_linked_list();
     if (term->ac == 1)

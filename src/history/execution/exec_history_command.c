@@ -7,7 +7,7 @@
 
 #include <string.h>
 #include "my.h"
-int execute_commands(char **args, term_t *term);
+int execute_commands(char **args, term_t *term, int input, int output);
 
 bool is_existant_event(char *str, history_list_t *list)
 {
@@ -59,6 +59,6 @@ int exec_history_command(char **args, history_list_t *list, term_t *term)
     command_is_in_history(list->tail->command, list);
     if (list->size > 100)
         rm_history_node(list->head, list);
-    exit_status = execute_commands(new_cmd, term);
+    exit_status = execute_commands(new_cmd, term, 0, 1);
     return (exit_status);
 }

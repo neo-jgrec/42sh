@@ -8,7 +8,7 @@
 #include "my.h"
 #include <sys/wait.h>
 
-int execute_commands(char **args, term_t *term);
+int execute_commands(char **args, term_t *term, int input, int output);
 
 char **extract_commands_in_parentheses(char **args, int *i)
 {
@@ -47,10 +47,10 @@ void my_parenthesis(UNUSED exec_t *exec, int *i, term_t *term, char **args)
     if ((pid = fork()) < 0) {
         perror_exit("fork");
     } else if (pid == 0) {
-        execute_commands(subshell_args, term);
+        execute_commands(subshell_args, term, STDIN_FILENO, STDOUT_FILENO);
         exit(0);
     } else
         waitpid(pid, &status, 0);
-    exec->cmd_start = (!strcmp(args[*i + 1], ")")) ? *i + 2 : *i + 1;
+    exec->cmd_start = *i + 1;
     free(subshell_args);
 }

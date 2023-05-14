@@ -54,11 +54,11 @@ int is_executable(char ***args, char **env, term_t *term)
     if (*args[0] == NULL) return (0);
     if (access(*args[0], X_OK) == 0) return (1);
     char *cmd_with_path = get_command_with_path(*args[0], env);
-    if (cmd_with_path == NULL) {
+    if (cmd_with_path == NULL)
         cmd_with_path = get_command_with_path_local_var(*args[0], term);
-        if (cmd_with_path == NULL)
-            return (0);
-    }
+    if (cmd_with_path == NULL)
+        return (0);
+    free(*args[0]);
     *args[0] = cmd_with_path;
     term->is_from_path = 1;
     return (1);

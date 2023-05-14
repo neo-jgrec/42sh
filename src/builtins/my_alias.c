@@ -92,10 +92,10 @@ int my_alias(char **args, UNUSED char **env, int *exit_status,
 void *data)
 {
     term_t *term = (term_t *)data;
-    alias_t *alias_struct = malloc(sizeof(alias_t));
+    alias_t *alias_struct = calloc(1, sizeof(alias_t));
 
     if (alias_struct == NULL) return (84);
-    alias_struct->command = malloc(sizeof(char *) * 3);
+    alias_struct->command = calloc(3, sizeof(char *));
     if (term->alias == NULL)
         term->alias = ll_init_linked_list();
     if (term->ac == 1)

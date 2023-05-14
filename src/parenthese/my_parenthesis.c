@@ -51,7 +51,6 @@ void my_parenthesis(UNUSED exec_t *exec, int *i, term_t *term, char **args)
         exit(0);
     } else
         waitpid(pid, &status, 0);
-    (*i) += 1;
-    exec->cmd_start = *i + 1;
+    exec->cmd_start = (!strcmp(args[*i + 1], ")")) ? *i + 2 : *i + 1;
     free(subshell_args);
 }

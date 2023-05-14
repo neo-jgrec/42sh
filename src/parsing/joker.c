@@ -8,33 +8,33 @@
 #include "my.h"
 
 const char *my_jokers[] = {";", "||", "|", "<<", ">>", ">", "<", "&&",
-"(", ")", NULL};
+    "(", ")", NULL};
 
-int is_joker(char c, const char **jokers)
+int is_joker(const char *str, const char **jokers)
 {
     for (int k = 0; jokers[k] != NULL; k++) {
-        if (c == jokers[k][0])
-            return 1;
+        if (strncmp(str, jokers[k], strlen(jokers[k])) == 0)
+            return strlen(jokers[k]);
     }
     return 0;
 }
 
 char *add_space_before_and_after_jokers(char *str)
 {
-    char *new_str = malloc(sizeof(char) * my_strlen(str) * 3 + 1);
+    char *new_str = malloc(sizeof(char) * strlen(str) * 3 + 1);
     int j = 0;
+    int len = 0;
 
-    for (int i = 0, in_quote = 0; str[i] != '\0'; i++) {
-        in_quote = (IS_QUOTE(str[i]) ? !in_quote : in_quote);
-        if (in_quote || !is_joker(str[i], my_jokers))
-            new_str[j++] = str[i];
-        else {
-            (i > 0 && !is_joker(str[i - 1], my_jokers)
-            ? new_str[j++] = ' ' : 0);
-            new_str[j++] = str[i];
-            (str[i + 1] != '\0' && !is_joker(str[i + 1], my_jokers) ?
-            new_str[j++] = ' ' : 0);
-        }
+    for (int i = 0; str[i] != '\0'; ) {
+        if ((len = is_joker(str + i, my_jokers))) {
+            (i > 0 && str[i - 1] != ' ') ? new_str[j++] = ' ' : 0;
+            strncpy(new_str + j, str + i, len);
+            j += len;
+            (str[i + len] != ' ' && str[i + len] != '\0')
+                ? new_str[j++] = ' ' : 0;
+            i += len;
+        } else
+            new_str[j++] = str[i++];
     }
     new_str[j] = '\0';
     return new_str;

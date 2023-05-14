@@ -7,7 +7,14 @@
 
 #include "my.h"
 
-int handle_tm(char *input)
+int print_par_error(int err_id);
+
+static int handle_tm_argv(char **argv)
+{
+    return 0;
+}
+
+int handle_tm(char *input, char **argv)
 {
     ssize_t nb = 0;
 
@@ -21,15 +28,5 @@ int handle_tm(char *input)
     }
     if (nb > 0)
         return print_par_error(2);
-    return 0;
-}
-
-int handle_tm_argv(char **argv)
-{
-    for (size_t i = 0; argv[i] != NULL; i++) {
-        if (argv[i + 1] != NULL &&
-        (argv[i][0] == '(' && argv[i + 1][0] == '('))
-            return print_par_error(1);
-    }
-    return 0;
+    return handle_tm_argv(argv);
 }

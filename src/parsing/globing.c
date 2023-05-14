@@ -46,7 +46,6 @@ char *edit_str_with_globbing(char *str)
     return new_str;
 }
 
-
 char *merge_all_args(char **args)
 {
     int total_length = 0;

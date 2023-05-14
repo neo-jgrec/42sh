@@ -181,5 +181,6 @@
 
     int check_parenthesis(term_t *term);
     void my_parenthesis(exec_t *exec, int *i, term_t *term, char **args);
+    int exec_parenthesis(char **argv, char **env);
 
 #endif /* !MY_H_ */

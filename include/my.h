@@ -39,6 +39,11 @@
         size_t size;
     } history_list_t;
 
+    typedef struct alias_s {
+        char **command;
+        int status;
+    } alias_t;
+
     typedef struct pid_list_s {
         pid_t pid;
         TAILQ_ENTRY(pid_list_s) entries;

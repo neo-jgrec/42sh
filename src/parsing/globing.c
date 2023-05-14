@@ -11,6 +11,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+char *clean_str_minishell(char *str, const char *to_clean);
+char **a_mkstw(char *str, char *sep);
+
 void handle_token(char *token, glob_t *glob_result, char *new_str)
 {
     if (strchr(token, '*') || strchr(token, '?') || strchr(token, '[')) {
@@ -41,4 +44,27 @@ char *edit_str_with_globbing(char *str)
     new_str[strlen(new_str) - 1] = '\0';
 
     return new_str;
+}
+
+char *merge_all_args(char **args)
+{
+    char *str = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    *str = '\0';
+
+    for (int i = 0; args[i] != NULL; i++) {
+        strcat(str, args[i]);
+        strcat(str, " ");
+    }
+    str[strlen(str) - 1] = '\0';
+
+    return str;
+}
+
+void edit_args_with_globbing(char ***args)
+{
+    char *str = merge_all_args(*args);
+    char *new_str = edit_str_with_globbing(str);
+    *args = a_mkstw(new_str, " ");
+    free(str);
+    free(new_str);
 }

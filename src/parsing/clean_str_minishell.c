@@ -19,7 +19,7 @@ static void remplace_char(char *new_str, int *j)
 
 char *clean_str_minishell(char *str, const char *to_clean)
 {
-    char *new_str = malloc(sizeof(char) * (my_strlen(str) + 3));
+    char *new_str = calloc(sizeof(char), (my_strlen(str) * 3) + 1);
     int j = 0;
     int in_quote = 0;
 
@@ -29,7 +29,7 @@ char *clean_str_minishell(char *str, const char *to_clean)
         if ((str[i] == '"') && (i == 0 || str[i - 1] != '\''))
             in_quote = !in_quote;
         if (in_quote || my_strchr(to_clean, str[i]) == NULL) {
-            new_str[j++] = str[i];
+            new_str[j++] = (str[i] == '\0') ? ' ' : str[i];
             continue;
         }
         if (i > 0 && my_strchr(to_clean, str[i - 1]) == NULL && !in_quote)

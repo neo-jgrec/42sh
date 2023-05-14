@@ -57,10 +57,13 @@ void set_special_vars(term_t *term)
     if (!path && !does_var_exist("path", term->var)) {
         path = malloc(sizeof(char) * size);
         confstr(_CS_PATH, path, size);
+        for (size_t i = 0; path[i]; i++)
+            path[i] = (path[i] == ':') ? ' ' : path[i];
         my_set("path", path, &term->var);
         return;
     }
     if (path) {
+        path = strdup(path);
         for (size_t i = 0; path[i]; i++)
             path[i] = (path[i] == ':') ? ' ' : path[i];
         my_set("path", path, &term->var);

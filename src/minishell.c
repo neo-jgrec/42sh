@@ -87,8 +87,7 @@ int minishell(char **env)
         term.str = clean_str_minishell(term.str, " \t");
         if ((term.str = replace_alias(term.str, term.alias)) == NULL)
             continue;
-        term.argv = check_str(term.str, &term);
-        if (term.argv == NULL)
+        if ((term.argv = check_str(term.str, &term)) == NULL)
             continue;
         manage_history(term.history, term.argv);
         if (parsing_error(term.argv, &term) == 1) continue;

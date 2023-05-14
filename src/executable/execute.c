@@ -11,6 +11,8 @@
 #include <string.h>
 #include <signal.h>
 
+void edit_args_with_globbing(char ***args);
+
 char *remove_path(char *str)
 {
     int i = 0;
@@ -80,9 +82,9 @@ char **env, term_t *term)
     pid_list_t *pid_list;
     pid_t pid = fork();
     pid_list_t *tail = TAILQ_LAST(&term->pid_list, pid_list_head_s);
-
     if (pid == 0) {
         setup_input_output(fd.input_fd, fd.output_fd);
+        edit_args_with_globbing(&args);
         execute_command_execve(args, env, term);
     } else if (pid < 0) {
         perror_exit("fork");

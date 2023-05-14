@@ -7,6 +7,7 @@
 
 #include "my.h"
 void setup_input_output(int *input_fd, int *output_fd);
+void edit_args_with_globbing(char ***args);
 
 int is_changing_input_output(UNUSED int *input_fd, int *output_fd)
 {
@@ -18,8 +19,14 @@ int is_changing_input_output(UNUSED int *input_fd, int *output_fd)
 void execute_builtin(char **args, char **env, term_t *term)
 {
     for (int i = 0; commands[i].name != NULL; i++) {
-        if (my_strcmp(args[0], commands[i].name) == 0) {
+        if (my_strcmp(args[0], "setenv") != 0
+            && my_strcmp(args[0], commands[i].name) == 0) {
+            edit_args_with_globbing(&args);
             commands[i].func(args, env, term->exit_status, term);
+        }
+        if (my_strcmp(args[0], "setenv") == 0) {
+            my_setenv_builtin(args, env, term->exit_status, term);
+            break;
         }
         if (my_strncmp(args[0], "!", 1) == 0) {
             my_history(args, env, term->exit_status, term);

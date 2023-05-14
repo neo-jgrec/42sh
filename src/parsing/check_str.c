@@ -11,11 +11,10 @@ char *handle_backstick(char *str, term_t *term);
 int check_quote(char *str);
 char **a_mkstw(char *str, char *sep);
 
-char **check_str(char *str, term_t *term)
+char **check_str(char *str, UNUSED term_t *term)
 {
     if (!check_quote(str))
         return NULL;
-    str = handle_backstick(str, term);
     for (int i = 0; str[i]; i++)
         if (str[i] == '\t')
             str[i] = ' ';

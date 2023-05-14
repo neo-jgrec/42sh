@@ -7,12 +7,12 @@
 
 #include "my.h"
 
-int handle_tm(char *str, char **argv);
+int handle_tm(char *input);
 int handle_bp(char **argv);
 
 int check_parenthesis(term_t *term)
 {
-    if (handle_tm(term->str, term->argv))
+    if (handle_tm(term->str))
         return 1;
     else if (handle_bp(term-> argv))
         return 1;

@@ -9,12 +9,7 @@
 
 int print_par_error(int err_id);
 
-static int handle_tm_argv(char **argv)
-{
-    return 0;
-}
-
-int handle_tm(char *input, char **argv)
+int handle_tm(char *input)
 {
     ssize_t nb = 0;
 
@@ -28,5 +23,5 @@ int handle_tm(char *input, char **argv)
     }
     if (nb > 0)
         return print_par_error(2);
-    return handle_tm_argv(argv);
+    return 0;
 }

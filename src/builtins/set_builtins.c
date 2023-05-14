@@ -7,18 +7,6 @@
 
 #include "my.h"
 
-static bool str_is_in_lst(char *str, char **lst)
-{
-    size_t len = strlen(str);
-
-    if (!lst)
-        return (false);
-    for (size_t i = 0; lst[i]; i++)
-        if (strncmp(str, lst[i], len) == 0 && lst[i][len] == '\t')
-            return (true);
-    return (false);
-}
-
 int my_set_builtin(char **args, UNUSED char **env, int *exit_status, void *data)
 {
     term_t *term = data;
@@ -29,11 +17,15 @@ int my_set_builtin(char **args, UNUSED char **env, int *exit_status, void *data)
         display_variables(term->var, term->history);
         return (*exit_status);
     }
-    if ((nb_args == 4 && strcmp(args[2], "=") == 0) || (nb_args >= 4 &&
-    str_is_in_lst(args[1], term->var) && strcmp(args[2], "=") == 0)) {
-        my_set(args[1], args[3], &term->var);
-    } else
-        my_set(args[1], "\n", &term->var);
+    for (size_t i = 1; args[i];) {
+        if (my_strcmp(args[i + 1], "=") == 0 && args[i + 2]) {
+            my_set(args[i], args[i + 2], &term->var);
+            i += 3;
+        } else {
+            my_set(args[i], NULL, &term->var);
+            i++;
+        }
+    }
     return (*exit_status);
 }
 

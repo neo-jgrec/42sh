@@ -21,10 +21,15 @@ bool does_var_exist(char *name, char **var)
 int my_set(char *name, char *value, char ***var)
 {
     size_t len = strlen(name);
-    char *new_var = my_strcat_inf(3, name, "\t", value);
+    char *new_var = NULL;
 
+    if (name && value)
+        new_var = my_strcat_inf(3, name, "\t", value);
+    else
+        new_var = strdup(name);
     for (size_t i = 0; (*var) && (*var)[i]; i++){
-        if (strncmp(name, (*var)[i], len) == 0 && (*var)[i][len] == '\t') {
+        if (strncmp(name, (*var)[i], len) == 0 && ((*var)[i][len] == '\t' ||
+        (*var)[i][len] == '\0')) {
             free((*var)[i]);
             (*var)[i] = strdup(new_var);
             free(new_var);

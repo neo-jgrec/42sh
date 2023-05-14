@@ -31,7 +31,7 @@ bool error_variable(char **args, term_t *term)
 {
     for (size_t i = 0; args[i]; i++){
         if (IS_VAR(args[i]) && !check_var_existance(args[i], term)) {
-            printf("%s: Undefined variable.\n", &args[i][1]);
+            dprintf(2, "%s: Undefined variable.\n", &args[i][1]);
             return (true);
         }
     }

@@ -8,6 +8,8 @@
 #include "my.h"
 
 char *add_space_before_and_after_jokers(char *str);
+char **check_str(char *str, char **args, term_t *term);
+char *edit_str_with_globbing(char *str);
 
 static void remplace_char(char *new_str, int *j)
 {
@@ -35,5 +37,6 @@ char *clean_str_minishell(char *str, const char *to_clean)
     }
     for (; j > 0 && my_strchr(to_clean, new_str[j - 1]) != NULL; j--);
     new_str[j] = '\0';
+    if (new_str[0] != '\0') new_str = edit_str_with_globbing(new_str);
     return (new_str);
 }

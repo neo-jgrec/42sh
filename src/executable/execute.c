@@ -68,10 +68,10 @@ void execute_command_execve(char **args, char **env, term_t *term)
         }
     } else {
         if (execve(args[0], args, env) == -1) {
-            perror_exit(args[0]);
+            perror_exit(my_strcat_inf(2, "./", args[0]));
         }
     }
-    exit(0);
+    exit(1);
 }
 
 int execute_non_builtin_command(char **args, my_fd_t fd,

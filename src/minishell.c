@@ -15,8 +15,10 @@ char *replace_alias(char *str, linked_list_t *alias);
 int execute_commands(char **args, term_t *term);
 int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
+char **check_str(char *str, term_t *term);
 char **a_mkstw(char *str, char *sep);
 char **edit_args_env(char **args, char **env);
+char **check_str(char *str, term_t *term);
 
 char *remove_home(char *str, char **env)
 {
@@ -60,7 +62,7 @@ int minishell(char **env)
             continue;
         term.str = clean_str_minishell(term.str, " \t");
         term.str = replace_alias(term.str, term.alias);
-        term.argv = a_mkstw(term.str, " ");
+        term.argv = check_str(term.str, &term);
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);

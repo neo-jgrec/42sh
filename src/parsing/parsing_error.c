@@ -20,7 +20,7 @@ int is_there_only_char(char **args, char *to_find)
 int all_char_check(char **args)
 {
     if (my_strcmp(args[0], "|") == 0 && args[1] == NULL) {
-        my_printf("Invalid null command.\n");
+        dprintf(2, "Invalid null command.\n");
         return (1);
     }
     if (is_there_only_char(args, ">") || is_there_only_char(args, "<") ||
@@ -54,17 +54,19 @@ void handle_exit(char **args, int i)
 
 int parsing_error(char **args, term_t *term)
 {
+    if (args[0] == NULL)
+        return (1);
     if (!my_strcmp(args[0], ";"))
         remove_element_at_index(args, 0);
     for (int i = 0; args[i + 1] != NULL; i++) {
         if (((IS_RDOUT(args[i]) || IS_RDIN(args[i])) && (IS_RDOUT(args[i + 1])
         || IS_RDIN(args[i + 1]))) || ((IS_DRDOUT(args[i]) || IS_DRDIN(args[i]))
         && (IS_DRDOUT(args[i + 1]) || IS_DRDIN(args[i + 1])))) {
-            my_printf("Missing name for redirect.\n");
+            dprintf(2, "Missing name for redirect.\n");
             return (1);
         }
         if (my_strcmp(args[i], "|") == 0 && my_strcmp(args[i + 1], "|") == 0) {
-            my_printf("Invalid null command.\n");
+            dprintf(2, "Invalid null command.\n");
             return (1);
         }
         handle_exit(args, i);

@@ -10,7 +10,7 @@
 
 static void cd_error(char *message, int *exit_status)
 {
-    my_printf("%s.\n", message);
+    dprintf(2, "%s.\n", message);
     *exit_status = 1;
 }
 
@@ -18,7 +18,7 @@ static void error_handling(char **argv, char **env, char *pwd,
 int *exit_status)
 {
     if (errno != 0) {
-        my_printf("%s: %s.\n", argv[1], strerror(errno));
+        dprintf(2, "%s: %s.\n", argv[1], strerror(errno));
         *exit_status = 1;
         errno = 0;
     } else {

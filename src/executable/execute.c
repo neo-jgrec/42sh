@@ -36,12 +36,12 @@ char **change_n_value(char **tab, char *str, int n)
     for (; tab[i] != NULL; i++);
     for (int k = 0; k < i; k++) {
         if (k == n) {
-            ret[j] = malloc(sizeof(char) * 100);
-            my_strcpy(ret[j], str);
+            ret[j] = calloc(sizeof(char), BUFFER_SIZE);
+            strcpy(ret[j], str);
             j++;
         } else {
-            ret[j] = malloc(sizeof(char) * 100);
-            my_strcpy(ret[j], tab[k]);
+            ret[j] = calloc(sizeof(char), BUFFER_SIZE);
+            strcpy(ret[j], tab[k]);
             j++;
         }
     }

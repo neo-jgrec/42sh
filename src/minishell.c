@@ -51,9 +51,8 @@ void handle_sigint_program(int sig)
 
 int minishell(char **env)
 {
-    term_t term = { .str = NULL, .argv = NULL,
-        .env = env, .exit_status = &(int){0},
-        init_history_list(), .alias = ll_init_linked_list()};
+    term_t term = { .str = NULL, .argv = NULL, .env = env, .exit_status =
+    &(int){0}, init_history_list(), .alias = ll_init_linked_list()};
 
     TAILQ_INIT(&term.pid_list);
     while (1) {
@@ -61,9 +60,9 @@ int minishell(char **env)
         if (term.str[0] == '\0')
             continue;
         term.str = clean_str_minishell(term.str, " \t");
-        term.str = replace_alias(term.str, term.alias);
+        if ((term.str = replace_alias(term.str, term.alias)) == NULL)
+            continue;
         term.argv = check_str(term.str, &term);
-        for (int i = 0; term.argv[i] != NULL; i++)
         if (term.argv == NULL)
             continue;
         manage_history(term.history, term.argv);

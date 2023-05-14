@@ -88,8 +88,8 @@ char *replace_alias(char *str, linked_list_t *alias)
             continue;
         }
         if (check_alias_loop(temp, i, alias) == 1) {
-            temp[i] = NULL;
-            continue;
+            str = NULL;
+            return (str);
         }
         temp[i] = get_alias_value(temp, i, alias);
     }

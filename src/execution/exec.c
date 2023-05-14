@@ -58,6 +58,7 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
         : (!my_strcmp(args[i], "&&")) ? my_and(exec, &i, term, args)
         : (!my_strcmp(args[i], ";")) ? my_semicolon(exec, &i, term, args)
         : (!my_strcmp(args[i], "||")) ? my_or(exec, &i, term, args)
+        : (!my_strcmp(args[i], "(")) ? my_parenthesis(exec, &i, term, args)
         : 0;
     }
 }

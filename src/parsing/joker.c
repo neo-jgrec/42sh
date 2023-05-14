@@ -7,7 +7,8 @@
 
 #include "my.h"
 
-const char *my_jokers[] = {";", "||", "|", "<<", ">>", ">", "<", "&&", NULL};
+const char *my_jokers[] = {";", "||", "|", "<<", ">>", ">", "<", "&&",
+"(", ")", NULL};
 
 int is_joker(char c, const char **jokers)
 {

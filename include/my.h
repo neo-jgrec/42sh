@@ -179,11 +179,7 @@
 
     void display_variables(char **var, history_list_t *history);
 
-    int print_par_error(int err_id);
-    int handle_tm(char *input);
-    int handle_bp(char **argv);
-    int handle_tm_argv(char **argv);
-    int handle_null(char **argv);
-    int handle_parenthese(term_t *term);
+    int check_parenthesis(term_t *term);
+    void my_parenthesis(exec_t *exec, int *i, term_t *term, char **args);
 
 #endif /* !MY_H_ */

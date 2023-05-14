@@ -12,7 +12,7 @@
 
 char *clean_str_minishell(char *str, const char *to_clean);
 char *replace_alias(char *str, linked_list_t *alias);
-int execute_commands(char **args, term_t *term);
+int execute_commands(char **args, term_t *term, int input, int output);
 int parsing_error(char **args, term_t *term);
 char *read_stdin(term_t *term);
 char **check_str(char *str, term_t *term);
@@ -94,6 +94,6 @@ int minishell(char **env)
             continue;
         if (edit_args_env(term.argv, term.env) == NULL) continue;
         signal(SIGINT, handle_sigint_program);
-        execute_commands(term.argv, &term);
+        execute_commands(term.argv, &term, 0, 1);
     }
 }

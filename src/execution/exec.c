@@ -61,9 +61,9 @@ void my_parsing(exec_t *exec, char **args, term_t *term)
     }
 }
 
-int execute_commands(char **args, term_t *term)
+int execute_commands(char **args, term_t *term, int input_fd, int output_fd)
 {
-    exec_t exec = {0, 1, 0, 0, 0};
+    exec_t exec = {input_fd, output_fd, 0, 0, 0};
 
     my_parsing(&exec, args, term);
     if (args[exec.cmd_start] != NULL)

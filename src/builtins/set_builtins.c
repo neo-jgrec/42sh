@@ -32,7 +32,7 @@ int my_set_builtin(char **args, UNUSED char **env, int *exit_status, void *data)
 int my_unset_builtin(char **args, UNUSED char **env, int *exit_status,
 void *data)
 {
-    UNUSED term_t *term = data;
+    term_t *term = data;
 
     *exit_status = 0;
     if (args && args[1] == NULL) {

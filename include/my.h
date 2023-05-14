@@ -201,5 +201,6 @@
     int handle_parenthese(term_t *term);
 
     void display_variables(char **var, history_list_t *history);
+    int exec_parenthesis(char **argv, char **env);
 
 #endif /* !MY_H_ */
